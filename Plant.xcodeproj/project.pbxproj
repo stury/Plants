@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		D28F352821B2264C007CFF9C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352721B2264C007CFF9C /* main.swift */; };
+		D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */; };
+		D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */; };
+		D28F353321B227B4007CFF9C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353021B227B3007CFF9C /* Image.swift */; };
+		D28F353521B227CF007CFF9C /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353421B227CF007CFF9C /* Plant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		D28F352421B2264C007CFF9C /* Plant */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Plant; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28F352721B2264C007CFF9C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGContextExtensions.swift; sourceTree = "<group>"; };
+		D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorExtensions.swift; sourceTree = "<group>"; };
+		D28F353021B227B3007CFF9C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		D28F353421B227CF007CFF9C /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				D28F352721B2264C007CFF9C /* main.swift */,
+				D28F353421B227CF007CFF9C /* Plant.swift */,
+				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
+				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
+				D28F353021B227B3007CFF9C /* Image.swift */,
 			);
 			path = Plant;
 			sourceTree = "<group>";
@@ -120,6 +132,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D28F352821B2264C007CFF9C /* main.swift in Sources */,
+				D28F353321B227B4007CFF9C /* Image.swift in Sources */,
+				D28F353521B227CF007CFF9C /* Plant.swift in Sources */,
+				D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */,
+				D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
