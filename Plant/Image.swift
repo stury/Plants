@@ -98,7 +98,18 @@ public extension Image {
         return result
     }
 
-    /// A simple method for outputting the image as a PNG image.
+    /// simple method to export an Image as a PNG to the user's document directory.
+    public func export(name: String = "maze") -> Image? {
+        
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        if let documentURL = URL(string: "\(name).png", relativeTo: URL(fileURLWithPath: documentsPath)) {
+            self.output(documentURL)
+        }
+        
+        return self
+    }
+
+    /// A simple method for outputting the image as a PNG image to a specified URL.
     public func output(_ url: URL) {
         let image = self
         #if os(macOS)

@@ -7,9 +7,9 @@
 /// Scott Tury
 
 #if os(macOS)
-import Cocoa
+    import Cocoa
 #elseif os(iOS)
-import UIKit
+    import UIKit
 #endif
 
 enum PlantItemEnum : Int {
@@ -33,6 +33,10 @@ class Plant {
     
     public var limitLeft : CGFloat = 0.0
     public var limitRight: CGFloat = 0.0
+    public var limitTop : CGFloat = 0.0
+    public var limitBottom : CGFloat = 0.0
+    
+    public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
     
     private let branchColor = ( 0.7098, 0.3961, 0.1137 )
     private let leafColor = ( 0.0, 1.0, 0.0 )
@@ -60,6 +64,13 @@ class Plant {
         }
         if point.x > limitRight {
             limitRight = point.x
+        }
+        
+        if point.y < limitTop {
+            limitTop = point.y
+        }
+        if point.y > limitBottom {
+            limitBottom = point.y
         }
     }
 
@@ -154,6 +165,13 @@ class Plant {
         return result
     }
     
+    func resetLimits(_ imageSize: (Int, Int)) {
+        limitLeft  = CGFloat(imageSize.0)
+        limitRight = 0.0
+        limitTop = CGFloat(imageSize.1)
+        limitBottom = 0.0
+    }
+    
     public func drawPlant(_ iterations: Int ) -> Image? {
         var result : Image?
         
@@ -163,11 +181,9 @@ class Plant {
         infoStack.append(seed)
 
         let imageSize = (600, 600)
+        resetLimits( imageSize )
         
-        limitLeft  = CGFloat(imageSize.0)
-        limitRight = 0.0
-
-        if let context = Image.context(size: imageSize, color: (0.0, 0.0, 0.0, 1.0)) {
+        if let context = Image.context(size: imageSize, color: backgroundColor) {
             
             self.context = context
             
@@ -246,6 +262,90 @@ class Plant {
             }
             
             self.context = nil
+        }
+
+        #if DEBUG
+        print( "limit: left:\(limitLeft), right:\(limitRight), top:\(limitTop), bottom:\(limitBottom)" )
+        // I could flag that this image isn't big enough, if the values fall outside of the current imageSize!
+        #endif
+        
+        return result
+    }
+    
+    // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
+    public func croppedPlant( _ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
+        var result : Image?
+
+        if let plantImage = plant.drawPlant(iterations) {
+            // print("limit left: \(plant.limitLeft), left: \(plant.limitRight)")
+            if let cropImage = plantImage.crop(CGRect(x: plant.limitLeft-offset/2, y: 0, width: (plant.limitRight - plant.limitLeft) + offset, height: plantImage.size.height)) {
+                result = cropImage
+            }
+//            else {
+//                result = plantImage
+//            }
+        }
+
+        return result
+    }
+    
+    /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
+    /// and then it generates each successive iteration into an Image.  It then adds all the images into an
+    /// image array to pass back to the caller.
+    public func iterativePlants(_ iterations: Int, crop: Bool, offset: CGFloat = 0.0 ) -> [Image] {
+        var result : [Image] = [Image]()
+        
+        for i in 0...iterations {
+            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+            var image : Image?
+            
+            if crop {
+                image = plant.croppedPlant(i, offset: offset)
+            }
+            else {
+                image = plant.drawPlant(i)
+            }
+            
+            if let plantImage = image {
+                result.append(plantImage)
+            }
+        }
+        return result
+    }
+    
+    // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
+    public func iterativeGrowth(_ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
+        var result : Image? = nil
+        let plants = iterativePlants(iterations, crop: true, offset: offset)
+
+        var maxWidth : Int = 0
+        var height : Int = 0
+        
+        // go through the images to figure out the width/height we will need for our composite image.
+        for plantImage in plants {
+            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+            maxWidth += Int(plantImage.size.width)
+            height = Int(plantImage.size.height)
+        }
+
+        // Once we have all of the cropped images, we should be able to calculate the size of the full image, and generate it.
+        let imageSize = ( maxWidth, height )
+        if let context = Image.context(size: imageSize, color: backgroundColor) {
+            
+            // now I can iterate through all of the images and generate one image that incorporates them all!
+            var offset : CGFloat = 0.0
+            for image in plants {
+                if let cgImage = image.cgImage {
+                    let rect = CGRect(x: offset, y: 0.0, width: image.size.width, height: image.size.height)
+                    //print( "\(rect)" )
+                    context.draw(cgImage, in: rect)
+                    offset += image.size.width
+                }
+            }
+            
+            if let cgImage = context.makeImage() {
+                result = Image(cgImage: cgImage)
+            }
         }
         
         return result
