@@ -57,7 +57,7 @@ class Turtle {
     }
     
     // NOTE: Border parameter is just for calculating the next image size...  Otherwise it's not needed.  Perhaps it should be a class property?
-    public func draw(_ iteration: Int, imageSize: (Int, Int) = (600, 600), start:CGPoint? = nil, border: CGFloat = 0.0  ) -> Image? {
+    public func draw(_ iteration: Int, imageSize: (Int, Int) = (200, 200), start:CGPoint? = nil, border: CGFloat = 0.0  ) -> Image? {
         var result : Image?
         
         let rule = rules.calculateRules(iteration)
@@ -161,7 +161,7 @@ class Turtle {
     // MARK: -
 
     // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
-    public func drawCropped( _ iterations: Int, imageSize: (Int, Int) = (600, 600), border: CGFloat = 0.0 ) -> Image? {
+    public func drawCropped( _ iterations: Int, imageSize: (Int, Int) = (200, 200), border: CGFloat = 0.0 ) -> Image? {
         var result : Image?
         
         if let image = draw(iterations, imageSize: imageSize, border: border) {
@@ -198,7 +198,7 @@ class Turtle {
         }
         else {
             // Should not get here!
-            size = (600, 600)
+            size = (200, 200)
         }
 
         for i in 0...iterations-1 {

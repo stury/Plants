@@ -48,17 +48,17 @@ func drawPlant() {
 }
 
 func drawTurtle( ) {
-    let rules : [String:Rules] =
-        ["quadraticKochIsland": Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"]),
-         "quadraticModifiedSnowflakeCurve": Rules(initiator: "-F", rules: ["F" : "F+F-F-F+F"]),
+    let rules : [String:Rules] = [
+        "quadraticKochIsland": Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"]),
+        "quadraticModifiedSnowflakeCurve": Rules(initiator: "-F", rules: ["F" : "F+F-F-F+F"]),
          "islandsAndLakes": Rules(initiator: "F+F+F+F", rules: ["F" : "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF", "f":"ffffff"]),
-         "koch_curve_a": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-F-F+F"]),
-         "koch_curve_b": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-FF"]),
-         "koch_curve_c": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F+F-F-FF"] ),
-         "koch_curve_d":Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F--F-F"] ),
-         "koch_curve_e":Rules(initiator: "F-F-F-F", rules: ["F" : "F-FF--F-F"] ),
-         "koch_curve_f":Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F-F-F"] )
-         ]
+        "koch_curve_a": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-F-F+F"]),
+        "koch_curve_b": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-FF"]),
+        "koch_curve_c": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F+F-F-FF"] ),
+        "koch_curve_d":Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F--F-F"] ),
+        "koch_curve_e":Rules(initiator: "F-F-F-F", rules: ["F" : "F-FF--F-F"] ),
+        "koch_curve_f":Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F-F-F"] )
+    ]
     
     let turtle = Turtle()
     for (ruleName, currentRule) in rules {
@@ -73,5 +73,5 @@ func drawTurtle( ) {
 //    }
 }
 
+drawPlant()
 drawTurtle()
-
