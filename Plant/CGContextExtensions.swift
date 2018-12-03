@@ -68,4 +68,14 @@ public extension CGContext {
         }
     }
 
+    /// Simple method to draw a line segment in the current context.
+    public func drawLineSegment( points: [(Double, Double)] ) {
+        
+        if points.count == 2 {
+            move(to: CGPoint(x:CGFloat(points[0].0), y:CGFloat(points[0].1)))
+            addLine(to: CGPoint(x:CGFloat(points[1].0), y:CGFloat(points[1].1)))
+            strokePath()
+        }
+    }
+
 }

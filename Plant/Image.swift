@@ -33,16 +33,16 @@
     import UIKit
     public typealias Image = UIImage
 
-extension UIImage {
-    
-    /// Mimicking the NSImage convienience initializer for iOS!
-    public convenience init?(contentsOf url: URL) {
-        guard let data = try? Data(contentsOf: url) else {
-            return nil
+    extension UIImage {
+        
+        /// Mimicking the NSImage convienience initializer for iOS!
+        public convenience init?(contentsOf url: URL) {
+            guard let data = try? Data(contentsOf: url) else {
+                return nil
+            }
+            self.init(data: data)
         }
-        self.init(data: data)
     }
-}
 #endif
 
 let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
@@ -86,7 +86,7 @@ public extension Image {
     }
    
     /// This method will allow you to crop an image to a specified Rect
-    func crop(_ rect: CGRect) -> Image? {
+    public func crop(_ rect: CGRect) -> Image? {
         var result : Image? = nil
         
         if let cgImage = self.cgImage {

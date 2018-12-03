@@ -175,11 +175,8 @@ class Plant {
     public func drawPlant(_ iterations: Int ) -> Image? {
         var result : Image?
         
-        let plantRule = calculateRules(iterations)
+        let rule = calculateRules(iterations)
         
-        var infoStack = [String]()
-        infoStack.append(seed)
-
         let imageSize = (600, 600)
         resetLimits( imageSize )
         
@@ -206,8 +203,8 @@ class Plant {
             
             var len = 0.0
             
-            for offset in 0 ..< plantRule.count {
-                let character = plantRule[String.Index(encodedOffset: offset)]
+            for offset in 0 ..< rule.count {
+                let character = rule[String.Index(encodedOffset: offset)]
                 //print( "processing character: \(character)" )
                 switch character {
                 case "0":
@@ -247,10 +244,19 @@ class Plant {
                         context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
                     }
                 default:
-                    if infoStack.count > 0 {
-                        infoStack.removeLast()
-                        context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
-                    }
+//                    if positionStack.count > 0 {
+//                        currentPosition = positionStack.removeLast()
+//                        if currentPosition.branch == .left {
+//                            currentPosition.direction += branchAngle
+//                            currentPosition.branch = .right
+//                        }
+//                        else {
+//                            currentPosition.branch = .left
+//                            currentPosition.direction -= branchAngle
+//                        }
+//                        context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
+//                    }
+                    print("WARNING: cannot process rule for character: \(character)")
                 }
             }
             
@@ -276,9 +282,9 @@ class Plant {
     public func croppedPlant( _ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
         var result : Image?
 
-        if let plantImage = plant.drawPlant(iterations) {
+        if let plantImage = drawPlant(iterations) {
             // print("limit left: \(plant.limitLeft), left: \(plant.limitRight)")
-            if let cropImage = plantImage.crop(CGRect(x: plant.limitLeft-offset/2, y: 0, width: (plant.limitRight - plant.limitLeft) + offset, height: plantImage.size.height)) {
+            if let cropImage = plantImage.crop(CGRect(x: limitLeft-offset/2, y: 0, width: (limitRight - limitLeft) + offset, height: plantImage.size.height)) {
                 result = cropImage
             }
 //            else {
@@ -300,14 +306,14 @@ class Plant {
             var image : Image?
             
             if crop {
-                image = plant.croppedPlant(i, offset: offset)
+                image = croppedPlant(i, offset: offset)
             }
             else {
-                image = plant.drawPlant(i)
+                image = drawPlant(i)
             }
             
-            if let plantImage = image {
-                result.append(plantImage)
+            if let image = image {
+                result.append(image)
             }
         }
         return result

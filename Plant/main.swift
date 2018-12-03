@@ -13,7 +13,7 @@ import Foundation
 
 let plant = Plant()
 
-plant.branchAngle = 25.0
+//plant.branchAngle = 25.0
 //plant.rules["0"] = "1[0][0]110" // Maple leaf
 
 //plant.branchAngle = 25.0
@@ -27,6 +27,12 @@ plant.branchAngle = 25.0
 //plant.rules["0"] = "1[1[1[1[1[1[10]]]]]]0" // Paisley
 //plant.rules["1"] = "11"
 
+//plant.rules["0"] = "1[1[0][0]0][1[0][0]0]" // ? Plant
+//plant.rules["0"] = "1[1[0][0]][1[0][0]]" // ? Plant
+
+plant.branchAngle = 25.0
+plant.rules["0"] = "1[1[0]1[0]][1[0]1[0]]" // ? Plant
+
 //let images = plant.iterativePlants(6, crop: true, offset: 50)
 //for (index, plantImage) in images.enumerated() {
 //    // print( "Plant for iteration \(index): \(plant.calculateRules(index))" )
@@ -35,7 +41,17 @@ plant.branchAngle = 25.0
 //}
 
 
-if let plantImage = plant.iterativeGrowth(6, offset: 50) {
-    _  = plantImage.export( name: "plant_iterative" )
-}
+//if let plantImage = plant.iterativeGrowth(8, offset: 50) {
+//    _  = plantImage.export( name: "plant_iterative" )
+//}
 
+let quadraticKochIsland = Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"])
+let quadraticModifiedSnowflakeCurve = Rules(initiator: "-F", rules: ["F" : "F+F-F-F+F"])
+let islandsAndLakes = Rules(initiator: "F+F+F+F", rules: ["F" : "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF", "f":"ffffff"])
+let unknown_a = Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-F-F+F"])
+
+let turtle = Turtle()
+turtle.rules = unknown_a
+if let image = turtle.drawIterativeGrowth(4, offset: 50) {
+    _  = image.export( name: "turtle_iterative" )
+}

@@ -12,6 +12,9 @@
 		D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */; };
 		D28F353321B227B4007CFF9C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353021B227B3007CFF9C /* Image.swift */; };
 		D28F353521B227CF007CFF9C /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353421B227CF007CFF9C /* Plant.swift */; };
+		D28F353721B483F2007CFF9C /* Turtle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353621B483F2007CFF9C /* Turtle.swift */; };
+		D28F353921B4DE52007CFF9C /* Limit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353821B4DE52007CFF9C /* Limit.swift */; };
+		D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +36,9 @@
 		D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorExtensions.swift; sourceTree = "<group>"; };
 		D28F353021B227B3007CFF9C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D28F353421B227CF007CFF9C /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
+		D28F353621B483F2007CFF9C /* Turtle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Turtle.swift; sourceTree = "<group>"; };
+		D28F353821B4DE52007CFF9C /* Limit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Limit.swift; sourceTree = "<group>"; };
+		D28F353A21B4DE84007CFF9C /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +73,9 @@
 			children = (
 				D28F352721B2264C007CFF9C /* main.swift */,
 				D28F353421B227CF007CFF9C /* Plant.swift */,
+				D28F353621B483F2007CFF9C /* Turtle.swift */,
+				D28F353821B4DE52007CFF9C /* Limit.swift */,
+				D28F353A21B4DE84007CFF9C /* Rules.swift */,
 				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
 				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
 				D28F353021B227B3007CFF9C /* Image.swift */,
@@ -132,10 +141,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D28F352821B2264C007CFF9C /* main.swift in Sources */,
+				D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */,
 				D28F353321B227B4007CFF9C /* Image.swift in Sources */,
 				D28F353521B227CF007CFF9C /* Plant.swift in Sources */,
 				D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */,
 				D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */,
+				D28F353921B4DE52007CFF9C /* Limit.swift in Sources */,
+				D28F353721B483F2007CFF9C /* Turtle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
