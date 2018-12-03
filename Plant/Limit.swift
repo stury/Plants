@@ -22,6 +22,18 @@ class Limit {
     public var top : CGFloat = 0.0
     public var bottom : CGFloat = 0.0
     
+    public var height : CGFloat {
+        get {
+            return (bottom - top)
+        }
+    }
+
+    public var width : CGFloat {
+        get {
+            return (right - left)
+        }
+    }
+
     // resets the limit values based on an Int pair for (width, height).
     public func reset(_ imageSize: (Int, Int)) {
         left  = CGFloat(imageSize.0)
@@ -64,5 +76,17 @@ class Limit {
     
     public func update(_ point: (Double, Double) ) {
         update( CGPoint(x: point.0, y: point.1) )
+    }
+    
+    // method to test if the drawn image fits within the size of the image we created.
+    public func within(_ size: (Int, Int) ) -> Bool {
+        var result = false
+        
+        if left >= 0 && right <= CGFloat(size.0) &&
+            top >= 0 && bottom <= CGFloat(size.1) {
+            result = true
+        }
+        
+        return result
     }
 }

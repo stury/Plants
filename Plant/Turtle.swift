@@ -56,12 +56,13 @@ class Turtle {
         context?.drawLineSegment(points: [start.position, end.position])
     }
     
-    public func draw(_ iteration: Int ) -> Image? {
+    // NOTE: Border parameter is just for calculating the next image size...  Otherwise it's not needed.  Perhaps it should be a class property?
+    public func draw(_ iteration: Int, imageSize: (Int, Int) = (600, 600), start:CGPoint? = nil, border: CGFloat = 0.0  ) -> Image? {
         var result : Image?
         
         let rule = rules.calculateRules(iteration)
         
-        let imageSize = (2400, 2400)
+        //let imageSize = (2400, 2400)
         limits.reset( imageSize )
         
         if let context = Image.context(size: imageSize, color: backgroundColor) {
@@ -76,10 +77,18 @@ class Turtle {
             context.setLineWidth(CGFloat(2.0))
             context.setLineJoin(CGLineJoin.round)
 
-            var state = TurtleState(position: (floor(Double(imageSize.0)/2.0), floor(Double(imageSize.1)/3.0)), heading: 90.0 )
+            let startLocation : CGPoint
+            if let start = start {
+                startLocation = start
+            }
+            else {
+                startLocation = CGPoint(x: floor(Double(imageSize.0)/2.0), y: floor(Double(imageSize.1)/3.0))
+            }
+            
+            var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: 90.0 )
             
             // I've got a graphics context!  Let's build up the image...
-            let startLocation = CGPoint(x: state.position.0, y: state.position.1)
+            
             context.move(to: startLocation)
             //print( "originatingPosition = \(currentPosition.position)" )
             limits.update(startLocation)
@@ -120,8 +129,8 @@ class Turtle {
                     print("WARNING: Unimplemented rule for character: \(character)")
                 }
             }
-            
-//            context.restoreGState()
+
+            //            context.restoreGState()
             
             // Convert context into a Image to return.
             if let cgImage = context.makeImage() {
@@ -129,6 +138,16 @@ class Turtle {
             }
             
             self.context = nil
+            
+            // Test to see if the image is within the bounds of the imageSize.  If not,
+            // recalculate the imageSize we  should use, and the starting position, and return that!
+            if !limits.within(imageSize) {
+                // recalculate the image size, and the start position, then rerun this method...
+                
+                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
+                let newStartPosition = CGPoint(x: startLocation.x-limits.left+border, y:startLocation.y-limits.top+border )
+                result = draw( iteration, imageSize: newImageSize, start: newStartPosition )
+            }
         }
         
         #if DEBUG
@@ -142,12 +161,12 @@ class Turtle {
     // MARK: -
 
     // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
-    public func drawCropped( _ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
+    public func drawCropped( _ iterations: Int, imageSize: (Int, Int) = (600, 600), border: CGFloat = 0.0 ) -> Image? {
         var result : Image?
         
-        if let image = draw(iterations) {
+        if let image = draw(iterations, imageSize: imageSize, border: border) {
             // print("limit left: \(plant.limitLeft), left: \(plant.limitRight)")
-            if let cropImage = image.crop(CGRect(x: limits.left-offset/2, y: 0, width: (limits.right - limits.left) + offset, height: image.size.height)) {
+            if let cropImage = image.crop(CGRect(x: limits.left-border/2, y: 0, width: (limits.right - limits.left) + border, height: image.size.height)) {
                 result = cropImage
             }
             //            else {
@@ -161,38 +180,59 @@ class Turtle {
     /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
     /// and then it generates each successive iteration into an Image.  It then adds all the images into an
     /// image array to pass back to the caller.
-    public func drawIterative(_ iterations: Int, crop: Bool, offset: CGFloat = 0.0 ) -> [Image] {
+    public func drawIterative(_ iterations: Int, crop: Bool, border: CGFloat = 0.0 ) -> [Image] {
         var result : [Image] = [Image]()
-        let original = rules
-        
-        for i in 0...iterations {
+//        let original = rules
+
+        let lastIterationImage : Image?
+        if crop {
+            lastIterationImage = drawCropped(iterations, border: border)
+        }
+        else {
+            lastIterationImage = draw(iterations, border: border)
+        }
+
+        let size : (Int, Int)
+        if let image = lastIterationImage {
+            size = ( Int(floor(image.size.width)), Int(floor(image.size.height)))
+        }
+        else {
+            // Should not get here!
+            size = (600, 600)
+        }
+
+        for i in 0...iterations-1 {
             //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
             var image : Image?
             
-            if i > 0 {
-                rules = Rules(initiator: original.initiator, rules: original.rules, angle: original.angle, length: original.length/(2.0*Double(i)))
-            }
+//            if i > 0 {
+//                rules = Rules(initiator: original.initiator, rules: original.rules, angle: original.angle, length: original.length/(2.0*Double(i)))
+//            }
             
             if crop {
-                image = drawCropped(i, offset: offset)
+                image = drawCropped(i, imageSize: size, border: border)
             }
             else {
-                image = draw(i)
+                image = draw(i, imageSize: size, border: border)
             }
             
             if let image = image {
                 result.append(image)
             }
         }
-        rules = original
-        
+//        rules = original
+
+        if let image = lastIterationImage {
+            result.append(image)
+        }
+
         return result
     }
     
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
-    public func drawIterativeGrowth(_ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
+    public func drawIterativeGrowth(_ iterations: Int, border: CGFloat = 0.0 ) -> Image? {
         var result : Image? = nil
-        let curves = drawIterative(iterations, crop: true, offset: offset)
+        let curves = drawIterative(iterations, crop: true, border: border)
         
         var maxWidth : Int = 0
         var height : Int = 0

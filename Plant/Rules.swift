@@ -16,7 +16,7 @@ public class Rules {
     public let angle : Double
     public let length : Double
     
-    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 40.0 ) {
+    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0 ) {
         self.initiator  = initiator
         self.rules      = rules
         self.angle      = angle
