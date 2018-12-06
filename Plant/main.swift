@@ -47,31 +47,55 @@ func drawPlant() {
 
 }
 
+let defaultLength = 20.0
+let defaultIteration = 4
+
 func drawTurtle( ) {
-    let rules : [String:Rules] = [
-        "quadraticKochIsland": Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"]),
-        "quadraticModifiedSnowflakeCurve": Rules(initiator: "-F", rules: ["F" : "F+F-F-F+F"]),
-         "islandsAndLakes": Rules(initiator: "F+F+F+F", rules: ["F" : "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF", "f":"ffffff"]),
-        "koch_curve_a": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-F-F+F"]),
-        "koch_curve_b": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-FF"]),
-        "koch_curve_c": Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F+F-F-FF"] ),
-        "koch_curve_d":Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F--F-F"] ),
-        "koch_curve_e":Rules(initiator: "F-F-F-F", rules: ["F" : "F-FF--F-F"] ),
-        "koch_curve_f":Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F-F-F"] )
+    let rules : [String:(Rules, Int)] = [
+        "quadraticKochIsland": (Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"]), 4),
+        "quadraticModifiedSnowflakeCurve": (Rules(initiator: "-F", rules: ["F" : "F+F-F-F+F"]),defaultIteration),
+         "islandsAndLakes": (Rules(initiator: "F+F+F+F", rules: ["F" : "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF", "f":"ffffff"]),3),
+        "koch_curve_a": (Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-F-F+F"]),defaultIteration),
+        "koch_curve_b": (Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F-F-F-FF"]),defaultIteration),
+        "koch_curve_c": (Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F+F-F-FF"] ),3),
+        "koch_curve_d": (Rules(initiator: "F-F-F-F", rules: ["F" : "FF-F--F-F"] ),defaultIteration),
+        "koch_curve_e": (Rules(initiator: "F-F-F-F", rules: ["F" : "F-FF--F-F"] ),5),
+        "koch_curve_f": (Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F-F-F"] ),defaultIteration),
+        
+        "hex_curve": (Rules(initiator: "F+F+F", rules: ["F" : "F+F-F+F"], angle: 60, length: defaultLength, initialDirection: 90 ),defaultIteration),
+        "tri_curve": (Rules(initiator: "F+F+F", rules: ["F" : "F+F-F+F"], angle: 120, length: defaultLength, initialDirection: 90 ),defaultIteration),
+        "triangle_curve": (Rules(initiator: "F-F-F", rules: ["F" : "F+F-FF"], angle: 120, length: defaultLength, initialDirection: 90 ),defaultIteration),
+        "koch_curve_flat_snowflake": (Rules(initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
+        "koch_curve_snowflake":(Rules(initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
+        "scott_destructive_snowflake":(Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "-F++FF-F"], angle: 60, length: defaultLength, initialDirection: 90 ),defaultIteration),
+        "scott_destructive_tri":(Rules(initiator: "+F--F--F", rules: ["F" : "+F--FF+F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
+        
+        "dragon-curve":(Rules(initiator: "L", rules: ["L" : "L+R+", "R" : "-L-R"], angle: 90, length: defaultLength, initialDirection: 90 ),10),
+        "sierpinski_gasket":(Rules(initiator: "R", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ),6),
+        "hexagonal_gosper_curve":(Rules(initiator: "L", rules: ["L" : "L+R++R-L--LL-R+", "R" : "-L+RR++R+L--L-R"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
+        "quadratic-Gosper_curve":(Rules(initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 ),3)
     ]
     
     let turtle = Turtle()
     for (ruleName, currentRule) in rules {
-        turtle.rules = currentRule
-        if let image = turtle.drawIterativeGrowth(4, border: 50) {
+        turtle.rules = currentRule.0
+        if let image = turtle.drawIterativeGrowth(currentRule.1, border: 50) {
             _  = image.export( name: "turtle_iterative_\(ruleName)" )
         }
+        if let image = turtle.draw(currentRule.1, border:50) {
+            _  = image.export( name: "turtle_draw_\(ruleName)" )
+        }
+
     }
     
-//    if let image = turtle.draw(4, border:50) {
+    // Koch Curve Snowflake:  Rules(initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 20.0, initialDirection: 0 )
+    // Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "-F+F-F+F"], angle: 60, length: 20.0, initialDirection: 90 )
+    // iterator:  F-F
+//    turtle.rules = Rules(initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 )
+//    if let image = turtle.draw(2, border:50) {
 //        _  = image.export( name: "turtle_draw" )
 //    }
 }
 
-drawPlant()
+//drawPlant()
 drawTurtle()

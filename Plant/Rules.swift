@@ -8,19 +8,20 @@
 
 import Foundation
 
-// MARK: -
-
+/// Class to setup with rules for building up image instances.  
 public class Rules {
     public let initiator : String
     public let rules : [Character:String]
     public let angle : Double
     public let length : Double
+    public let initialDirection : Double
     
-    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0 ) {
+    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0 ) {
         self.initiator  = initiator
         self.rules      = rules
         self.angle      = angle
         self.length     = length
+        self.initialDirection = initialDirection
     }
     
     /// calculates the entire rule base based on the number of iterations we want to draw.

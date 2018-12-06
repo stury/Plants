@@ -2,6 +2,7 @@
 //  Turtle.swift
 //
 //  simple implementation of a Turtle rule based drawing system.
+// This is an example of a DOL-system.  It is deterministic and context free.
 //
 //  Created by Scott Tury on 12/2/18.
 //  Copyright © 2018 Scott Tury. All rights reserved.
@@ -11,10 +12,29 @@ import Foundation
 
 /// A structure to keep track of the position and heading of the turtle.
 struct TurtleState {
-    /// x, y coordinate
+    /// Position specified as (x, y) of the current turtle cursor
     let position: (Double, Double)
-    /// angle of direction
+    /// Angle of direction for the turtle (specified in degrees, not radians)
     let heading: Double
+    
+    var radians: Double {
+        get {
+            return heading * (Double.pi/180.0)
+        }
+    }
+    
+    /// This function will return the current heading (in degrees) by adding the supplied modifier value (in degrees).
+    /// It also checks to make sure the result is between 0 and 360.
+    func modifiedHeading(_ modifier: Double ) -> Double {
+        var result = heading + modifier
+        if result > 360.0 {
+            result -= 360.0
+        }
+        else if result < 0 {
+            result += 360.0
+        }
+        return result
+    }
 }
 
 // MARK: -
@@ -30,33 +50,15 @@ class Turtle {
     
     public var context : CGContext?
     
-    /// This function converts degrees into radiens.
-    func radiens( _ degrees: Double) -> Double {
-        return degrees * (Double.pi/180.0)
-    }
-    
-    /// This function will update the current degrees that the plant should be branching in.
-    /// It also checks to make sure the result is between 0 and 360.
-    func modDirection( modifier: Double, direction: Double) -> Double {
-        var result = direction + modifier
-        if direction > 360.0 {
-            result -= 360.0
-        }
-        else if direction < 0 {
-            result += 360.0
-        }
-        return result
-    }
-    
+    /// This method draws from the start position to the end position on the graphics context.
     func drawSegment(_ start: TurtleState, end: TurtleState ) {
-
         limits.update(end.position)
         
         context?.setStrokeColor(CGColor.from(color))
         context?.drawLineSegment(points: [start.position, end.position])
     }
     
-    // NOTE: Border parameter is just for calculating the next image size...  Otherwise it's not needed.  Perhaps it should be a class property?
+    /// NOTE: Border parameter is just for calculating the next image size...  Otherwise it's not needed.  Perhaps it should be a class property?
     public func draw(_ iteration: Int, imageSize: (Int, Int) = (200, 200), start:CGPoint? = nil, border: CGFloat = 0.0  ) -> Image? {
         var result : Image?
         
@@ -85,7 +87,7 @@ class Turtle {
                 startLocation = CGPoint(x: floor(Double(imageSize.0)/2.0), y: floor(Double(imageSize.1)/3.0))
             }
             
-            var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: 90.0 )
+            var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: rules.initialDirection )
             
             // I've got a graphics context!  Let's build up the image...
             
@@ -102,7 +104,31 @@ class Turtle {
                     // x' = x+ d cos angle
                     // y' = y + d sin angle
                     // line segment between (x, y) and (x', y') is drawn
-                    let headingRad = radiens(state.heading)
+                    let headingRad = state.radians
+                    let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
+                    // draw the line segment!
+                    drawSegment(state, end: newState)
+                    // set new state!
+                    state = newState
+                    
+                case "L":
+                    // Move forward drawing a line...  turtle state changes to (x', y', angle') where
+                    // x' = x+ d cos angle
+                    // y' = y + d sin angle
+                    // line segment between (x, y) and (x', y') is drawn
+                    let headingRad = state.radians
+                    let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
+                    // draw the line segment!
+                    drawSegment(state, end: newState)
+                    // set new state!
+                    state = newState
+
+                case "R":
+                    // Move forward drawing a line...  turtle state changes to (x', y', angle') where
+                    // x' = x+ d cos angle
+                    // y' = y + d sin angle
+                    // line segment between (x, y) and (x', y') is drawn
+                    let headingRad = state.radians
                     let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
                     // draw the line segment!
                     drawSegment(state, end: newState)
@@ -111,19 +137,19 @@ class Turtle {
                     
                 case "f":
                     // Move forward without drawing a line...
-                    let headingRad = radiens(state.heading)
+                    let headingRad = state.radians
                     state = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
                     limits.update(state.position)
                     
                 case "-":
                     // turn right by rule.angle  (clockwise)
                     // turtle state changes to (x, y, direction-angle)
-                    state = TurtleState(position: (state.position.0, state.position.1), heading: modDirection(modifier: -rules.angle, direction: state.heading) )
+                    state = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(-rules.angle) )
 
                 case "+":
                     // turn left by rule.angle (counter clockwise)
                     // turtle state changes to (x, y, direction+angle)
-                    state = TurtleState(position: (state.position.0, state.position.1), heading: modDirection(modifier: rules.angle, direction: state.heading) )
+                    state = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(rules.angle) )
 
                 default:
                     print("WARNING: Unimplemented rule for character: \(character)")
