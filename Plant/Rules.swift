@@ -15,13 +15,15 @@ public class Rules {
     public let angle : Double
     public let length : Double
     public let initialDirection : Double
+    public let rewriting : Bool
     
-    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0 ) {
+    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, rewriting: Bool = false ) {
         self.initiator  = initiator
         self.rules      = rules
         self.angle      = angle
         self.length     = length
         self.initialDirection = initialDirection
+        self.rewriting  = rewriting
     }
     
     /// calculates the entire rule base based on the number of iterations we want to draw.
@@ -43,6 +45,12 @@ public class Rules {
             result = tmpString
         }
         
+        if rewriting {
+            // Ideally I should just remove all of the "L" and "R" characters from the final string...
+            // This way we don't have to process them when drawing the rule set.
+            result = result.replacingOccurrences(of: "L", with: "")
+            result = result.replacingOccurrences(of: "R", with: "")
+        }
         return result
     }
     

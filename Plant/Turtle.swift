@@ -110,31 +110,24 @@ class Turtle {
                     drawSegment(state, end: newState)
                     // set new state!
                     state = newState
-                    
-                case "L":
-                    // Move forward drawing a line...  turtle state changes to (x', y', angle') where
-                    // x' = x+ d cos angle
-                    // y' = y + d sin angle
-                    // line segment between (x, y) and (x', y') is drawn
-                    let headingRad = state.radians
-                    let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
-                    // draw the line segment!
-                    drawSegment(state, end: newState)
-                    // set new state!
-                    state = newState
 
-                case "R":
+                case "L", "R":
                     // Move forward drawing a line...  turtle state changes to (x', y', angle') where
                     // x' = x+ d cos angle
                     // y' = y + d sin angle
                     // line segment between (x, y) and (x', y') is drawn
-                    let headingRad = state.radians
-                    let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
-                    // draw the line segment!
-                    drawSegment(state, end: newState)
-                    // set new state!
-                    state = newState
                     
+                    // figure out if we're in a rewriting mode.  If so, don't do anything...
+                    let applyRule = !rules.rewriting
+                    if applyRule {
+                        let headingRad = state.radians
+                        let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
+                        // draw the line segment!
+                        drawSegment(state, end: newState)
+                        // set new state!
+                        state = newState
+                    }
+
                 case "f":
                     // Move forward without drawing a line...
                     let headingRad = state.radians

@@ -39,9 +39,12 @@ func drawPlant() {
     //    // save the image to the disk!
     //    _ = plantImage.export(name: "plant\(index)_cropped")
     //}
+
+
+//    plant.branchAngle = 25.7
+//    plant.rules["0"] = "1[10]1[10]10" // ? Plant
     
-    
-    if let plantImage = plant.iterativeGrowth(8, offset: 50) {
+    if let plantImage = plant.iterativeGrowth(5, offset: 50) {
         _  = plantImage.export( name: "plant_iterative" )
     }
 
@@ -72,27 +75,33 @@ func drawTurtle( ) {
         
         "dragon-curve":(Rules(initiator: "L", rules: ["L" : "L+R+", "R" : "-L-R"], angle: 90, length: defaultLength, initialDirection: 90 ),10),
         "sierpinski_gasket":(Rules(initiator: "R", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ),6),
+        // Examples of edge-rewriting
         "hexagonal_gosper_curve":(Rules(initiator: "L", rules: ["L" : "L+R++R-L--LL-R+", "R" : "-L+RR++R+L--L-R"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
-        "quadratic-Gosper_curve":(Rules(initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 ),3)
+        "quadratic-Gosper_curve":(Rules(initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 ),3),
+        // Examples of Node rewriting
+        "hilbert_curve":(Rules(initiator: "L", rules: ["L" : "+RF-LFL-FR+", "R" : "-LF+RFR+FL-"], angle: 90, length: defaultLength, initialDirection: 90, rewriting: true ),5)
+        "3x3_macrotile":(Rules(initiator: "-L", rules: ["L" : "LF+RFR+FL-F-LFLFL-FRFR+", "R" : "-LFLF+RFRFR+F+RF-LFL-FR"], angle: 90, length: defaultLength, initialDirection: 90, rewriting: true ),3),
+        "4x4_macrotile":(Rules(initiator: "-L", rules: ["L" : "LFLF+RFR+FLFL-FRF-LFL-FR+F+RF-LFL-FRFRFR+", "R" : "-LFLFLF+RFR+FL-F-LF+RFR+FLF+RFRF-LFL-FRFR"], angle: 90, length: defaultLength, initialDirection: 90, rewriting: true ),2),
+        "3x3_peano_curve":(Rules(initiator: "L", rules: ["L" : "LFRFL-F-RFLFR+F+LFRFL", "R" : "RFLFR+F+LFRFL-F-RFLFR"], angle: 90, length: defaultLength, initialDirection: 90, rewriting: true ), 3),
+        "5x5_macrotile":(Rules(initiator: "L", rules: ["L" : "L+F+R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L-F-R-F-L+F+R+F+L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R-F-L", "R" : "R-F-L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R+F+L+F+R-F-L-F-R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L+F+R"], angle: 45, length: defaultLength, initialDirection: 45, rewriting: true ), 2)
     ]
     
     let turtle = Turtle()
-    for (ruleName, currentRule) in rules {
-        turtle.rules = currentRule.0
-        if let image = turtle.drawIterativeGrowth(currentRule.1, border: 50) {
+    for (ruleName, (currentRule, iterations)) in rules {
+        turtle.rules = currentRule
+        if let image = turtle.drawIterativeGrowth( iterations, border: 50) {
             _  = image.export( name: "turtle_iterative_\(ruleName)" )
         }
-        if let image = turtle.draw(currentRule.1, border:50) {
+        if let image = turtle.draw(iterations, border:50) {
             _  = image.export( name: "turtle_draw_\(ruleName)" )
         }
-
     }
     
     // Koch Curve Snowflake:  Rules(initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 20.0, initialDirection: 0 )
-    // Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "-F+F-F+F"], angle: 60, length: 20.0, initialDirection: 90 )
-    // iterator:  F-F
-//    turtle.rules = Rules(initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 )
-//    if let image = turtle.draw(2, border:50) {
+    // R-F-L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R+F+L+F+R-F-L-F-R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L+F+R
+//    turtle.rules = Rules(initiator: "L", rules: ["L" :
+//        "+RF-LFL-FR+", "R" : "-LF+RFR+FL-"], angle: 90, length: defaultLength, initialDirection: 90, rewriting: true )
+//    if let image = turtle.draw(4, border:50) {
 //        _  = image.export( name: "turtle_draw" )
 //    }
 }
