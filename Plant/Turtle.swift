@@ -42,11 +42,39 @@ struct TurtleState {
 /// and an iteration to execute, and it will draw the result.
 class Turtle {
     
+    static private let colorAmberMonitor = ( 0.7098, 0.3961, 0.1137 ) // amber
+    static private let colorGreenMonitor = (0.2, 0.70, 0.2) // green display
+    
+    /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.
     public var limits : Limit = Limit()
+    
+    /// The Rules for drawing the image.
     public var rules : Rules = Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"])
     
+    /// Background color + alpha to use for the background of the image.  (Should easilly be able to change to having a transparent background.)
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
-    public var color = ( 0.7098, 0.3961, 0.1137 )
+    /// Value to use for drawing the image.
+    public var color = colorAmberMonitor
+    /// Value for the border around the image being drawn.  Number of pixels to have around the drawn image.
+    public var border : CGFloat = 50.0
+    
+    /// If you know where the start location should be, you can use this property to set the start location of each iteration drawing.
+    /// typically it should be nil, and you should let the methods use this.
+    private var start:CGPoint? = nil
+    
+    private var stack : [TurtleState] = [TurtleState]()
+    
+//    public var colorBlock : ((Int)->(Double, Double, Double))? = (iteration:Int)->(Double, Double, Double) {
+//        var result : (Double, Double, Double)
+//        if iteration % 2 == 0 {
+//            result =  ( 0.7098, 0.3961, 0.1137 ) // amber
+//        }
+//        else {
+//            result = (0.2, 1.0, 0.2) // green displayz
+//        }
+//        return result
+//    }
+    
     
     public var context : CGContext?
     
@@ -58,11 +86,66 @@ class Turtle {
         context?.drawLineSegment(points: [start.position, end.position])
     }
     
-    /// NOTE: Border parameter is just for calculating the next image size...  Otherwise it's not needed.  Perhaps it should be a class property?
-    public func draw(_ iteration: Int, imageSize: (Int, Int) = (200, 200), start:CGPoint? = nil, border: CGFloat = 0.0  ) -> Image? {
+    public func process( _ character: Character, state: TurtleState ) -> TurtleState {
+        var result = state
+
+        switch character {
+        case "F", "L", "R":
+            // Move forward drawing a line...  turtle state changes to (x', y', angle') where
+            // x' = x+ d cos angle
+            // y' = y + d sin angle
+            // line segment between (x, y) and (x', y') is drawn
+            let headingRad = state.radians
+            let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
+            // draw the line segment!
+            drawSegment(state, end: newState)
+            // set new state!
+            result = newState
+            
+        case "f":
+            // Move forward without drawing a line...
+            let headingRad = state.radians
+            result = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
+            limits.update(state.position)
+            
+        case "-":
+            // turn right by rule.angle  (clockwise)
+            // turtle state changes to (x, y, direction-angle)
+            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(-rules.angle) )
+            
+        case "+":
+            // turn left by rule.angle (counter clockwise)
+            // turtle state changes to (x, y, direction+angle)
+            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(rules.angle) )
+
+        // In order to support 3D drawing of these, I'll have to implement the following:
+        // & ^ \ / |
+            
+        // Plants need branching, so that's what these rules are for:  Keeping track of the branches. (Push TurtleState onto and off of a stack.)
+        case "[":
+            // Push the state onto a stack.
+            stack.append(state)
+            
+        case "]":
+            // pop the top item off the stack.
+            if let priorState = stack.popLast() {
+                result = priorState
+            }
+            
+        default:
+            #if DEBUG
+            print("WARNING: Unimplemented rule for character: \(character)")
+            #endif
+        }
+
+        return result
+    }
+    
+    /// Method for drawing the rule set at a particular iteration point.
+    public func draw(_ iteration: Int, imageSize: (Int, Int) = (20, 20) ) -> Image? {
         var result : Image?
         
-        let rule = rules.calculateRules(iteration)
+        let rule = rules.calculateRules(for: iteration)
         
         //let imageSize = (2400, 2400)
         limits.reset( imageSize )
@@ -98,55 +181,7 @@ class Turtle {
             for offset in 0 ..< rule.count {
                 let character = rule[String.Index(encodedOffset: offset)]
                 //print( "processing character: \(character)" )
-                switch character {
-                case "F":
-                    // Move forward drawing a line...  turtle state changes to (x', y', angle') where
-                    // x' = x+ d cos angle
-                    // y' = y + d sin angle
-                    // line segment between (x, y) and (x', y') is drawn
-                    let headingRad = state.radians
-                    let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
-                    // draw the line segment!
-                    drawSegment(state, end: newState)
-                    // set new state!
-                    state = newState
-
-                case "L", "R":
-                    // Move forward drawing a line...  turtle state changes to (x', y', angle') where
-                    // x' = x+ d cos angle
-                    // y' = y + d sin angle
-                    // line segment between (x, y) and (x', y') is drawn
-                    
-                    // figure out if we're in a rewriting mode.  If so, don't do anything...
-                    let applyRule = !rules.rewriting
-                    if applyRule {
-                        let headingRad = state.radians
-                        let newState = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
-                        // draw the line segment!
-                        drawSegment(state, end: newState)
-                        // set new state!
-                        state = newState
-                    }
-
-                case "f":
-                    // Move forward without drawing a line...
-                    let headingRad = state.radians
-                    state = TurtleState(position: (state.position.0+rules.length*cos(headingRad), state.position.1+rules.length*sin(headingRad)), heading: state.heading )
-                    limits.update(state.position)
-                    
-                case "-":
-                    // turn right by rule.angle  (clockwise)
-                    // turtle state changes to (x, y, direction-angle)
-                    state = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(-rules.angle) )
-
-                case "+":
-                    // turn left by rule.angle (counter clockwise)
-                    // turtle state changes to (x, y, direction+angle)
-                    state = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(rules.angle) )
-
-                default:
-                    print("WARNING: Unimplemented rule for character: \(character)")
-                }
+                state = process( character, state: state )
             }
 
             //            context.restoreGState()
@@ -164,8 +199,8 @@ class Turtle {
                 // recalculate the image size, and the start position, then rerun this method...
                 
                 let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
-                let newStartPosition = CGPoint(x: startLocation.x-limits.left+border, y:startLocation.y-limits.top+border )
-                result = draw( iteration, imageSize: newImageSize, start: newStartPosition )
+                start = CGPoint(x: startLocation.x-limits.left+border, y:startLocation.y-limits.top+border )
+                result = draw( iteration, imageSize: newImageSize )
             }
         }
         
@@ -180,10 +215,10 @@ class Turtle {
     // MARK: -
 
     // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
-    public func drawCropped( _ iterations: Int, imageSize: (Int, Int) = (200, 200), border: CGFloat = 0.0 ) -> Image? {
+    public func drawCropped( _ iterations: Int, imageSize: (Int, Int) = (20, 20)) -> Image? {
         var result : Image?
         
-        if let image = draw(iterations, imageSize: imageSize, border: border) {
+        if let image = draw(iterations, imageSize: imageSize) {
             // print("limit left: \(plant.limitLeft), left: \(plant.limitRight)")
             if let cropImage = image.crop(CGRect(x: limits.left-border/2, y: 0, width: (limits.right - limits.left) + border, height: image.size.height)) {
                 result = cropImage
@@ -199,16 +234,21 @@ class Turtle {
     /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
     /// and then it generates each successive iteration into an Image.  It then adds all the images into an
     /// image array to pass back to the caller.
-    public func drawIterative(_ iterations: Int, crop: Bool, border: CGFloat = 0.0 ) -> [Image] {
+    public func drawIterative(_ iterations: Int, crop: Bool ) -> [Image] {
         var result : [Image] = [Image]()
-//        let original = rules
+        
+        start = nil
 
+//        let original = rules
+        let colors = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor]
+        
+        color = colors[iterations%colors.count]
         let lastIterationImage : Image?
         if crop {
-            lastIterationImage = drawCropped(iterations, border: border)
+            lastIterationImage = drawCropped(iterations)
         }
         else {
-            lastIterationImage = draw(iterations, border: border)
+            lastIterationImage = draw(iterations)
         }
 
         let size : (Int, Int)
@@ -217,7 +257,7 @@ class Turtle {
         }
         else {
             // Should not get here!
-            size = (200, 200)
+            size = (20, 20)
         }
 
         for i in 0...iterations-1 {
@@ -227,12 +267,13 @@ class Turtle {
 //            if i > 0 {
 //                rules = Rules(initiator: original.initiator, rules: original.rules, angle: original.angle, length: original.length/(2.0*Double(i)))
 //            }
+            color = colors[i%colors.count]
             
             if crop {
-                image = drawCropped(i, imageSize: size, border: border)
+                image = drawCropped(i, imageSize: size)
             }
             else {
-                image = draw(i, imageSize: size, border: border)
+                image = draw(i, imageSize: size)
             }
             
             if let image = image {
@@ -245,16 +286,20 @@ class Turtle {
             result.append(image)
         }
 
+        color = colors[0]
+
         return result
     }
     
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
-    public func drawIterativeGrowth(_ iterations: Int, border: CGFloat = 0.0 ) -> Image? {
+    public func drawIterativeGrowth(_ iterations: Int ) -> Image? {
         var result : Image? = nil
-        let curves = drawIterative(iterations, crop: true, border: border)
+        let curves = drawIterative(iterations, crop: true)
         
         var maxWidth : Int = 0
         var height : Int = 0
+        
+        start = nil
         
         // go through the images to figure out the width/height we will need for our composite image.
         for image in curves {
@@ -283,6 +328,8 @@ class Turtle {
             }
         }
         
+        start = nil
+
         return result
     }
 }

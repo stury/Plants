@@ -15,19 +15,19 @@ public class Rules {
     public let angle : Double
     public let length : Double
     public let initialDirection : Double
-    public let rewriting : Bool
+    public let nodeRewriting : Bool
     
-    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, rewriting: Bool = false ) {
+    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false ) {
         self.initiator  = initiator
         self.rules      = rules
         self.angle      = angle
         self.length     = length
         self.initialDirection = initialDirection
-        self.rewriting  = rewriting
+        self.nodeRewriting  = nodeRewriting
     }
     
     /// calculates the entire rule base based on the number of iterations we want to draw.
-    public func calculateRules( _ iterations: Int ) -> String {
+    public func calculateRules( for iterations: Int ) -> String {
         var result = initiator
         
         for _ in 0..<iterations {
@@ -45,7 +45,7 @@ public class Rules {
             result = tmpString
         }
         
-        if rewriting {
+        if nodeRewriting {
             // Ideally I should just remove all of the "L" and "R" characters from the final string...
             // This way we don't have to process them when drawing the rule set.
             result = result.replacingOccurrences(of: "L", with: "")
