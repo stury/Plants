@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D27BA30921BCCC36006C9D92 /* ImageArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */; };
 		D28F352821B2264C007CFF9C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352721B2264C007CFF9C /* main.swift */; };
 		D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */; };
 		D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageArrayExtensions.swift; sourceTree = "<group>"; };
 		D28F352421B2264C007CFF9C /* Plant */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Plant; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28F352721B2264C007CFF9C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGContextExtensions.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				D28F353621B483F2007CFF9C /* Turtle.swift */,
 				D28F353821B4DE52007CFF9C /* Limit.swift */,
 				D28F353A21B4DE84007CFF9C /* Rules.swift */,
+				D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */,
 				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
 				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
 				D28F353021B227B3007CFF9C /* Image.swift */,
@@ -147,6 +150,7 @@
 				D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */,
 				D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */,
 				D28F353921B4DE52007CFF9C /* Limit.swift in Sources */,
+				D27BA30921BCCC36006C9D92 /* ImageArrayExtensions.swift in Sources */,
 				D28F353721B483F2007CFF9C /* Turtle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

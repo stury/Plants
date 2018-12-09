@@ -219,13 +219,12 @@ class Turtle {
         var result : Image?
         
         if let image = draw(iterations, imageSize: imageSize) {
-            // print("limit left: \(plant.limitLeft), left: \(plant.limitRight)")
-            if let cropImage = image.crop(CGRect(x: limits.left-border/2, y: 0, width: (limits.right - limits.left) + border, height: image.size.height)) {
+            // Note, since we drew the image upside down, the top and bottom are reversed...
+//            if let cropImage = image.crop(CGRect(x: limits.left-border/2, y: 0.0, width: limits.width + border, height: image.size.height)) {
+            if let cropImage = image.crop(CGRect(x: limits.left-border/2, y: image.size.height-(limits.bottom+border/2), width: limits.width + border, height: limits.height+border)) {
                 result = cropImage
+
             }
-            //            else {
-            //                result = plantImage
-            //            }
         }
         
         return result

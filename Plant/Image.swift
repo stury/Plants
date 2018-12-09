@@ -84,7 +84,27 @@ public extension Image {
         }
         return result
     }
-   
+
+    /// Simple method for drawing a line segment in a image...
+    public func drawHorizontalLine(at: CGFloat, color: (Double, Double, Double) = (0.0, 1.0, 0.0) ) -> Image? {
+        var result : Image? = nil
+        
+        if let cgImage = self.cgImage {
+            let size = (Int(self.size.width),Int(self.size.height))
+            if let context = Image.context(size: size, color: (1.0, 1.0, 1.0, 1.0)) {
+                context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.0, height: size.1))
+                
+                context.setStrokeColor(CGColor.from(color))
+                context.drawLineSegment(points: [(0, Int(at)), (size.0, Int(at))])
+                
+                if let cgImage = context.makeImage() {
+                    result = Image(cgImage: cgImage)
+                }
+            }
+        }
+        return result
+    }
+    
     /// This method will allow you to crop an image to a specified Rect
     public func crop(_ rect: CGRect) -> Image? {
         var result : Image? = nil

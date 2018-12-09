@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 // Sample code to generate a plant...
 // ----------------------------------
 func drawPlant() {
@@ -115,7 +116,8 @@ func drawPlantBracketedTurtle() {
         "c": (Rules(initiator: "F", rules: ["F" : "FF-[-F+F+F]+[+F-F-F]"], angle:22.5), 4),
         "d": (Rules(initiator: "X", rules: ["X" : "F[+X]F[-X]+X", "F" : "FF"], angle:20, nodeRewriting: true), 7),
         "e": (Rules(initiator: "X", rules: ["X" : "F[+X][-X]FX", "F" : "FF"], angle:25.7, nodeRewriting: true), 7),
-        "f": (Rules(initiator: "X", rules: ["X" : "F-[[X]+X]+F[+FX]-X", "F" : "FF"], angle:22.5, nodeRewriting: true), 5)
+        "f": (Rules(initiator: "X", rules: ["X" : "F-[[X]+X]+F[+FX]-X", "F" : "FF"], angle:22.5, nodeRewriting: true), 5),
+        "multirule": (Rules(initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true), 5)
     ]
     
     let turtle = Turtle()
@@ -132,6 +134,28 @@ func drawPlantBracketedTurtle() {
 
 }
 
-//drawPlant()
-//drawTurtle()
+func stochasticPlant() {
+    let turtle = Turtle()
+    turtle.border = 50.0
+    // Example of a Rule that have multiple possibilities for the replacement of 'F'...  Each replacement is picked randomly when building the plant.
+    // This leads to variation in the plant, but it's clear overal that the plants are similar in nature.
+    turtle.rules = Rules(initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true)
+
+    var images = [Image]()
+    
+    for _ in 0...10 {
+        if let image = turtle.drawCropped(6) {
+            images.append(image)
+        }
+    }
+    
+    if let image = images.arrangedHorizontally() { // , backgroundColor: (1.0, 1.0, 1.0, 1.0) ) {
+        _ = image.export( name: "stochastic_plant" )
+    }
+
+}
+
+drawPlant()
+drawTurtle()
 drawPlantBracketedTurtle()
+stochasticPlant()
