@@ -16,24 +16,26 @@ public class Rules {
     public let length : Double
     public let initialDirection : Double
     public let nodeRewriting : Bool
+    public let modifier : Double   // What to change ht elength by on each iteration...
     
-    public init(initiator: String, rules: [Character:[String]], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false ) {
+    public init(initiator: String, rules: [Character:[String]], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false, modifier: Double = 1 ) {
         self.initiator  = initiator
         self.rules      = rules
         self.angle      = angle
         self.length     = length
         self.initialDirection = initialDirection
         self.nodeRewriting  = nodeRewriting
+        self.modifier = modifier
     }
 
-    convenience init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false ) {
+    convenience init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false, modifier: Double = 1 ) {
 
         var newRules = [Character:[String]]()
         for (char, string) in rules {
             newRules[char] = [string]
         }
 
-        self.init(initiator: initiator, rules: newRules, angle: angle, length: length, initialDirection: initialDirection, nodeRewriting: nodeRewriting)
+        self.init(initiator: initiator, rules: newRules, angle: angle, length: length, initialDirection: initialDirection, nodeRewriting: nodeRewriting, modifier: modifier)
     }
 //    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false ) {
 //        self.initiator  = initiator
@@ -90,4 +92,15 @@ public class Rules {
         return result
     }
     
+    public func calculateLength( for iteration: Int ) -> Double {
+        var result : Double = length
+        
+        if modifier > 1 && iteration > 0 {
+            for _ in 0..<iteration {
+                result = result / modifier
+            }
+        }
+        
+        return result
+    }
 }

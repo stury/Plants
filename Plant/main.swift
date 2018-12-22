@@ -17,8 +17,8 @@ func drawPlant() {
     //plant.branchAngle = 25.0
     //plant.rules["0"] = "1[0][0]110" // Maple leaf
     
-    //plant.branchAngle = 25.0
-    //plant.rules["0"] =  "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]" // Lopsided
+    plant.branchAngle = 25.0
+    plant.rules["0"] =  "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]" // Lopsided
     
     //plant.rules["0"] =  "11[1[1[0]]][11[][0]]111[10]"  // SPARSE LOPSIDED
     
@@ -31,8 +31,8 @@ func drawPlant() {
     //plant.rules["0"] = "1[1[0][0]0][1[0][0]0]" // ? Plant
     //plant.rules["0"] = "1[1[0][0]][1[0][0]]" // ? Plant
     
-    plant.branchAngle = 25.0
-    plant.rules["0"] = "1[1[0]1[0]][1[0]1[0]]" // ? Plant
+//    plant.branchAngle = 25.0
+//    plant.rules["0"] = "1[1[0]1[0]][1[0]1[0]]" // ? Plant
     
     //let images = plant.iterativePlants(6, crop: true, offset: 50)
     //for (index, plantImage) in images.enumerated() {
@@ -44,8 +44,8 @@ func drawPlant() {
 
 //    plant.branchAngle = 25.7
 //    plant.rules["0"] = "1[10]1[10]10" // ? Plant
-    
-    if let plantImage = plant.iterativeGrowth(5, offset: 50) {
+
+    if let plantImage = plant.iterativeGrowth(6, offset: 50) {
         _  = plantImage.export( name: "plant_iterative" )
     }
 
@@ -91,7 +91,8 @@ func drawTurtle( ) {
     for (ruleName, (currentRule, iterations)) in rules {
         turtle.rules = currentRule
         turtle.border = 50.0
-        if let image = turtle.drawIterativeGrowth( iterations) {
+//        if let image = turtle.drawIterativeGrowth( iterations ) {
+        if let image = turtle.drawIterativeGrowth( iterations, colors: [Turtle.colorAmberMonitor]) {
             _  = image.export( name: "turtle_iterative_\(ruleName)" )
         }
         if let image = turtle.draw(iterations) {
@@ -124,7 +125,8 @@ func drawPlantBracketedTurtle() {
     turtle.border = 50.0
     for (ruleName, (rule, iterations)) in rules {
         turtle.rules = rule
-        if let image = turtle.drawIterativeGrowth( iterations) {
+//        if let image = turtle.drawIterativeGrowth( iterations) {
+        if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
             _  = image.export( name: "turtle_iterative_plant_\(ruleName)" )
         }
         if let image = turtle.draw(iterations) {
@@ -155,7 +157,23 @@ func stochasticPlant() {
 
 }
 
+func modifierRule() {
+    let turtle = Turtle()
+    turtle.border = 50.0
+
+    turtle.rules = Rules(initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 1200, initialDirection: 0, modifier: 3 )
+    
+//    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
+    if let image = turtle.drawIterativeGrowth( 5 ) {
+        _  = image.export( name: "turtle_iterative_modifier" )
+    }
+
+}
+
 drawPlant()
 drawTurtle()
 drawPlantBracketedTurtle()
 stochasticPlant()
+modifierRule()
+
+
