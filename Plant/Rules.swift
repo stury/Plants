@@ -92,6 +92,7 @@ public class Rules {
         return result
     }
     
+    /// public method for determining the line segment length at a particular iteration.
     public func calculateLength( for iteration: Int ) -> Double {
         var result : Double = length
         

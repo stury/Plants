@@ -67,6 +67,11 @@ func drawTurtle( ) {
         "koch_curve_f": (Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F-F-F"] ),defaultIteration),
         
         "hex_curve": (Rules(initiator: "F+F+F", rules: ["F" : "F+F-F+F"], angle: 60, length: defaultLength, initialDirection: 90 ),defaultIteration),
+//        "hex_curve_updated": (Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "--FX--FX--FX--FX--FX--FX", "X" : "F+F+F+F+F+F"], angle: 60, length: 1000, initialDirection: 90, modifier: 2 ),defaultIteration),
+//        "hex_curve_updated": (Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "--F+F+F+F+F+FX", "X" : "F+F+F+F+F+F"], angle: 60, length: 1000, initialDirection: 90, modifier: 2 ),defaultIteration),
+//        "hex_curve_updated": (Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "+[--F+F+F+F+F+F+][+F]"], angle: 60, length: 100, initialDirection: 90 ),defaultIteration),
+        "hex_curve_updated": (Rules(initiator: "H", rules: ["H" : "FT+FT+FT+FT+FT+FT", "T" : "--FH--FH--FH", "F" : "FF"], angle: 60, length: defaultLength, initialDirection: 90, modifier: 1 ),8),
+
         "tri_curve": (Rules(initiator: "F+F+F", rules: ["F" : "F+F-F+F"], angle: 120, length: defaultLength, initialDirection: 90 ),defaultIteration),
         "triangle_curve": (Rules(initiator: "F-F-F", rules: ["F" : "F+F-FF"], angle: 120, length: defaultLength, initialDirection: 90 ),defaultIteration),
         "koch_curve_flat_snowflake": (Rules(initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
@@ -85,6 +90,9 @@ func drawTurtle( ) {
         "4x4_macrotile":(Rules(initiator: "-L", rules: ["L" : "LFLF+RFR+FLFL-FRF-LFL-FR+F+RF-LFL-FRFRFR+", "R" : "-LFLFLF+RFR+FL-F-LF+RFR+FLF+RFRF-LFL-FRFR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ),2),
         "3x3_peano_curve":(Rules(initiator: "L", rules: ["L" : "LFRFL-F-RFLFR+F+LFRFL", "R" : "RFLFR+F+LFRFL-F-RFLFR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ), 3),
         "5x5_macrotile":(Rules(initiator: "L", rules: ["L" : "L+F+R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L-F-R-F-L+F+R+F+L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R-F-L", "R" : "R-F-L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R+F+L+F+R-F-L-F-R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L+F+R"], angle: 45, length: defaultLength, initialDirection: 45, nodeRewriting: true ), 2)
+        ,
+        "square-grid-approximation-of-the-Sierpinski-curve":(Rules(initiator: "F+XF+F+XF", rules: ["X" : "XF-F+F-XF+F+XF-F+F-X", "F":"F"], angle: 90.0, length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), 4),
+        "scott_curve": (Rules(initiator: "F++F++F++F", rules: ["F" : "-F+F"], angle: 45, length: defaultLength, initialDirection: 90 ),defaultIteration),
     ]
     
     let turtle = Turtle()
@@ -164,10 +172,9 @@ func modifierRule() {
     turtle.rules = Rules(initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 1200, initialDirection: 0, modifier: 3 )
     
 //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
-    if let image = turtle.drawIterativeGrowth( 5 ) {
+    if let image = turtle.drawIterativeGrowth( 5, mode: .top ) {
         _  = image.export( name: "turtle_iterative_modifier" )
     }
-
 }
 
 drawPlant()

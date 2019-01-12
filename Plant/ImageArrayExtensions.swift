@@ -8,11 +8,17 @@
 
 import Foundation
 
+enum ImageHorizontalMode {
+    case bottom;
+    case center;
+    case top;
+}
+
 /// Extension to an Array of Imaghe objects so I can operate on the array of items more simply.
 extension Array where Element:Image {
     
     /// This method will take all of the images in the array and try to create a new image with th econtents of all of them aligned horizonatlly one right after the other.  If successful, and Image will be returned.
-    func arrangedHorizontally( backgroundColor: (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0) ) -> Image? {
+    func arrangedHorizontally( backgroundColor: (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0), mode: ImageHorizontalMode = .bottom ) -> Image? {
         var result : Image? = nil
         
         // Append all of the images together!
@@ -35,7 +41,16 @@ extension Array where Element:Image {
             var offset : CGFloat = 0.0
             for image in self {
                 if let cgImage = image.cgImage {
-                    let rect = CGRect(x: offset, y: 0.0, width: image.size.width, height: image.size.height)
+                    let rect : CGRect
+                    switch ( mode ) {
+                    case .bottom:
+                        rect = CGRect(x: offset, y: 0.0, width: image.size.width, height: image.size.height)
+                    case .center:
+                        rect = CGRect(x: offset, y: (CGFloat(height) - image.size.height)/2.0, width: image.size.width, height: image.size.height)
+                    case .top:
+                        rect = CGRect(x: offset, y: (CGFloat(height) - image.size.height), width: image.size.width, height: image.size.height)
+                    }
+
                     //print( rect )
                     context.draw(cgImage, in: rect)
                     offset += image.size.width

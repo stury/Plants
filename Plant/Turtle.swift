@@ -304,13 +304,13 @@ class Turtle {
     }
     
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
-    public func drawIterativeGrowth(_ iterations: Int, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor] ) -> Image? {
+    public func drawIterativeGrowth(_ iterations: Int, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor], mode: ImageHorizontalMode = .bottom ) -> Image? {
         var result : Image? = nil
         let curves = drawIterative(iterations, crop: true, colors: colors)
         
         start = nil
         
-        result = curves.arrangedHorizontally()
+        result = curves.arrangedHorizontally(mode: mode)
 
         return result
     }
