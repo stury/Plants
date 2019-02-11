@@ -9,8 +9,9 @@
 import Foundation
 
 
-// Sample code to generate a plant...
-// ----------------------------------
+/**
+ This is a sample function based on my origiinal code from 1990!  Just a very basic Plant drawing implementation.
+ */
 func drawPlant() {
     let plant = Plant()
     
@@ -51,9 +52,80 @@ func drawPlant() {
 
 }
 
+// MARK: - Generic drawing methods
+
+/**
+ This function renders sequential images with a range to a file.
+ - parameter rules: The rule to render
+ - parameter range: The range of generations of the rule you want to generate
+ - parameter filename: optional filename you want to use to save the image.
+ */
+func drawIterativeRules( _ rules: Rules, range: Range<Int>, filename: String? ) -> Image? {
+    
+    let turtle = Turtle()
+    turtle.border = 50.0
+    turtle.rules = rules
+    
+    var image : Image?
+    
+    if let _ = range.min(), let _ = range.max() {
+        //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
+        image = turtle.drawIterativeGrowth( range, mode: .bottom )
+    }
+    else {
+        
+    }
+    
+    if let image = image, let filename = filename {
+        _  = image.export( name: filename )
+    }
+    
+    return image
+}
+
+/**
+ This function renders sequential images with a range to a file.
+ - parameter rules: The rule to render
+ - parameter iterations: Assumes you want to generate the iterations from 0..<iterations specified.
+ - parameter filename: optional filename you want to use to save the image.
+ */
+func drawIterativeRules( _ rules: Rules, iterations: Int, filename: String? ) -> Image? {
+    return drawIterativeRules( rules, range: 0..<iterations, filename: filename )
+}
+
+/**
+ This function renders a specific iteration of the given Rules.
+ - parameter rules: The rule to render
+ - parameter iteration: The iteration/generation of the ruleset you want to render.
+ - parameter filename: optional filename you want to use to save the image.
+ */
+func drawIteration( _ rules: Rules, iteration: Int, filename: String? ) -> Image? {
+    let turtle = Turtle()
+    turtle.border = 50.0
+    turtle.rules = rules
+    
+    var image : Image?
+    
+    //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
+    image = turtle.drawCropped(iteration) //draw(iteration)
+    
+    if let image = image, let filename = filename {
+        _  = image.export( name: filename )
+    }
+    
+    return image
+}
+
+// MARK: -
+
+/// default segment length
 let defaultLength = 20.0
+/// default iteration to generate
 let defaultIteration = 4
 
+/**
+ This function runs through a bunch of predefined Rules, and renders each of them to a file.
+ */
 func drawTurtle( ) {
     let rules : [String:(Rules, Int)] = [
         "quadraticKochIsland": (Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"]), 4),
@@ -117,6 +189,9 @@ func drawTurtle( ) {
 //    }
 }
 
+/**
+ This function renders some simmple 2D plant structures using the Turtle commands.
+ */
 func drawPlantBracketedTurtle() {
 
     let rules : [String:(Rules, Int)] = [
@@ -144,6 +219,9 @@ func drawPlantBracketedTurtle() {
 
 }
 
+/**
+ This function renders 10 different iterations of the same plant rules.  Each plant should grow a bit differently.
+ */
 func stochasticPlant() {
     let turtle = Turtle()
     turtle.border = 50.0
@@ -165,6 +243,11 @@ func stochasticPlant() {
 
 }
 
+/**
+ This function shows an example Rule set using the modifier rules.  Modifier meand you are trying to generate the
+ resulting images for each generation at the same over all size.  So each iteration you divide the length by the
+ modifier value.
+ */
 func modifierRule() {
     let turtle = Turtle()
     turtle.border = 50.0
@@ -177,10 +260,38 @@ func modifierRule() {
     }
 }
 
+/**
+ This function renders the Serpinski Carpet.
+ */
+func serpinskiCarpet() {
+    let turtle = Turtle()
+    turtle.border = 50.0
+
+    // Serpinsk Carpet, but there are extra lines through the empty sections.  (See below for a better one.)
+//    turtle.rules = Rules(initiator: "F", rules: ["F" : "F+F-F-F-G+F+F+F-F", "G":"GGG"], angle: 90, length: 1200, initialDirection: 45, modifier: 3 )
+
+    // Serpinsk Carpet, corrected.
+    turtle.rules = Rules(initiator: "F", rules: ["F" : "F+F−F−F−f+F+F+F−F", "f":"fff"], angle: 90,  length: 2400, initialDirection: 45, modifier: 3)
+
+    // This one is really interesting, but not what I was looking for.  Snake?
+    //turtle.rules = Rules(initiator: "F", rules: ["F" : "F+F−F−F−fGf+F+F+F−F", "G":"GGG"], angle: 90, length: 2400, initialDirection: 45, modifier: 3 )
+
+    
+    //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
+    if let image = turtle.drawIterativeGrowth( 6, mode: .bottom ) {
+        _  = image.export( name: "turtle_iterative_serpinski_carpet" )
+    }
+}
+
 drawPlant()
 drawTurtle()
 drawPlantBracketedTurtle()
 stochasticPlant()
 modifierRule()
+serpinskiCarpet()
 
-
+// This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
+//n = 3, δ = 60°
+//{XF+F+XF+F+XF+F}
+//X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
+_ = drawIterativeRules(Rules(initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 1200, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")

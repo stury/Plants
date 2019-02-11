@@ -10,6 +10,13 @@
 
 import Foundation
 
+enum TurtleDrawingMode {
+    /// Draw each segent as if it were the only piece to draw.
+    case discrete
+    /// Draw each piece as a part of a larger path.
+    case path
+}
+
 /// A structure to keep track of the position and heading of the turtle.
 struct TurtleState {
     /// Position specified as (x, y) of the current turtle cursor
@@ -35,6 +42,8 @@ struct TurtleState {
         }
         return result
     }
+    
+    let drawingMode: TurtleDrawingMode
 }
 
 // MARK: -
@@ -85,7 +94,12 @@ class Turtle {
         limits.update(end.position)
         
         context?.setStrokeColor(CGColor.from(color))
-        context?.drawLineSegment(points: [start.position, end.position])
+        if end.drawingMode == .path {
+            context?.drawLineSegment(points: [start.position, end.position], discrete: false)
+        }
+        else {
+            context?.drawLineSegment(points: [start.position, end.position])
+        }
     }
     
     public func process( _ character: Character, state: TurtleState ) -> TurtleState {
@@ -96,18 +110,18 @@ class Turtle {
         case "f":
             // Move forward without drawing a line...
             let headingRad = state.radians
-            result = TurtleState(position: (state.position.0+length*cos(headingRad), state.position.1+length*sin(headingRad)), heading: state.heading )
+            result = TurtleState(position: (state.position.0+length*cos(headingRad), state.position.1+length*sin(headingRad)), heading: state.heading, drawingMode: state.drawingMode )
             limits.update(state.position)
             
-        case "-":
+        case "-", "−":
             // turn right by rule.angle  (clockwise)
             // turtle state changes to (x, y, direction-angle)
-            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(-rules.angle) )
+            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(-rules.angle), drawingMode: state.drawingMode )
             
         case "+":
             // turn left by rule.angle (counter clockwise)
             // turtle state changes to (x, y, direction+angle)
-            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(rules.angle) )
+            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(rules.angle), drawingMode: state.drawingMode )
 
         // In order to support 3D drawing of these, I'll have to implement the following:
         // & ^ \ / |
@@ -123,6 +137,18 @@ class Turtle {
                 result = priorState
             }
             
+        case "{":
+            // Draw needs to switch to using paths
+            result = TurtleState(position: state.position, heading: state.heading, drawingMode: .path )
+            context?.move(to: CGPoint(x:CGFloat(result.position.0), y:CGFloat(result.position.1)))
+            context?.setFillColor(CGColor.from(color))
+            
+        case "}":
+            // switch back to default drawing.
+            result = TurtleState(position: state.position, heading: state.heading, drawingMode: .discrete )
+            // need to also close the Path, and stroke/fill it.
+            context?.drawPath(using: .fillStroke)
+            
         default:
             if let scalar = Unicode.Scalar(String(character)) {
                 if  CharacterSet.uppercaseLetters.contains(scalar)  {
@@ -131,7 +157,7 @@ class Turtle {
                     // y' = y + d sin angle
                     // line segment between (x, y) and (x', y') is drawn
                     let headingRad = state.radians
-                    let newState = TurtleState(position: (state.position.0+length*cos(headingRad), state.position.1+length*sin(headingRad)), heading: state.heading )
+                    let newState = TurtleState(position: (state.position.0+length*cos(headingRad), state.position.1+length*sin(headingRad)), heading: state.heading, drawingMode: state.drawingMode )
                     // draw the line segment!
                     drawSegment(state, end: newState)
                     // set new state!
@@ -183,7 +209,7 @@ class Turtle {
                 startLocation = CGPoint(x: floor(Double(imageSize.0)/2.0), y: floor(Double(imageSize.1)/3.0))
             }
             
-            var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: rules.initialDirection )
+            var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: rules.initialDirection, drawingMode: .discrete )
             
             // I've got a graphics context!  Let's build up the image...
             
@@ -246,72 +272,80 @@ class Turtle {
     /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
     /// and then it generates each successive iteration into an Image.  It then adds all the images into an
     /// image array to pass back to the caller.
-    public func drawIterative(_ iterations: Int, crop: Bool, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor] ) -> [Image] {
+    public func drawIterative(_ range: Range<Int>, crop: Bool, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor] ) -> [Image] {
         var result : [Image] = [Image]()
         
         start = nil
-
-//        let original = rules
-//        let colors = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor]
         
-        color = colors[iterations%colors.count]
-        let lastIterationImage : Image?
-        if crop {
-            lastIterationImage = drawCropped(iterations)
-        }
-        else {
-            lastIterationImage = draw(iterations)
-        }
-
-        let size : (Int, Int)
-        if let image = lastIterationImage {
-            size = ( Int(floor(image.size.width)), Int(floor(image.size.height)))
-        }
-        else {
-            // Should not get here!
-            size = (20, 20)
-        }
-
-        for i in 0...iterations-1 {
-            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
-            var image : Image?
-            
-//            if i > 0 {
-//                rules = Rules(initiator: original.initiator, rules: original.rules, angle: original.angle, length: original.length/(2.0*Double(i)))
-//            }
-            color = colors[i%colors.count]
-            
+        //        let original = rules
+        //        let colors = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor]
+        if let min = range.min(), let max = range.max() {
+            let iterations = max - min
+            color = colors[iterations%colors.count]
+            let lastIterationImage : Image?
             if crop {
-                image = drawCropped(i, imageSize: size)
+                lastIterationImage = drawCropped(iterations)
             }
             else {
-                image = draw(i, imageSize: size)
+                lastIterationImage = draw(iterations)
             }
             
-            if let image = image {
+            let size : (Int, Int)
+            if let image = lastIterationImage {
+                size = ( Int(floor(image.size.width)), Int(floor(image.size.height)))
+            }
+            else {
+                // Should not get here!
+                size = (20, 20)
+            }
+            
+            for i in min...max-1 {
+                //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+                var image : Image?
+                
+                //            if i > 0 {
+                //                rules = Rules(initiator: original.initiator, rules: original.rules, angle: original.angle, length: original.length/(2.0*Double(i)))
+                //            }
+                color = colors[i%colors.count]
+                
+                if crop {
+                    image = drawCropped(i, imageSize: size)
+                }
+                else {
+                    image = draw(i, imageSize: size)
+                }
+                
+                if let image = image {
+                    result.append(image)
+                }
+            }
+            //        rules = original
+            
+            if let image = lastIterationImage {
                 result.append(image)
             }
         }
-//        rules = original
-
-        if let image = lastIterationImage {
-            result.append(image)
-        }
-
+        
         color = colors[0]
-
+        
         return result
     }
-    
+
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
-    public func drawIterativeGrowth(_ iterations: Int, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor], mode: ImageHorizontalMode = .bottom ) -> Image? {
+    public func drawIterativeGrowth(_ range: Range<Int>, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor], mode: ImageHorizontalMode = .bottom ) -> Image? {
         var result : Image? = nil
-        let curves = drawIterative(iterations, crop: true, colors: colors)
+        let curves = drawIterative(range, crop: true, colors: colors)
         
         start = nil
         
         result = curves.arrangedHorizontally(mode: mode)
-
+        
         return result
     }
+
+    // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
+    public func drawIterativeGrowth(_ iterations: Int, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor], mode: ImageHorizontalMode = .bottom ) -> Image? {        
+        return drawIterativeGrowth(0..<iterations, colors: colors, mode: mode)
+    }
+
 }

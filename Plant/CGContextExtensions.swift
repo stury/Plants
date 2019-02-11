@@ -48,33 +48,61 @@ public extension CGContext {
     }
 
     
-    /// Simple method to draw a line segment in the current context.
-    public func drawLineSegment( points: [(Int, Int)] ) {
+    /**
+     Simple method to draw a line segment in the current context.
+     
+     - parameter points: array of (x,y) coordinates to draw between
+     - parameter discrete: default to true to draw this piece by itself.  If you are trtying to draw a larger path, set this to false.
+     */
+    public func drawLineSegment( points: [(Int, Int)], discrete: Bool = true ) {
         
         if points.count == 2 {
-            move(to: CGPoint(x:points[0].0, y:points[0].1))
+            if discrete {
+                move(to: CGPoint(x:points[0].0, y:points[0].1))
+            }
             addLine(to: CGPoint(x:points[1].0, y:points[1].1))
-            strokePath()
+            if discrete {
+                strokePath()
+            }
         }
     }
 
-    /// Simple method to draw a line segment in the current context.
-    public func drawLineSegment( points: [(CGFloat, CGFloat)] ) {
+    /**
+     Simple method to draw a line segment in the current context.
+     
+     - parameter points: array of (x,y) coordinates to draw between
+     - parameter discrete: default to true to draw this piece by itself.  If you are trtying to draw a larger path, set this to false.
+     */
+    public func drawLineSegment( points: [(CGFloat, CGFloat)], discrete: Bool = true ) {
         
         if points.count == 2 {
-            move(to: CGPoint(x:points[0].0, y:points[0].1))
+            
+            if discrete {
+                move(to: CGPoint(x:points[0].0, y:points[0].1))
+            }
             addLine(to: CGPoint(x:points[1].0, y:points[1].1))
-            strokePath()
+            if discrete {
+                strokePath()
+            }
         }
     }
 
-    /// Simple method to draw a line segment in the current context.
-    public func drawLineSegment( points: [(Double, Double)] ) {
+    /**
+     Simple method to draw a line segment in the current context.
+     
+     - parameter points: array of (x,y) coordinates to draw between
+     - parameter discrete: default to true to draw this piece by itself.  If you are trtying to draw a larger path, set this to false.
+     */
+    public func drawLineSegment( points: [(Double, Double)], discrete: Bool = true ) {
         
         if points.count == 2 {
-            move(to: CGPoint(x:CGFloat(points[0].0), y:CGFloat(points[0].1)))
+            if discrete {
+                move(to: CGPoint(x:CGFloat(points[0].0), y:CGFloat(points[0].1)))
+            }
             addLine(to: CGPoint(x:CGFloat(points[1].0), y:CGFloat(points[1].1)))
-            strokePath()
+            if discrete {
+                strokePath()
+            }
         }
     }
 
