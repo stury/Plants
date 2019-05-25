@@ -151,7 +151,7 @@ class Plant {
             var tmpString = ""
             for offset in 0..<result.count {
                 // for each character, if I have a rule for it, replace that character with the rule.  Otherwise keep the character.
-                let character = result[String.Index(encodedOffset: offset)]
+                let character = result[String.Index(utf16Offset: offset, in: result)]
                 if let replacement = rules[String(character)] {
                     tmpString.append(replacement)
                 }
@@ -204,7 +204,7 @@ class Plant {
             var len = 0.0
             
             for offset in 0 ..< rule.count {
-                let character = rule[String.Index(encodedOffset: offset)]
+                let character = rule[String.Index(utf16Offset: offset, in: rule)]
                 //print( "processing character: \(character)" )
                 switch character {
                 case "0":

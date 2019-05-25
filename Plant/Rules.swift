@@ -59,7 +59,8 @@ public class Rules {
             var tmpString = ""
             for offset in 0..<result.count {
                 // for each character, if I have a rule for it, replace that character with the rule.  Otherwise keep the character.
-                let character = result[String.Index(encodedOffset: offset)]
+                let character = result[String.Index(utf16Offset: offset, in: result)]
+
                 if let replacement = rules[character] {
                     if replacement.count == 1 {
                         if let replacement = replacement.first {
@@ -85,8 +86,8 @@ public class Rules {
             // Remove all upper case characters that are not 'F'
             let upperCase = "ABCDEGHIJKLMNOPQRSTUVWXYZ"
             for index in 0..<upperCase.count {
-                let character = upperCase[String.Index(encodedOffset: index)]
-                result = result.replacingOccurrences(of: String(character), with: "")
+              let character = upperCase[String.Index(utf16Offset: index, in: upperCase)]
+              result = result.replacingOccurrences(of: String(character), with: "")
             }
         }
         return result

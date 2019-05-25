@@ -218,7 +218,7 @@ class Turtle {
             limits.update(startLocation)
             
             for offset in 0 ..< rule.count {
-                let character = rule[String.Index(encodedOffset: offset)]
+                let character = rule[String.Index(utf16Offset: offset, in: rule)]
                 //print( "processing character: \(character)" )
                 state = process( character, state: state )
             }

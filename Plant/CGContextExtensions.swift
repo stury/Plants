@@ -12,7 +12,7 @@ import CoreGraphics
 public extension CGContext {
     
     /// Simple method for drawing a Polygon using abn array of (x, y) points.
-    public func drawPolygon( points: [(Int, Int)], using: CGPathDrawingMode = .fillStroke ) {
+    func drawPolygon( points: [(Int, Int)], using: CGPathDrawingMode = .fillStroke ) {
         
         if points.count > 0 {
             for (index, point) in points.enumerated() {
@@ -30,7 +30,7 @@ public extension CGContext {
     }
    
     /// Simple method for drawing a Polygon using abn array of (x, y) points.
-    public func drawPolygon( points: [(CGFloat, CGFloat)], using: CGPathDrawingMode = .fillStroke ) {
+    func drawPolygon( points: [(CGFloat, CGFloat)], using: CGPathDrawingMode = .fillStroke ) {
         
         if points.count > 0 {
             for (index, point) in points.enumerated() {
@@ -54,7 +54,7 @@ public extension CGContext {
      - parameter points: array of (x,y) coordinates to draw between
      - parameter discrete: default to true to draw this piece by itself.  If you are trtying to draw a larger path, set this to false.
      */
-    public func drawLineSegment( points: [(Int, Int)], discrete: Bool = true ) {
+    func drawLineSegment( points: [(Int, Int)], discrete: Bool = true ) {
         
         if points.count == 2 {
             if discrete {
@@ -73,7 +73,7 @@ public extension CGContext {
      - parameter points: array of (x,y) coordinates to draw between
      - parameter discrete: default to true to draw this piece by itself.  If you are trtying to draw a larger path, set this to false.
      */
-    public func drawLineSegment( points: [(CGFloat, CGFloat)], discrete: Bool = true ) {
+    func drawLineSegment( points: [(CGFloat, CGFloat)], discrete: Bool = true ) {
         
         if points.count == 2 {
             
@@ -93,7 +93,7 @@ public extension CGContext {
      - parameter points: array of (x,y) coordinates to draw between
      - parameter discrete: default to true to draw this piece by itself.  If you are trtying to draw a larger path, set this to false.
      */
-    public func drawLineSegment( points: [(Double, Double)], discrete: Bool = true ) {
+    func drawLineSegment( points: [(Double, Double)], discrete: Bool = true ) {
         
         if points.count == 2 {
             if discrete {

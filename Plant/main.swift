@@ -153,6 +153,10 @@ func drawTurtle( ) {
         
         "dragon-curve":(Rules(initiator: "L", rules: ["L" : "L+R+", "R" : "-L-R"], angle: 90, length: defaultLength, initialDirection: 90 ),10),
         "sierpinski_gasket":(Rules(initiator: "R", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ),6),
+        // http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+        // These seem to only work in certain situations.
+        "sierpinski_gasket_hexagon_outward":(Rules(initiator: "R-R-R-R-R-R-", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ),7),
+        "sierpinski_gasket_hexagon_inward":(Rules(initiator: "L-L-L-L-L-L-", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ),7),
         // Examples of edge-rewriting
         "hexagonal_gosper_curve":(Rules(initiator: "L", rules: ["L" : "L+R++R-L--LL-R+", "R" : "-L+RR++R+L--L-R"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
         "quadratic-Gosper_curve":(Rules(initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 ),2),
@@ -165,6 +169,19 @@ func drawTurtle( ) {
         ,
         "square-grid-approximation-of-the-Sierpinski-curve":(Rules(initiator: "F+XF+F+XF", rules: ["X" : "XF-F+F-XF+F+XF-F+F-X", "F":"F"], angle: 90.0, length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), 4),
         "scott_curve": (Rules(initiator: "F++F++F++F", rules: ["F" : "-F+F"], angle: 45, length: defaultLength, initialDirection: 90 ),defaultIteration),
+        // http://ecademy.agnesscott.edu/~lriddle/ifs/pentigre/pentigre2.htm
+        "McWhorter_Pentigree":(Rules(initiator: "F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), 4),
+        // http://ecademy.agnesscott.edu/~lriddle/ifs/pentigre/pentigreeForm2.htm
+        "McWhorter_Pentigree_2nd_form":(Rules(initiator: "F++F++F++F++F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), 4),
+        // http://ecademy.agnesscott.edu/~lriddle/ifs/pentaden/penta.htm
+        "McWhorter_Pentadentrite":(Rules(initiator: "F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), 4),
+        // http://ecademy.agnesscott.edu/~lriddle/ifs/pentaden/pentadenForm2.htm
+        "McWhorter_Pentadentrite_2nd":(Rules(initiator: "F+F+F+F+F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), 4),
+        // Lévy_Dragon  http://ecademy.agnesscott.edu/~lriddle/ifs/levy/levy.htm
+        "Levy_Dragon":(Rules(initiator: "F", rules: ["F":"+F−−F+"], angle: 45, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), 10),
+        "Levy_Tapestry":(Rules(initiator: "F++F++F++F++", rules: ["F":"+F−−F+"], angle: 45, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), 10)
+
+
     ]
     
     let turtle = Turtle()
@@ -271,6 +288,7 @@ func serpinskiCarpet() {
 //    turtle.rules = Rules(initiator: "F", rules: ["F" : "F+F-F-F-G+F+F+F-F", "G":"GGG"], angle: 90, length: 1200, initialDirection: 45, modifier: 3 )
 
     // Serpinsk Carpet, corrected.
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/carpet/carpet.htm
     turtle.rules = Rules(initiator: "F", rules: ["F" : "F+F−F−F−f+F+F+F−F", "f":"fff"], angle: 90,  length: 2400, initialDirection: 45, modifier: 3)
 
     // This one is really interesting, but not what I was looking for.  Snake?
@@ -294,4 +312,18 @@ serpinskiCarpet()
 //n = 3, δ = 60°
 //{XF+F+XF+F+XF+F}
 //X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
-_ = drawIterativeRules(Rules(initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 1200, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")
+_ = drawIterativeRules(Rules(initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")
+
+// Attempt at twin dragon:
+// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
+_ = drawIterativeRules(Rules(initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<12, filename: "twin-dragon")
+
+// Attempt at terdragon:
+// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
+_ = drawIterativeRules(Rules(initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "terdragon")
+
+// Attempt at Sierpinski Gadget:
+// http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+_ = drawIterativeRules(Rules(initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket")
+_ = drawIterativeRules(Rules(initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket_nodeRewriting")
+
