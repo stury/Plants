@@ -8,6 +8,7 @@
 
 #if os(macOS)
     import Cocoa
+    import Quartz
 #elseif os(iOS)
     import UIKit
 #endif
@@ -31,10 +32,8 @@ struct PositionNode {
 class Plant {
     public var branchAngle : Double = 45.0
     
-    public var limitLeft : CGFloat = 0.0
-    public var limitRight: CGFloat = 0.0
-    public var limitTop : CGFloat = 0.0
-    public var limitBottom : CGFloat = 0.0
+    /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.
+    public var limits : Limit = Limit()
     
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
     
@@ -59,23 +58,7 @@ class Plant {
     
     /// Calculate the limits of the actual drawing, so we might be able to crop the image at the emd.
     private func updateLimit(_ point: CGPoint ) {
-        if point.x < limitLeft {
-            limitLeft = point.x
-        }
-        if point.x > limitRight {
-            limitRight = point.x
-        }
-        
-        if point.y < limitTop {
-            limitTop = point.y
-        }
-        if point.y > limitBottom {
-            limitBottom = point.y
-        }
-    }
-
-    private func updateLimit(_ point: (CGFloat, CGFloat) ) {
-        updateLimit( CGPoint(x: point.0, y: point.1) )
+        limits.update(point)
     }
     
     /// This function converts degrees into radiens.
@@ -113,7 +96,7 @@ class Plant {
                                  position.1 - CGFloat(ceil(cos(directionInRadiens)*4.0)) )
         //print( "drawLeaf() directionsInRadiens=\(directionInRadiens), position=\(position), adjustedPosition=\(adjustedPosition)")
         
-        updateLimit(adjustedPosition)
+        limits.update(adjustedPosition)
         
         if let context = context {
             context.setStrokeColor(CGColor.from(color(for: .leaf)))
@@ -131,7 +114,7 @@ class Plant {
         let adjustedPosition = ( position.0 + CGFloat( ceil(sin(directionInRadiens)*length) ),
                                  position.1 - CGFloat(ceil(cos(directionInRadiens)*length)) )
         
-        updateLimit(adjustedPosition)
+        limits.update(adjustedPosition)
         
         context?.setStrokeColor(CGColor.from(color(for: .branch)))
         context?.drawLineSegment(points: [position, adjustedPosition])
@@ -165,116 +148,132 @@ class Plant {
         return result
     }
     
-    func resetLimits(_ imageSize: (Int, Int)) {
-        limitLeft  = CGFloat(imageSize.0)
-        limitRight = 0.0
-        limitTop = CGFloat(imageSize.1)
-        limitBottom = 0.0
+    private func draw(in context:CGContext, rule: String, imageSize: (Int, Int) ) {
+        self.context = context
+        
+        // Flip the drawing coordinates so I can draw this top to bottom as it is in the ascii maze...
+        context.saveGState()
+        context.translateBy(x: 0, y: CGFloat(imageSize.1))
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.setLineWidth(CGFloat(2.0))
+        context.setLineJoin(CGLineJoin.round)
+        
+        positionStack = [PositionNode]()
+        var currentPosition = PositionNode(position: (floor(Double(imageSize.0)/2.0), floor(Double(imageSize.1)*0.75)), direction: 0.0, branch: .left)
+        positionStack.append(currentPosition)
+        
+        // I've got a graphics context!  Let's build up the image...
+        let startLocation = CGPoint(x: currentPosition.position.0, y: currentPosition.position.1)
+        context.move(to: startLocation)
+        //print( "originatingPosition = \(currentPosition.position)" )
+        updateLimit(startLocation)
+        
+        var len = 0.0
+        
+        for offset in 0 ..< rule.count {
+            let character = rule[String.Index(utf16Offset: offset, in: rule)]
+            //print( "processing character: \(character)" )
+            switch character {
+            case "0":
+                if len > 0.0 {
+                    currentPosition = PositionNode(position: drawBranch(currentPosition.position, direction: currentPosition.direction, length: len), direction: currentPosition.direction, branch: currentPosition.branch)
+                    len = 0.0
+                }
+                drawLeaf(currentPosition.position, direction: currentPosition.direction)
+            case "1":
+                len += 1.0
+            case "[":
+                if len > 0.0 {
+                    currentPosition = PositionNode(position: drawBranch(currentPosition.position, direction: currentPosition.direction, length: len), direction: currentPosition.direction, branch: currentPosition.branch)
+                    len = 0.0
+                }
+                if currentPosition.branch == .left {
+                    currentPosition.direction -= branchAngle
+                }
+                else {
+                    currentPosition.direction += branchAngle
+                }
+                
+                // push an item onto the stack?
+                positionStack.append(currentPosition)
+                
+            case "]":
+                if positionStack.count > 0 {
+                    currentPosition = positionStack.removeLast()
+                    if currentPosition.branch == .left {
+                        currentPosition.direction += branchAngle
+                        currentPosition.branch = .right
+                    }
+                    else {
+                        currentPosition.branch = .left
+                        currentPosition.direction -= branchAngle
+                    }
+                    context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
+                }
+            default:
+                //                    if positionStack.count > 0 {
+                //                        currentPosition = positionStack.removeLast()
+                //                        if currentPosition.branch == .left {
+                //                            currentPosition.direction += branchAngle
+                //                            currentPosition.branch = .right
+                //                        }
+                //                        else {
+                //                            currentPosition.branch = .left
+                //                            currentPosition.direction -= branchAngle
+                //                        }
+                //                        context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
+                //                    }
+                print("WARNING: cannot process rule for character: \(character)")
+            }
+        }
+
     }
     
-    public func drawPlant(_ iterations: Int ) -> Image? {
+    public func drawPlant(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Image? {
         var result : Image?
         
         let rule = calculateRules(iterations)
         
-        let imageSize = (600, 600)
-        resetLimits( imageSize )
-        
-        if let context = Image.context(size: imageSize, color: backgroundColor) {
-            
-            self.context = context
-            
-            // Flip the drawing coordinates so I can draw this top to bottom as it is in the ascii maze...
-            context.saveGState()
-            context.translateBy(x: 0, y: CGFloat(imageSize.1))
-            context.scaleBy(x: 1.0, y: -1.0)
-            context.setLineWidth(CGFloat(2.0))
-            context.setLineJoin(CGLineJoin.round)
-            
-            positionStack = [PositionNode]()
-            var currentPosition = PositionNode(position: (floor(Double(imageSize.0)/2.0), floor(Double(imageSize.1)*0.75)), direction: 0.0, branch: .left)
-            positionStack.append(currentPosition)
-            
-            // I've got a graphics context!  Let's build up the image...
-            let startLocation = CGPoint(x: currentPosition.position.0, y: currentPosition.position.1)
-            context.move(to: startLocation)
-            //print( "originatingPosition = \(currentPosition.position)" )
-            updateLimit(startLocation)
-            
-            var len = 0.0
-            
-            for offset in 0 ..< rule.count {
-                let character = rule[String.Index(utf16Offset: offset, in: rule)]
-                //print( "processing character: \(character)" )
-                switch character {
-                case "0":
-                    if len > 0.0 {
-                        currentPosition = PositionNode(position: drawBranch(currentPosition.position, direction: currentPosition.direction, length: len), direction: currentPosition.direction, branch: currentPosition.branch)
-                        len = 0.0
-                    }
-                    drawLeaf(currentPosition.position, direction: currentPosition.direction)
-                case "1":
-                    len += 1.0
-                case "[":
-                    if len > 0.0 {
-                        currentPosition = PositionNode(position: drawBranch(currentPosition.position, direction: currentPosition.direction, length: len), direction: currentPosition.direction, branch: currentPosition.branch)
-                        len = 0.0
-                    }
-                    if currentPosition.branch == .left {
-                        currentPosition.direction -= branchAngle
-                    }
-                    else {
-                        currentPosition.direction += branchAngle
-                    }
+        limits.reset(imageSize)
 
-                    // push an item onto the stack?
-                    positionStack.append(currentPosition)
-                    
-                case "]":
-                    if positionStack.count > 0 {
-                        currentPosition = positionStack.removeLast()
-                        if currentPosition.branch == .left {
-                            currentPosition.direction += branchAngle
-                            currentPosition.branch = .right
-                        }
-                        else {
-                            currentPosition.branch = .left
-                            currentPosition.direction -= branchAngle
-                        }
-                        context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
-                    }
-                default:
-//                    if positionStack.count > 0 {
-//                        currentPosition = positionStack.removeLast()
-//                        if currentPosition.branch == .left {
-//                            currentPosition.direction += branchAngle
-//                            currentPosition.branch = .right
-//                        }
-//                        else {
-//                            currentPosition.branch = .left
-//                            currentPosition.direction -= branchAngle
-//                        }
-//                        context.move(to: CGPoint(x: currentPosition.position.0, y: currentPosition.position.1))
-//                    }
-                    print("WARNING: cannot process rule for character: \(character)")
-                }
-            }
-            
-            context.restoreGState()
-            
-            // Convert context into a Image to return.
-            if let cgImage = context.makeImage() {
-                result = Image(cgImage: cgImage)
-            }
-            
-            self.context = nil
+        let renderer = ImageRenderer( backgroundColor )
+        result = renderer.raster(size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
+            self?.draw(in:context, rule:rule, imageSize:imageSize)
         }
 
-        #if DEBUG
-        print( "limit: left:\(limitLeft), right:\(limitRight), top:\(limitTop), bottom:\(limitBottom)" )
-        // I could flag that this image isn't big enough, if the values fall outside of the current imageSize!
-        #endif
+        if !limits.within(imageSize) {
+            // recalculate the image size, and the start position, then rerun this method...
+            // Note:  the height here is 75% of what we really need, because of how we calculate the start position of the plant.
+            //        so change the height calculation to accomodate for that.  height = height/3.0  + height.
+            let newImageSize = (Int(limits.width+20), Int(limits.height+(limits.height/3.0)+20))
+//            start = CGPoint(x: startLocation.x-limits.left+border, y:startLocation.y-limits.top+border )
+            result = drawPlant( iterations, imageSize: newImageSize )
+        }
         
+        return result
+    }
+
+    public func drawPdfPlant(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
+        var result : Data?
+        
+        let rule = calculateRules(iterations)
+        
+        limits.reset(imageSize)
+        
+        let renderer = ImageRenderer( backgroundColor )
+        result = renderer.data(mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
+            self?.draw(in:context, rule:rule, imageSize:imageSize)
+        }
+        
+        if !limits.within(imageSize) {
+            // recalculate the image size, and the start position, then rerun this method...
+            
+            // Note:  the height here is 75% of what we really need, because of how we calculate the start position of the plant.
+            //        so change the height calculation to accomodate for that.  height = height/3.0  + height.
+            let newImageSize = (Int(limits.width+20), Int(limits.height+(limits.height/3.0)+20))
+            result = drawPdfPlant( iterations, imageSize: newImageSize )
+        }
+
         return result
     }
     
@@ -284,7 +283,7 @@ class Plant {
 
         if let plantImage = drawPlant(iterations) {
             // print("limit left: \(plant.limitLeft), left: \(plant.limitRight)")
-            if let cropImage = plantImage.crop(CGRect(x: limitLeft-offset/2, y: 0, width: (limitRight - limitLeft) + offset, height: plantImage.size.height)) {
+            if let cropImage = plantImage.crop(CGRect(x: limits.left-offset/2, y: 0, width: (limits.right - limits.left) + offset, height: plantImage.size.height)) {
                 result = cropImage
             }
 //            else {

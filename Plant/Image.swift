@@ -7,42 +7,43 @@
 //
 
 #if os(macOS)
-    import Cocoa
-    public typealias Image = NSImage
+
+import Cocoa
+public typealias Image = NSImage
+
+public extension NSImage {
     
-    extension NSImage {
-        
-        public convenience init(cgImage: CGImage) {
-            self.init(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
-        }
-        
-        public var cgImage : CGImage? {
-            get {
-                var result : CGImage?
-                if let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil) {
-                    result = cgImage
-                }
-                return result
-            }
-        }
+    convenience init(cgImage: CGImage) {
+        self.init(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
     }
     
+    var cgImage : CGImage? {
+        get {
+            var result : CGImage?
+            if let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+                result = cgImage
+            }
+            return result
+        }
+    }
+}
+
 #endif
 
 #if os(iOS)
-    import UIKit
-    public typealias Image = UIImage
+import UIKit
+public typealias Image = UIImage
 
-    extension UIImage {
-        
-        /// Mimicking the NSImage convienience initializer for iOS!
-        public convenience init?(contentsOf url: URL) {
-            guard let data = try? Data(contentsOf: url) else {
-                return nil
-            }
-            self.init(data: data)
+extension UIImage {
+    
+    /// Mimicking the NSImage convienience initializer for iOS!
+    public convenience init?(contentsOf url: URL) {
+        guard let data = try? Data(contentsOf: url) else {
+            return nil
         }
+        self.init(data: data)
     }
+}
 #endif
 
 let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
@@ -69,6 +70,26 @@ public extension Image {
         return result
     }
     
+    static func appIconImage(with image: Image ) -> Image? {
+        var result : Image? = nil
+        
+        if let cgImage = image.cgImage {
+            if let context = Image.context(size: (1024, 1024), color: (1.0, 1.0, 1.0, 1.0)) {
+                let width = image.size.width
+                let height = image.size.height
+                let x = (1024 - width) / 2.0
+                let y = (1024 - height) / 2.0
+                
+                context.draw(cgImage, in: CGRect(x: x, y: y, width: width, height: height))
+                
+                if let cgImage = context.makeImage() {
+                    result = Image(cgImage: cgImage)
+                }
+            }
+        }
+        return result
+    }
+    
     /// Simple method for resizing a given image to a specific size...
     func resize(size: (Int, Int) ) -> Image? {
         var result : Image? = nil
@@ -84,7 +105,7 @@ public extension Image {
         }
         return result
     }
-
+    
     /// Simple method for drawing a line segment in a image...
     func drawHorizontalLine(at: CGFloat, color: (Double, Double, Double) = (0.0, 1.0, 0.0) ) -> Image? {
         var result : Image? = nil
@@ -117,7 +138,7 @@ public extension Image {
         
         return result
     }
-
+    
     /// simple method to export an Image as a PNG to the user's document directory.
     func export(name: String = "maze") -> Image? {
         
@@ -128,25 +149,25 @@ public extension Image {
         
         return self
     }
-
-    /// A simple method for outputting the image as a PNG image to a specified URL.
+    
+    /// A simple method for outputting the image as a PNG image.
     func output(_ url: URL) {
         let image = self
         #if os(macOS)
-            if let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
-                let bitmap = NSBitmapImageRep(cgImage: cgImage)
-                #if swift(>=4.0)
-                if let data = bitmap.representation(using: .png, properties: [:]) {
-                    try? data.write(to: url)
-                    print( url )
-                }
-                #else
-                if let data = bitmap.representation(using: .PNG, properties: [:]) {
-                    try? data.write(to: url)
-                    print( url )
-                }
-                #endif
+        if let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+            let bitmap = NSBitmapImageRep(cgImage: cgImage)
+            #if swift(>=4.0)
+            if let data = bitmap.representation(using: .png, properties: [:]) {
+                try? data.write(to: url)
+                print( url )
             }
+            #else
+            if let data = bitmap.representation(using: .PNG, properties: [:]) {
+                try? data.write(to: url)
+                print( url )
+            }
+            #endif
+        }
         //        if let bits = imageRep.representations.first as? NSBitmapImageRep {
         //            if let data = bits.representation(using: .png, properties: [:]) {
         //                try? data.write(to: URL(fileURLWithPath: "./maze.png"))
@@ -154,5 +175,71 @@ public extension Image {
         //        }
         #endif
     }
+    
+}
 
+public extension Image {
+    /// Simple method for generating a bitmap Image, filled in with a particular background color, and rendered with a block.
+    static func image( size: (Int, Int), color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Image? {
+        
+        var result : Image?
+        
+        if let context = Image.context( size: size, color:color) {
+            drawing(context)
+            
+            if let cgImage = context.makeImage() {
+                result = Image(cgImage: cgImage)
+            }
+        }
+        
+        return result
+    }
+    
+    // Convienience method
+    static func image( size: CGSize, color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Image? {
+        
+        return Image.image(size: (Int(size.width), Int(size.height)), color: color, drawing: drawing)
+    }
+    
+    /// Simple method for generating a pdf data blob, filled in with a particular background color, and rendered with a block.
+    static func pdf( size: (Int, Int), color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Data? {
+        
+        var result : Data? = nil
+        
+        var mediaBox = CGRect(x: 0, y: 0, width: size.0, height: size.1)
+        
+        // Example showing how to create a CGDataConsumer to grab the data, then allow me to write out that data myself.
+        if let pdfData = CFDataCreateMutable(nil, 0) {
+            if let consumer = CGDataConsumer(data: pdfData) {
+                if let context = CGContext(consumer: consumer, mediaBox: &mediaBox, nil) {
+                    context.beginPDFPage(nil)
+                    drawing(context)
+                    context.endPDFPage()
+                    context.closePDF()
+                    
+                    let size = CFDataGetLength(pdfData)
+                    if let bytePtr = CFDataGetBytePtr(pdfData) {
+                        result = Data(bytes: bytePtr, count: size)
+                        if let result = result {
+                            print( result )
+                        }
+                    }
+                    print("Created PDF using a CFMutableData.  Size is \(size)")
+                }
+                else {
+                    print( "Failed to create a context")
+                }
+            }
+            else {
+                print("Failed to create a consumer")
+            }
+        }
+        
+        return result
+    }
+    
+    // convienience method!
+    static func pdf( size: CGSize, color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Data? {
+        return pdf(size: (Int(size.width), Int(size.height)), color: color, drawing: drawing)
+    }
 }

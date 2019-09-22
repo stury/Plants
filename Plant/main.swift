@@ -50,6 +50,13 @@ func drawPlant() {
         _  = plantImage.export( name: "plant_iterative" )
     }
 
+    if let plantImage = plant.drawPlant(6) {
+        _  = plantImage.export( name: "plant_iteration_6" )
+    }
+    let renderer = ImageRenderer()
+    if let pdfData = plant.drawPdfPlant(6) {
+        _  = renderer.export(type: .pdf, name: "plant_iteration_6", data: pdfData)
+    }
 }
 
 // MARK: - Generic drawing methods

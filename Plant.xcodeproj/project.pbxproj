@@ -16,6 +16,7 @@
 		D28F353721B483F2007CFF9C /* Turtle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353621B483F2007CFF9C /* Turtle.swift */; };
 		D28F353921B4DE52007CFF9C /* Limit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353821B4DE52007CFF9C /* Limit.swift */; };
 		D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
+		D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C3E9E42327452F00843FFE /* ImageRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		D28F353621B483F2007CFF9C /* Turtle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Turtle.swift; sourceTree = "<group>"; };
 		D28F353821B4DE52007CFF9C /* Limit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Limit.swift; sourceTree = "<group>"; };
 		D28F353A21B4DE84007CFF9C /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
+		D2C3E9E42327452F00843FFE /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
 				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
 				D28F353021B227B3007CFF9C /* Image.swift */,
+				D2C3E9E42327452F00843FFE /* ImageRenderer.swift */,
 			);
 			path = Plant;
 			sourceTree = "<group>";
@@ -113,7 +116,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Scott Tury";
 				TargetAttributes = {
 					D28F352321B2264C007CFF9C = {
@@ -149,6 +152,7 @@
 				D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */,
 				D28F353321B227B4007CFF9C /* Image.swift in Sources */,
 				D28F353521B227CF007CFF9C /* Plant.swift in Sources */,
+				D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */,
 				D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */,
 				D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */,
 				D28F353921B4DE52007CFF9C /* Limit.swift in Sources */,
@@ -278,6 +282,7 @@
 		D28F352C21B2264C007CFF9C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -287,6 +292,7 @@
 		D28F352D21B2264C007CFF9C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
