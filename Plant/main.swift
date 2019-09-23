@@ -45,7 +45,8 @@ func drawPlant() {
 
 //    plant.branchAngle = 25.7
 //    plant.rules["0"] = "1[10]1[10]10" // ? Plant
-
+    
+    // Test out the rasterization of the Plant class.
     if let plantImage = plant.iterativeGrowth(6, offset: 50) {
         _  = plantImage.export( name: "plant_iterative" )
     }
@@ -53,8 +54,13 @@ func drawPlant() {
     if let plantImage = plant.drawPlant(6) {
         _  = plantImage.export( name: "plant_iteration_6" )
     }
+
+    // Now test out rendering the image into a PDF.
     let renderer = ImageRenderer()
-    if let pdfData = plant.drawPdfPlant(6) {
+    if let pdfData = plant.iterativeGrowthPdf(6, offset: 50) {
+        _  = renderer.export( type: .pdf, name: "plant_iterative", data: pdfData )
+    }
+    if let pdfData = plant.drawPlantPdf(6) {
         _  = renderer.export(type: .pdf, name: "plant_iteration_6", data: pdfData)
     }
 }
