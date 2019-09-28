@@ -34,11 +34,13 @@ class Plant {
     
     /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.
     public var limits : Limit = Limit()
+    public var border : CGFloat = 20.0
     
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
     
     private let branchColor = ( 0.7098, 0.3961, 0.1137 )
     private let leafColor = ( 0.0, 1.0, 0.0 )
+    private var startPos : (Double, Double)? = nil
     
     public var context : CGContext?
     var positionStack : [PositionNode] = [PositionNode]()
@@ -159,7 +161,17 @@ class Plant {
         context.setLineJoin(CGLineJoin.round)
         
         positionStack = [PositionNode]()
-        var currentPosition = PositionNode(position: (floor(Double(imageSize.0)/2.0), floor(Double(imageSize.1)*0.75)), direction: 0.0, branch: .left)
+        
+        var currentPosition : PositionNode
+        if let startPos = startPos {
+            currentPosition = PositionNode(position: startPos, direction: 0.0, branch: .left)
+        }
+        else {
+            let position = (floor(Double(imageSize.0)/2.0), floor(Double(imageSize.1)*0.75))
+            currentPosition = PositionNode(position: position, direction: 0.0, branch: .left)
+            startPos = position
+        }
+        
         positionStack.append(currentPosition)
         
         // I've got a graphics context!  Let's build up the image...
@@ -226,7 +238,6 @@ class Plant {
                 print("WARNING: cannot process rule for character: \(character)")
             }
         }
-
     }
     
     public func drawPlant(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Image? {
@@ -241,14 +252,21 @@ class Plant {
             self?.draw(in:context, rule:rule, imageSize:imageSize)
         }
 
-        if !limits.within(imageSize) {
+        if !limits.within(imageSize) || imageSize == (20, 20) {
             // recalculate the image size, and the start position, then rerun this method...
-            // Note:  the height here is 75% of what we really need, because of how we calculate the start position of the plant.
-            //        so change the height calculation to accomodate for that.  height = height/3.0  + height.
-            let newImageSize = (Int(limits.width+20), Int(limits.height+(limits.height/3.0)+20))
-//            start = CGPoint(x: startLocation.x-limits.left+border, y:startLocation.y-limits.top+border )
-            result = drawPlant( iterations, imageSize: newImageSize )
+            if let startLocation = startPos {
+                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
+                if newImageSize == imageSize {
+                    print( "Uh, oh!  We're stuck.  Why?")
+                }
+                let x = Double((CGFloat(startLocation.0)-limits.left)+border)
+                let y = Double((CGFloat(startLocation.1)-limits.top)+border)
+                startPos = ( x, y )
+            
+                result = drawPlant( iterations, imageSize: newImageSize )
+            }
         }
+        startPos = nil
         
         return result
     }
@@ -265,15 +283,23 @@ class Plant {
             self?.draw(in:context, rule:rule, imageSize:imageSize)
         }
         
-        if !limits.within(imageSize) {
+        if !limits.within(imageSize) || imageSize == (20, 20) {
             // recalculate the image size, and the start position, then rerun this method...
+                        
+            if let startLocation = startPos {
+                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
+                if newImageSize == imageSize {
+                    print( "Uh, oh!  We're stuck.  Why?")
+                }
+                let x = Double((CGFloat(startLocation.0)-limits.left)+border)
+                let y = Double((CGFloat(startLocation.1)-limits.top)+border)
+                startPos = ( x, y )
             
-            // Note:  the height here is 75% of what we really need, because of how we calculate the start position of the plant.
-            //        so change the height calculation to accomodate for that.  height = height/3.0  + height.
-            let newImageSize = (Int(limits.width+20), Int(limits.height+(limits.height/3.0)+20))
-            result = drawPlantPdf( iterations, imageSize: newImageSize )
+                result = drawPlantPdf( iterations, imageSize: newImageSize )
+            }
         }
-
+        startPos = nil
+        
         return result
     }
     
@@ -300,9 +326,8 @@ class Plant {
 
         if let _ = drawPlantPdf(iterations) {
             //print("limit left: \(limits.left), left: \(limits.right)")
-            // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
             let height = limits.bottom-limits.top
-            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int((height+height/3.0)))) {
+            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) {
                 result = cropImage
             }
         }
