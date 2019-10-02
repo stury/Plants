@@ -179,6 +179,38 @@ class Turtle {
         return result
     }
     
+    private func draw( context: CGContext, imageSize: CGSize, rule: String ) {
+        self.context = context
+        
+        context.setLineWidth(CGFloat(2.0))
+        context.setLineJoin(CGLineJoin.round)
+
+        let startLocation : CGPoint
+        if let start = start {
+            startLocation = start
+        }
+        else {
+            startLocation = CGPoint(x: floor(Double(imageSize.width)/2.0), y: floor(Double(imageSize.height)/3.0))
+            start = startLocation
+        }
+        
+        var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: rules.initialDirection, drawingMode: .discrete )
+        
+        // Let's build up the image...
+        
+        context.move(to: startLocation)
+        //print( "originatingPosition = \(currentPosition.position)" )
+        limits.update(startLocation)
+        
+        for offset in 0 ..< rule.count {
+            let character = rule[String.Index(utf16Offset: offset, in: rule)]
+            //print( "processing character: \(character)" )
+            state = process( character, state: state )
+        }
+
+        self.context = nil
+    }
+    
     /// Method for drawing the rule set at a particular iteration point.
     public func draw(_ iteration: Int, imageSize: (Int, Int) = (20, 20) ) -> Image? {
         var result : Image?
@@ -186,73 +218,37 @@ class Turtle {
         let rule = rules.calculateRules(for: iteration)
         
         length = rules.calculateLength(for: iteration)
-        //let imageSize = (2400, 2400)
         limits.reset( imageSize )
+        let renderer = ImageRenderer()
+        result = renderer.raster(size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
+            self?.draw( context: context, imageSize: CGSize(width: imageSize.0, height: imageSize.1), rule:rule)
+        }
         
-        if let context = Image.context(size: imageSize, color: backgroundColor) {
+        // Test to see if the image is within the bounds of the imageSize.  If not,
+        // recalculate the imageSize we  should use, and the starting position, and return that!
+        if !limits.within((imageSize.0, imageSize.1)) {
+            // recalculate the image size, and the start position, then rerun this method...
             
-            self.context = context
-            
-//            // Flip the drawing coordinates so I can draw this top to bottom as it is in the ascii maze...
-//            context.saveGState()
-//            context.translateBy(x: 0, y: CGFloat(imageSize.1))
-//            context.scaleBy(x: 1.0, y: -1.0)
-
-            context.setLineWidth(CGFloat(2.0))
-            context.setLineJoin(CGLineJoin.round)
-
-            let startLocation : CGPoint
+            let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
             if let start = start {
-                startLocation = start
-            }
-            else {
-                startLocation = CGPoint(x: floor(Double(imageSize.0)/2.0), y: floor(Double(imageSize.1)/3.0))
-            }
-            
-            var state = TurtleState(position: (Double(startLocation.x), Double(startLocation.y)), heading: rules.initialDirection, drawingMode: .discrete )
-            
-            // I've got a graphics context!  Let's build up the image...
-            
-            context.move(to: startLocation)
-            //print( "originatingPosition = \(currentPosition.position)" )
-            limits.update(startLocation)
-            
-            for offset in 0 ..< rule.count {
-                let character = rule[String.Index(utf16Offset: offset, in: rule)]
-                //print( "processing character: \(character)" )
-                state = process( character, state: state )
-            }
-
-            //            context.restoreGState()
-            
-            // Convert context into a Image to return.
-            if let cgImage = context.makeImage() {
-                result = Image(cgImage: cgImage)
-            }
-            
-            self.context = nil
-            
-            // Test to see if the image is within the bounds of the imageSize.  If not,
-            // recalculate the imageSize we  should use, and the starting position, and return that!
-            if !limits.within(imageSize) {
-                // recalculate the image size, and the start position, then rerun this method...
-                
-                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
-                start = CGPoint(x: startLocation.x-limits.left+border, y:startLocation.y-limits.top+border )
+                self.start = CGPoint(x: start.x-limits.left+border, y:start.y-limits.top+border )
                 result = draw( iteration, imageSize: newImageSize )
             }
         }
-        
+
         #if DEBUG
         print( "limit: left:\(limits.left), right:\(limits.right), top:\(limits.top), bottom:\(limits.bottom)" )
         // I could flag that this image isn't big enough, if the values fall outside of the current imageSize!
         #endif
+        start = nil
         
         return result
     }
+}
 
-    // MARK: -
-
+// MARK: -
+extension Turtle {
+    
     // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
     public func drawCropped( _ iterations: Int, imageSize: (Int, Int) = (20, 20)) -> Image? {
         var result : Image?
@@ -349,3 +345,4 @@ class Turtle {
     }
 
 }
+
