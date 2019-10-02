@@ -34,7 +34,7 @@ class Plant {
     
     /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.
     public var limits : Limit = Limit()
-    public var border : CGFloat = 20.0
+    public var border : CGFloat = 40.0
     
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
     
@@ -252,7 +252,7 @@ class Plant {
             self?.draw(in:context, rule:rule, imageSize:imageSize)
         }
 
-        if !limits.within(imageSize) || imageSize == (20, 20) {
+        if limits.within(imageSize) == false {
             // recalculate the image size, and the start position, then rerun this method...
             if let startLocation = startPos {
                 let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
@@ -283,9 +283,43 @@ class Plant {
             self?.draw(in:context, rule:rule, imageSize:imageSize)
         }
         
-        if !limits.within(imageSize) || imageSize == (20, 20) {
+        if !limits.within(imageSize) {
             // recalculate the image size, and the start position, then rerun this method...
-                        
+            
+            // Note:  the height here is 75% of what we really need, because of how we calculate the start position of the plant.
+            //        so change the height calculation to accomodate for that.  height = height/3.0  + height.
+//            let newImageSize = (Int(limits.width+20), Int(limits.height+(limits.height/3.0)+20))
+//            result = drawPlantPdf( iterations, imageSize: newImageSize )
+
+//            let newImageSize = (Int(limits.width+border), Int(limits.height+border))
+
+//            if let startLocation = startPos {
+//                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
+//                if newImageSize == imageSize {
+//                    print( "Uh, oh!  We're stuck.  Why?")
+//                    let x : Double
+//                    if limits.left <= 0 {
+//                        x = startLocation.0-Double(limits.left)
+//                    }
+//                    else {
+//                        x = startLocation.0-(Double(limits.right)-Double(imageSize.0))
+//                    }
+//                    let y : Double
+//                    if limits.top <= 0 {
+//                        y = Double(CGFloat(startLocation.1)-limits.top+border)
+//                    }
+//                    else {
+//                        y = startLocation.1
+//                    }
+//                    startPos = ( x, y )
+//                } else {
+//                    startPos = ( Double(CGFloat(startLocation.1)-limits.left+border), Double(CGFloat(startLocation.0)-limits.top+border) )
+//                }
+//                startPos = ( Double(CGFloat(startLocation.1)-limits.left+border), Double(CGFloat(startLocation.0)-limits.top+border) )
+        
+//                result = drawPlantPdf( iterations, imageSize: newImageSize )
+//            }
+            
             if let startLocation = startPos {
                 let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
                 if newImageSize == imageSize {
@@ -297,9 +331,10 @@ class Plant {
             
                 result = drawPlantPdf( iterations, imageSize: newImageSize )
             }
+
+
         }
-        startPos = nil
-        
+
         return result
     }
     
@@ -326,8 +361,9 @@ class Plant {
 
         if let _ = drawPlantPdf(iterations) {
             //print("limit left: \(limits.left), left: \(limits.right)")
+            // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
             let height = limits.bottom-limits.top
-            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) {
+            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { // Int((height+height/3.0)))) {
                 result = cropImage
             }
         }
