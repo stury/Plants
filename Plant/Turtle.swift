@@ -54,6 +54,10 @@ class Turtle {
     static public let colorAmberMonitor = ( 0.7098, 0.3961, 0.1137 ) // amber
     static public let colorGreenMonitor = (0.2, 0.70, 0.2) // green display
     
+    static public let colorBackgroundWhite = (CGFloat(1.0), CGFloat(1.0), CGFloat(1.0), CGFloat(1.0))
+    static public let colorBackgroundBlack = (CGFloat(0.0), CGFloat(0.0), CGFloat(0.0), CGFloat(1.0))
+    
+    
     /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.
     public var limits : Limit = Limit()
     
@@ -61,7 +65,9 @@ class Turtle {
     public var rules : Rules = Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"])
     
     /// Background color + alpha to use for the background of the image.  (Should easilly be able to change to having a transparent background.)
-    public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
+    public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = colorBackgroundBlack
+    /// Class to use for generating the Images
+    public var renderer = ImageRenderer()
     /// Value to use for drawing the image.
     public var color = colorAmberMonitor
     /// Value for the border around the image being drawn.  Number of pixels to have around the drawn image.
@@ -219,7 +225,8 @@ class Turtle {
         
         length = rules.calculateLength(for: iteration)
         limits.reset( imageSize )
-        let renderer = ImageRenderer()
+        
+        renderer.backgroundColor = backgroundColor
         result = renderer.raster(size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
             self?.draw( context: context, imageSize: CGSize(width: imageSize.0, height: imageSize.1), rule:rule)
         }
@@ -295,7 +302,7 @@ extension Turtle {
                 size = (20, 20)
             }
             
-            for i in min...max-1 {
+            for i in min..<max {
                 //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
                 var image : Image?
                 
@@ -334,7 +341,7 @@ extension Turtle {
         
         start = nil
         
-        result = curves.arrangedHorizontally(mode: mode)
+        result = curves.arrangedHorizontally(backgroundColor:backgroundColor, mode: mode)
         
         return result
     }
