@@ -17,6 +17,7 @@
 		D28F353921B4DE52007CFF9C /* Limit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353821B4DE52007CFF9C /* Limit.swift */; };
 		D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
 		D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C3E9E42327452F00843FFE /* ImageRenderer.swift */; };
+		D2CEC2EE2344FDFA00034179 /* FileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CEC2ED2344FDFA00034179 /* FileWriter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,7 @@
 		D28F353821B4DE52007CFF9C /* Limit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Limit.swift; sourceTree = "<group>"; };
 		D28F353A21B4DE84007CFF9C /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
 		D2C3E9E42327452F00843FFE /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
+		D2CEC2ED2344FDFA00034179 /* FileWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWriter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
 				D28F353021B227B3007CFF9C /* Image.swift */,
 				D2C3E9E42327452F00843FFE /* ImageRenderer.swift */,
+				D2CEC2ED2344FDFA00034179 /* FileWriter.swift */,
 			);
 			path = Plant;
 			sourceTree = "<group>";
@@ -152,6 +155,7 @@
 				D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */,
 				D28F353321B227B4007CFF9C /* Image.swift in Sources */,
 				D28F353521B227CF007CFF9C /* Plant.swift in Sources */,
+				D2CEC2EE2344FDFA00034179 /* FileWriter.swift in Sources */,
 				D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */,
 				D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */,
 				D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */,

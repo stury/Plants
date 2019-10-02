@@ -150,6 +150,7 @@ class Plant {
         return result
     }
     
+    /// Common drawing routine for both raster and PDF drawing.
     private func draw(in context:CGContext, rule: String, imageSize: (Int, Int) ) {
         self.context = context
         
@@ -239,7 +240,12 @@ class Plant {
             }
         }
     }
+}
+
     
+// MARK: - Raster Drawing Routines
+    
+extension Plant {
     public func drawPlant(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Image? {
         var result : Image?
         
@@ -270,73 +276,6 @@ class Plant {
         
         return result
     }
-
-    public func drawPlantPdf(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
-        var result : Data?
-        
-        let rule = calculateRules(iterations)
-        
-        limits.reset(imageSize)
-        
-        let renderer = ImageRenderer( backgroundColor )
-        result = renderer.data(mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
-            self?.draw(in:context, rule:rule, imageSize:imageSize)
-        }
-        
-        if !limits.within(imageSize) {
-            // recalculate the image size, and the start position, then rerun this method...
-            
-            // Note:  the height here is 75% of what we really need, because of how we calculate the start position of the plant.
-            //        so change the height calculation to accomodate for that.  height = height/3.0  + height.
-//            let newImageSize = (Int(limits.width+20), Int(limits.height+(limits.height/3.0)+20))
-//            result = drawPlantPdf( iterations, imageSize: newImageSize )
-
-//            let newImageSize = (Int(limits.width+border), Int(limits.height+border))
-
-//            if let startLocation = startPos {
-//                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
-//                if newImageSize == imageSize {
-//                    print( "Uh, oh!  We're stuck.  Why?")
-//                    let x : Double
-//                    if limits.left <= 0 {
-//                        x = startLocation.0-Double(limits.left)
-//                    }
-//                    else {
-//                        x = startLocation.0-(Double(limits.right)-Double(imageSize.0))
-//                    }
-//                    let y : Double
-//                    if limits.top <= 0 {
-//                        y = Double(CGFloat(startLocation.1)-limits.top+border)
-//                    }
-//                    else {
-//                        y = startLocation.1
-//                    }
-//                    startPos = ( x, y )
-//                } else {
-//                    startPos = ( Double(CGFloat(startLocation.1)-limits.left+border), Double(CGFloat(startLocation.0)-limits.top+border) )
-//                }
-//                startPos = ( Double(CGFloat(startLocation.1)-limits.left+border), Double(CGFloat(startLocation.0)-limits.top+border) )
-        
-//                result = drawPlantPdf( iterations, imageSize: newImageSize )
-//            }
-            
-            if let startLocation = startPos {
-                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
-                if newImageSize == imageSize {
-                    print( "Uh, oh!  We're stuck.  Why?")
-                }
-                let x = Double((CGFloat(startLocation.0)-limits.left)+border)
-                let y = Double((CGFloat(startLocation.1)-limits.top)+border)
-                startPos = ( x, y )
-            
-                result = drawPlantPdf( iterations, imageSize: newImageSize )
-            }
-
-
-        }
-
-        return result
-    }
     
     // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
     public func croppedPlant( _ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
@@ -350,22 +289,6 @@ class Plant {
 //            else {
 //                result = plantImage
 //            }
-        }
-
-        return result
-    }
-
-    // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
-    public func croppedPlantPdf( _ iterations: Int, offset: CGFloat = 0.0 ) -> Data? {
-        var result : Data?
-
-        if let _ = drawPlantPdf(iterations) {
-            //print("limit left: \(limits.left), left: \(limits.right)")
-            // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
-            let height = limits.bottom-limits.top
-            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { // Int((height+height/3.0)))) {
-                result = cropImage
-            }
         }
 
         return result
@@ -386,30 +309,6 @@ class Plant {
             }
             else {
                 image = drawPlant(i)
-            }
-            
-            if let image = image {
-                result.append(image)
-            }
-        }
-        return result
-    }
-
-    /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
-    /// and then it generates each successive iteration into an Image.  It then adds all the images into an
-    /// image array to pass back to the caller.
-    public func iterativePlantsPdf(_ iterations: Int, crop: Bool, offset: CGFloat = 0.0 ) -> [Data] {
-        var result : [Data] = [Data]()
-        
-        for i in 0...iterations {
-            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
-            var image : Data?
-            
-            if crop {
-                image = croppedPlantPdf(i, offset: offset)
-            }
-            else {
-                image = drawPlantPdf(i)
             }
             
             if let image = image {
@@ -458,7 +357,81 @@ class Plant {
         
         return result
     }
+}
+
+// MARK: - PDF Drawing Routines
+extension Plant {
+
+    public func drawPlantPdf(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
+        var result : Data?
+        
+        let rule = calculateRules(iterations)
+        
+        limits.reset(imageSize)
+        
+        let renderer = ImageRenderer( backgroundColor )
+        result = renderer.data(mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
+            self?.draw(in:context, rule:rule, imageSize:imageSize)
+        }
+        
+        if !limits.within(imageSize) {
+            // recalculate the image size, and the start position, then rerun this method...
+            if let startLocation = startPos {
+                let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
+                if newImageSize == imageSize {
+                    print( "Uh, oh!  We're stuck.  Why?")
+                }
+                let x = Double((CGFloat(startLocation.0)-limits.left)+border)
+                let y = Double((CGFloat(startLocation.1)-limits.top)+border)
+                startPos = ( x, y )
+            
+                result = drawPlantPdf( iterations, imageSize: newImageSize )
+            }
+        }
+
+        return result
+    }
     
+    // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
+    public func croppedPlantPdf( _ iterations: Int, offset: CGFloat = 0.0 ) -> Data? {
+        var result : Data?
+
+        if let _ = drawPlantPdf(iterations) {
+            //print("limit left: \(limits.left), left: \(limits.right)")
+            // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
+            let height = limits.bottom-limits.top
+            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { // Int((height+height/3.0)))) {
+                result = cropImage
+            }
+        }
+
+        return result
+    }
+    
+    /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
+    /// and then it generates each successive iteration into an Image.  It then adds all the images into an
+    /// image array to pass back to the caller.
+    public func iterativePlantsPdf(_ iterations: Int, crop: Bool, offset: CGFloat = 0.0 ) -> [Data] {
+        var result : [Data] = [Data]()
+        
+        for i in 0...iterations {
+            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+            var image : Data?
+            
+            if crop {
+                image = croppedPlantPdf(i, offset: offset)
+            }
+            else {
+                image = drawPlantPdf(i)
+            }
+            
+            if let image = image {
+                result.append(image)
+            }
+        }
+        return result
+    }
+
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
     public func iterativeGrowthPdf(_ iterations: Int, offset: CGFloat = 0.0 ) -> Data? {
         var result : Data? = nil

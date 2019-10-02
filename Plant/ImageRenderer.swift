@@ -18,48 +18,68 @@ public enum ImageRenderEnum : String {
 public class ImageRenderer {
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat)
     
-    public init(_ backgroundColor:(CGFloat, CGFloat, CGFloat, CGFloat) = (1.0, 1.0, 1.0, 1.0) ) {
-        self.backgroundColor = backgroundColor
-    }
-    
-    // MARK: - Writing
-    public func export(type: ImageRenderEnum, name: String = "maze", data: Data) {
-        
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        if let documentURL = URL(string: "\(name).\(type.rawValue)", relativeTo: URL(fileURLWithPath: documentsPath)) {
-            self.write(documentURL, data: data)
+    public init(_ backgroundColor:(CGFloat, CGFloat, CGFloat, CGFloat)? = nil ) {
+        if let backgroundColor = backgroundColor {
+            self.backgroundColor = backgroundColor
         }
-    }
-
-    /// Just a helper method to write a data blob out to the disk
-    public func write( _ url:URL, data: Data? ) {
-        if let fileData = data {
-            do {
-                try fileData.write(to: url)
-                print( "Wrote file to \(url)" )
-            }
-            catch {
-                print( "ERROR when writing data out to disk.  \(error)" )
-            }
-        }
-    }
-    /// Just a helper method to write a data blob out to the disk
-    public func write( _ path:String, data: Data? ) {
-        write(URL(fileURLWithPath: path), data: data)
-    }
-    
-    public func asyncWrite( _ url: URL, data: Data?, completion: @escaping (()->Void) ) {
-        DispatchQueue.global().async { [weak self] in
-            if let strongSelf = self {
-                strongSelf.write(url, data: data)
-                completion()
-            }
+        else {
+            self.backgroundColor = (1.0, 1.0, 1.0, 1.0)
         }
     }
     
-    public func asyncWrite( _ path: String, data: Data?, completion: @escaping (()->Void) ) {
-        asyncWrite(URL(fileURLWithPath: path), data: data, completion: completion)
-    }
+//    // MARK: - Writing
+//    public func export(type: ImageRenderEnum, name: String = "maze", data: Data) {
+//        
+//        var documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//        // See if we want to embed the file somewhere else...
+//        if outputDirectory.count > 0 {
+//            documentsPath.append(contentsOf: "/\(outputDirectory)")
+//            // Should I check to see if the directory exists already?
+//            let fileManager = FileManager.default
+//            var isDirectory : ObjCBool = true
+//            if !fileManager.fileExists(atPath: documentsPath, isDirectory: &isDirectory ) {
+//                do {
+//                    try fileManager.createDirectory(atPath: documentsPath, withIntermediateDirectories: true)
+//                }
+//                catch {
+//                    print( error )
+//                }
+//            }
+//        }
+//        if let documentURL = URL(string: "\(name).\(type.rawValue)", relativeTo: URL(fileURLWithPath: documentsPath)) {
+//            self.write(documentURL, data: data)
+//        }
+//    }
+//
+//    /// Just a helper method to write a data blob out to the disk
+//    public func write( _ url:URL, data: Data? ) {
+//        if let fileData = data {
+//            do {
+//                try fileData.write(to: url)
+//                print( "Wrote file to \(url)" )
+//            }
+//            catch {
+//                print( "ERROR when writing data out to disk.  \(error)" )
+//            }
+//        }
+//    }
+//    /// Just a helper method to write a data blob out to the disk
+//    public func write( _ path:String, data: Data? ) {
+//        write(URL(fileURLWithPath: path), data: data)
+//    }
+//    
+//    public func asyncWrite( _ url: URL, data: Data?, completion: @escaping (()->Void) ) {
+//        DispatchQueue.global().async { [weak self] in
+//            if let strongSelf = self {
+//                strongSelf.write(url, data: data)
+//                completion()
+//            }
+//        }
+//    }
+//    
+//    public func asyncWrite( _ path: String, data: Data?, completion: @escaping (()->Void) ) {
+//        asyncWrite(URL(fileURLWithPath: path), data: data, completion: completion)
+//    }
     
     // MARK: - Creating
     

@@ -8,6 +8,7 @@
 
 import Foundation
 
+let fileWriter = try? FileWriter(additionalOutputDirectory: "Plant")
 
 /**
  This is a sample function based on my origiinal code from 1990!  Just a very basic Plant drawing implementation.
@@ -45,23 +46,26 @@ func drawPlant() {
 
 //    plant.branchAngle = 25.7
 //    plant.rules["0"] = "1[10]1[10]10" // ? Plant
-    
+
     // Test out the rasterization of the Plant class.
     if let plantImage = plant.iterativeGrowth(6, offset: 50) {
-        _  = plantImage.export( name: "plant_iterative" )
+        if let pngData = plantImage.data() {
+            fileWriter?.export(type: .png, name: "plant_iterative", data: pngData)
+        }
     }
 
     if let plantImage = plant.drawPlant(6) {
-        _  = plantImage.export( name: "plant_iteration_6" )
+        if let pngData = plantImage.data() {
+            fileWriter?.export(type: .png, name: "plant_iteration_6", data: pngData)
+        }
     }
 
     // Now test out rendering the image into a PDF.
-    let renderer = ImageRenderer()
     if let pdfData = plant.iterativeGrowthPdf(6, offset: 50) {
-        _  = renderer.export( type: .pdf, name: "plant_iterative", data: pdfData )
+        fileWriter?.export( type: .pdf, name: "plant_iterative", data: pdfData )
     }
     if let pdfData = plant.drawPlantPdf(6) {
-        _  = renderer.export(type: .pdf, name: "plant_iteration_6", data: pdfData)
+        fileWriter?.export(type: .pdf, name: "plant_iteration_6", data: pdfData)
     }
 }
 
@@ -89,8 +93,8 @@ func drawIterativeRules( _ rules: Rules, range: Range<Int>, filename: String? ) 
         
     }
     
-    if let image = image, let filename = filename {
-        _  = image.export( name: filename )
+    if let image = image, let filename = filename, let pngData = image.data(), let fileWriter = fileWriter  {
+        fileWriter.export(fileType: "png", name: filename, data: pngData)
     }
     
     return image
@@ -122,10 +126,10 @@ func drawIteration( _ rules: Rules, iteration: Int, filename: String? ) -> Image
     //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
     image = turtle.drawCropped(iteration) //draw(iteration)
     
-    if let image = image, let filename = filename {
-        _  = image.export( name: filename )
+    if let image = image, let filename = filename, let pngData = image.data(), let fileWriter = fileWriter  {
+        fileWriter.export(fileType: "png", name: filename, data: pngData)
     }
-    
+
     return image
 }
 
@@ -203,10 +207,10 @@ func drawTurtle( ) {
         turtle.border = 50.0
 //        if let image = turtle.drawIterativeGrowth( iterations ) {
         if let image = turtle.drawIterativeGrowth( iterations, colors: [Turtle.colorAmberMonitor]) {
-            _  = image.export( name: "turtle_iterative_\(ruleName)" )
+            fileWriter?.export(fileType: "png", name: "turtle_iterative_\(ruleName)", data: image.data())
         }
         if let image = turtle.draw(iterations) {
-            _  = image.export( name: "turtle_draw_\(ruleName)" )
+            fileWriter?.export(fileType: "png", name: "turtle_draw_\(ruleName)", data: image.data())
         }
     }
     
@@ -240,10 +244,10 @@ func drawPlantBracketedTurtle() {
         turtle.rules = rule
 //        if let image = turtle.drawIterativeGrowth( iterations) {
         if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
-            _  = image.export( name: "turtle_iterative_plant_\(ruleName)" )
+            fileWriter?.export(fileType: "png", name: "turtle_iterative_plant_\(ruleName)", data: image.data())
         }
         if let image = turtle.draw(iterations) {
-            _  = image.export( name: "turtle_plant_\(ruleName)" )
+            fileWriter?.export(fileType: "png", name: "turtle_plant_\(ruleName)", data: image.data())
         }
     }
 
@@ -268,7 +272,7 @@ func stochasticPlant() {
     }
     
     if let image = images.arrangedHorizontally() { // , backgroundColor: (1.0, 1.0, 1.0, 1.0) ) {
-        _ = image.export( name: "stochastic_plant" )
+        fileWriter?.export(fileType: "png", name: "stochastic_plant", data: image.data())
     }
 
 }
@@ -286,7 +290,7 @@ func modifierRule() {
     
 //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
     if let image = turtle.drawIterativeGrowth( 5, mode: .top ) {
-        _  = image.export( name: "turtle_iterative_modifier" )
+        fileWriter?.export(fileType: "png", name: "turtle_iterative_modifier", data: image.data())
     }
 }
 
@@ -310,7 +314,7 @@ func serpinskiCarpet() {
     
     //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
     if let image = turtle.drawIterativeGrowth( 6, mode: .bottom ) {
-        _  = image.export( name: "turtle_iterative_serpinski_carpet" )
+        fileWriter?.export(fileType: "png", name: "turtle_iterative_serpinski_carpet", data: image.data())
     }
 }
 
