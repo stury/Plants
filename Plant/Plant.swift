@@ -362,10 +362,10 @@ extension Plant {
 // MARK: - PDF Drawing Routines
 extension Plant {
 
-    public func drawPlantPdf(_ iterations: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
+    public func drawPlantPdf(_ iteration: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
         var result : Data?
         
-        let rule = calculateRules(iterations)
+        let rule = calculateRules(iteration)
         
         limits.reset(imageSize)
         
@@ -385,7 +385,7 @@ extension Plant {
                 let y = Double((CGFloat(startLocation.1)-limits.top)+border)
                 startPos = ( x, y )
             
-                result = drawPlantPdf( iterations, imageSize: newImageSize )
+                result = drawPlantPdf( iteration, imageSize: newImageSize )
             }
         }
 
@@ -393,14 +393,14 @@ extension Plant {
     }
     
     // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
-    public func croppedPlantPdf( _ iterations: Int, offset: CGFloat = 0.0 ) -> Data? {
+    public func croppedPlantPdf( _ iteration: Int, offset: CGFloat = 0.0 ) -> Data? {
         var result : Data?
 
-        if let _ = drawPlantPdf(iterations) {
+        if let _ = drawPlantPdf(iteration) {
             //print("limit left: \(limits.left), left: \(limits.right)")
             // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
             let height = limits.bottom-limits.top
-            if let cropImage = drawPlantPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { // Int((height+height/3.0)))) {
+            if let cropImage = drawPlantPdf(iteration, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { 
                 result = cropImage
             }
         }

@@ -251,6 +251,41 @@ class Turtle {
         
         return result
     }
+    
+    public func drawPdf(_ iteration: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
+        var result : Data?
+        
+        let rule = rules.calculateRules(for: iteration)
+        
+        length = rules.calculateLength(for: iteration)
+        limits.reset( imageSize )
+        
+        renderer.backgroundColor = backgroundColor
+        result = renderer.data( mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { [weak self] (context) in
+            self?.draw( context: context, imageSize: CGSize(width: imageSize.0, height: imageSize.1), rule:rule)
+        }
+        
+        // Test to see if the image is within the bounds of the imageSize.  If not,
+        // recalculate the imageSize we  should use, and the starting position, and return that!
+        if !limits.within((imageSize.0, imageSize.1)) {
+            // recalculate the image size, and the start position, then rerun this method...
+            
+            let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
+            if let start = start {
+                self.start = CGPoint(x: start.x-limits.left+border, y:start.y-limits.top+border )
+                result = drawPdf( iteration, imageSize: newImageSize )
+            }
+        }
+
+        #if DEBUG
+        print( "limit: left:\(limits.left), right:\(limits.right), top:\(limits.top), bottom:\(limits.bottom)" )
+        // I could flag that this image isn't big enough, if the values fall outside of the current imageSize!
+        #endif
+        start = nil
+
+        return result
+    }
+
 }
 
 // MARK: -
@@ -353,3 +388,104 @@ extension Turtle {
 
 }
 
+// MARK: - PDF Drawing Routines
+extension Turtle {
+
+    
+    // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
+    public func drawCroppedPdf( _ iterations: Int, offset: CGFloat = 0.0 ) -> Data? {
+        var result : Data?
+
+        if let _ = drawPdf(iterations) {
+            //print("limit left: \(limits.left), left: \(limits.right)")
+            // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
+            let height = limits.bottom-limits.top
+            if let cropImage = drawPdf(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { // Int((height+height/3.0)))) {
+                result = cropImage
+            }
+        }
+
+        return result
+    }
+    
+    /// This method creates cropped iteration versions of the plant.  This means you give an iteration number,
+    /// and then it generates each successive iteration into an Image.  It then adds all the images into an
+    /// image array to pass back to the caller.
+    public func drawIterativePdf(_ iterations: Int, crop: Bool, offset: CGFloat = 0.0 ) -> [Data] {
+        var result : [Data] = [Data]()
+        
+        for i in 0...iterations {
+            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+            var image : Data?
+            
+            if crop {
+                image = drawCroppedPdf(i, offset: offset)
+            }
+            else {
+                image = drawPdf(i)
+            }
+            
+            if let image = image {
+                result.append(image)
+            }
+        }
+        return result
+    }
+
+    // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
+    public func drawIterativeGrowthPdf(_ iterations: Int, offset: CGFloat = 0.0 ) -> Data? {
+        var result : Data? = nil
+        let plants = drawIterativePdf(iterations, crop: true, offset: offset)
+
+        var maxWidth : Int = 0
+        var height   : Int = 0
+        
+        // go through the images to figure out the width/height we will need for our composite image.
+        for plantImage in plants {
+            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+            // NEED to open this as a PDF Docuent to find out it's size...
+            if let provider = CGDataProvider(data: plantImage as CFData),
+                let document = CGPDFDocument(provider),
+                let page = document.page(at:1)
+            {
+                let boxRect = page.getBoxRect(.mediaBox)
+                
+                print( "pdf plant width:\(boxRect.width) height:\(boxRect.height)" )
+                maxWidth += Int(boxRect.width)
+                height = Int(boxRect.height)
+            }
+            //let document = PDFDocument(data: plantImage)
+        }
+
+        // Once we have all of the cropped images, we should be able to calculate the size of the full image, and generate it.
+        let imageSize = ( maxWidth, height )
+        print( "iterative pdf size: \(imageSize)" )
+        
+        let renderer = ImageRenderer(backgroundColor)
+        result = renderer.data(mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { (context) in
+            // now I can iterate through all of the images and generate one image that incorporates them all!
+            var offset : CGFloat = 0.0
+            for image in plants {
+
+                if let provider = CGDataProvider(data: image as CFData),
+                    let document = CGPDFDocument(provider),
+                    let page = document.page(at:1)
+                {
+                    let boxRect = page.getBoxRect(.mediaBox)
+                    // transform the page over the current offset, and then draw the page.
+                    //let rect = CGRect(x: offset, y: 0.0, width: boxRect.width, height: boxRect.height)
+                    //let transform = page.getDrawingTransform(.mediaBox, rect: rect, rotate: 0, preserveAspectRatio: true)
+                    print(" translating by \(offset)")
+                    context.translateBy(x: offset, y: 0.0)
+                    context.drawPDFPage( page )
+                    // reset the translation...
+                    context.translateBy(x: -offset, y: 0.0)
+
+                    offset += boxRect.width
+                }
+            }
+        }
+        
+        return result
+    }
+}

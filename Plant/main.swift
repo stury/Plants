@@ -97,6 +97,20 @@ func drawIterativeRules( _ rules: Rules, range: Range<Int>, filename: String? ) 
         fileWriter.export(fileType: "png", name: filename, data: pngData)
     }
     
+    // Now do the same thing, but with the PDF routines...
+    var pdfData : Data?
+    
+    if let _ = range.min(), let max = range.max() {
+        pdfData = turtle.drawIterativeGrowthPdf( max )
+    }
+    else {
+        
+    }
+    
+    if let pdfData = pdfData, let filename = filename  {
+        fileWriter?.export(fileType: "pdf", name: filename, data: pdfData)
+    }
+
     return image
 }
 
@@ -126,8 +140,18 @@ func drawIteration( _ rules: Rules, iteration: Int, filename: String? ) -> Image
     //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
     image = turtle.drawCropped(iteration) //draw(iteration)
     
-    if let image = image, let filename = filename, let pngData = image.data(), let fileWriter = fileWriter  {
-        fileWriter.export(fileType: "png", name: filename, data: pngData)
+    if let image = image, let filename = filename  {
+        fileWriter?.export(fileType: "png", name: filename, data: image.data())
+    }
+
+    // Now do the same for the PDF variants...
+    var pdfData : Data?
+    
+    //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
+    pdfData = turtle.drawCroppedPdf(iteration)
+    
+    if let filename = filename  {
+        fileWriter?.export(fileType: "png", name: filename, data: pdfData)
     }
 
     return image
@@ -212,6 +236,15 @@ func drawTurtle( ) {
         if let image = turtle.draw(iterations) {
             fileWriter?.export(fileType: "png", name: "turtle_draw_\(ruleName)", data: image.data())
         }
+
+        // Also write out PDF variants
+        if let image = turtle.drawIterativeGrowthPdf( iterations ) {
+            fileWriter?.export(fileType: "pdf", name: "turtle_iterative_\(ruleName)", data: image)
+        }
+        if let image = turtle.drawPdf(iterations) {
+            fileWriter?.export(fileType: "pdf", name: "turtle_draw_\(ruleName)", data: image)
+        }
+
     }
     
     // Koch Curve Snowflake:  Rules(initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 20.0, initialDirection: 0 )
@@ -249,6 +282,15 @@ func drawPlantBracketedTurtle() {
         if let image = turtle.draw(iterations) {
             fileWriter?.export(fileType: "png", name: "turtle_plant_\(ruleName)", data: image.data())
         }
+        
+        // Output PDF images as well!
+        if let image = turtle.drawIterativeGrowthPdf( iterations ) {
+            fileWriter?.export(fileType: "pdf", name: "turtle_iterative_plant_\(ruleName)", data: image)
+        }
+        if let image = turtle.drawPdf(iterations) {
+            fileWriter?.export(fileType: "pdf", name: "turtle_plant_\(ruleName)", data: image)
+        }
+
     }
 
 }
