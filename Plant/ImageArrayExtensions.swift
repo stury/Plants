@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 enum ImageHorizontalMode {
     case bottom;
@@ -14,10 +15,12 @@ enum ImageHorizontalMode {
     case top;
 }
 
-/// Extension to an Array of Imaghe objects so I can operate on the array of items more simply.
+// MARK: - Image Array Extension
+
+/// Extension to an Array of Image objects so I can operate on the array of items more simply.
 extension Array where Element:Image {
     
-    /// This method will take all of the images in the array and try to create a new image with th econtents of all of them aligned horizonatlly one right after the other.  If successful, and Image will be returned.
+    /// This method will take all of the images in the array and try to create a new image with the contents of all of them aligned horizonatlly one right after the other.  If successful, an Image will be returned.
     func arrangedHorizontally( backgroundColor: (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0), mode: ImageHorizontalMode = .bottom ) -> Image? {
         var result : Image? = nil
         
@@ -34,9 +37,8 @@ extension Array where Element:Image {
         
         // Once we have all of the cropped images, we should be able to calculate the size of the full image, and generate it.
         let imageSize = ( maxWidth, height )
-        if let context = Image.context(size: imageSize, color: backgroundColor) {
-            
-            //print( imageSize )
+        let renderer = ImageRenderer(backgroundColor)
+        result = renderer.raster(size: CGSize(width: imageSize.0, height: imageSize.1), drawing: { (context) in
             // now I can iterate through all of the images and generate one image that incorporates them all!
             var offset : CGFloat = 0.0
             for image in self {
@@ -56,9 +58,77 @@ extension Array where Element:Image {
                     offset += image.size.width
                 }
             }
-            
-            if let cgImage = context.makeImage() {
-                result = Image(cgImage: cgImage)
+        })
+                    
+        return result
+    }
+}
+
+// MARK: - PDF Data Array Extension
+
+/// Extension to an Array of PDF Data objects, so I can operate on the array of items more simply.
+extension Array where Element==Data {
+    
+    /// This method will take all of the pdf Data in the array and try to create a new image with the contents of all of them aligned horizonatlly one right after the other.  If successful, a pdf data blob will be returned.
+    func arrangedHorizontally( backgroundColor: (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0), mode: ImageHorizontalMode = .bottom ) -> Data? {
+        var result : Data? = nil
+        
+        // Append all of the images together!
+        var maxWidth : Int = 0
+        var height : Int = 0
+                
+        // go through the images to figure out the width/height we will need for our composite image.
+        for plantImage in self {
+            //print( "Plant for iteration \(i): \(plant.calculateRules(i))" )
+            // NEED to open this as a PDF Docuent to find out it's size...
+            if let provider = CGDataProvider(data: plantImage as CFData),
+                let document = CGPDFDocument(provider),
+                let page = document.page(at:1)
+            {
+                let boxRect = page.getBoxRect(.mediaBox)
+                
+                print( "pdf plant width:\(boxRect.width) height:\(boxRect.height)" )
+                maxWidth += Int(boxRect.width)
+                height = Swift.max(height, Int(boxRect.height))
+            }
+        }
+
+        // Once we have all of the cropped images, we should be able to calculate the size of the full image, and generate it.
+        let imageSize = ( maxWidth, height )
+        print( "iterative pdf size: \(imageSize)" )
+        
+        let renderer = ImageRenderer(backgroundColor)
+        result = renderer.data(mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { (context) in
+            // now I can iterate through all of the images and generate one image that incorporates them all!
+            var offset : CGFloat = 0.0
+            for image in self {
+
+                if let provider = CGDataProvider(data: image as CFData),
+                    let document = CGPDFDocument(provider),
+                    let page = document.page(at:1)
+                {
+                    let imageRect = page.getBoxRect(.mediaBox)
+                    // transform the page over the current offset, and then draw the page.
+
+                    // Calculate where we need to draw!
+                    let rect : CGRect
+                    switch ( mode ) {
+                    case .bottom:
+                        rect = CGRect(x: offset, y: 0.0, width: imageRect.size.width, height: imageRect.size.height)
+                    case .center:
+                        rect = CGRect(x: offset, y: (CGFloat(height) - imageRect.size.height)/2.0, width: imageRect.size.width, height: imageRect.size.height)
+                    case .top:
+                        rect = CGRect(x: offset, y: (CGFloat(height) - imageRect.size.height), width: imageRect.size.width, height: imageRect.size.height)
+                    }
+
+                    print(" translating by \(offset)")
+                    context.translateBy(x: rect.origin.x, y: rect.origin.y)
+                    context.drawPDFPage( page )
+                    // reset the translation...
+                    context.translateBy(x: -rect.origin.x, y: -rect.origin.y)
+
+                    offset += rect.size.width
+                }
             }
         }
         

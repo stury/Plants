@@ -398,7 +398,6 @@ extension Plant {
 
         if let _ = drawPlantPdf(iteration) {
             //print("limit left: \(limits.left), left: \(limits.right)")
-            // NOTE:  Because of the way we draw the plants, the height is actually the (height + height/3.0)
             let height = limits.bottom-limits.top
             if let cropImage = drawPlantPdf(iteration, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { 
                 result = cropImage

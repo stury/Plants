@@ -100,11 +100,8 @@ func drawIterativeRules( _ rules: Rules, range: Range<Int>, filename: String? ) 
     // Now do the same thing, but with the PDF routines...
     var pdfData : Data?
     
-    if let _ = range.min(), let max = range.max() {
-        pdfData = turtle.drawIterativeGrowthPdf( max )
-    }
-    else {
-        
+    if let _ = range.min(), let _ = range.max() {
+        pdfData = turtle.drawIterativeGrowthPdf(range)
     }
     
     if let pdfData = pdfData, let filename = filename  {
@@ -151,7 +148,7 @@ func drawIteration( _ rules: Rules, iteration: Int, filename: String? ) -> Image
     pdfData = turtle.drawCroppedPdf(iteration)
     
     if let filename = filename  {
-        fileWriter?.export(fileType: "png", name: filename, data: pdfData)
+        fileWriter?.export(fileType: "pdf", name: filename, data: pdfData)
     }
 
     return image
@@ -238,7 +235,7 @@ func drawTurtle( ) {
         }
 
         // Also write out PDF variants
-        if let image = turtle.drawIterativeGrowthPdf( iterations ) {
+        if let image = turtle.drawIterativeGrowthPdf( iterations, colors: [Turtle.colorAmberMonitor] ) {
             fileWriter?.export(fileType: "pdf", name: "turtle_iterative_\(ruleName)", data: image)
         }
         if let image = turtle.drawPdf(iterations) {
@@ -284,7 +281,7 @@ func drawPlantBracketedTurtle() {
         }
         
         // Output PDF images as well!
-        if let image = turtle.drawIterativeGrowthPdf( iterations ) {
+        if let image = turtle.drawIterativeGrowthPdf( iterations, colors:[Turtle.colorAmberMonitor] ) {
             fileWriter?.export(fileType: "pdf", name: "turtle_iterative_plant_\(ruleName)", data: image)
         }
         if let image = turtle.drawPdf(iterations) {
@@ -317,6 +314,18 @@ func stochasticPlant() {
         fileWriter?.export(fileType: "png", name: "stochastic_plant", data: image.data())
     }
 
+    // Let's do the same with PDF
+    var pdfImages = [Data]()
+    
+    for _ in 0...10 {
+        if let image = turtle.drawCroppedPdf(6) {
+            pdfImages.append(image)
+        }
+    }
+    
+    if let image = pdfImages.arrangedHorizontally() { // , backgroundColor: (1.0, 1.0, 1.0, 1.0) ) {
+        fileWriter?.export(fileType: "pdf", name: "stochastic_plant", data: image)
+    }
 }
 
 /**
@@ -333,6 +342,11 @@ func modifierRule() {
 //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
     if let image = turtle.drawIterativeGrowth( 5, mode: .top ) {
         fileWriter?.export(fileType: "png", name: "turtle_iterative_modifier", data: image.data())
+    }
+
+    // Now test out the PDF methods
+    if let image = turtle.drawIterativeGrowthPdf( 5, mode: .top ) {
+        fileWriter?.export(fileType: "pdf", name: "turtle_iterative_modifier", data: image)
     }
 }
 
@@ -358,6 +372,12 @@ func serpinskiCarpet() {
     if let image = turtle.drawIterativeGrowth( 6, mode: .bottom ) {
         fileWriter?.export(fileType: "png", name: "turtle_iterative_serpinski_carpet", data: image.data())
     }
+
+    // Test out the same thing with PDF
+    if let image = turtle.drawIterativeGrowthPdf( 6, mode: .bottom ) {
+        fileWriter?.export(fileType: "pdf", name: "turtle_iterative_serpinski_carpet", data: image)
+    }
+
 }
 
 drawPlant()
