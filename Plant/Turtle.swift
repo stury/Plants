@@ -54,6 +54,7 @@ class Turtle {
     static public let colorAmberMonitor = ( 0.7098, 0.3961, 0.1137 ) // amber
     static public let colorGreenMonitor = (0.2, 0.70, 0.2) // green display
     
+    static public let colorBackgroundTransparent = (CGFloat(1.0), CGFloat(1.0), CGFloat(1.0), CGFloat(0.0))
     static public let colorBackgroundWhite = (CGFloat(1.0), CGFloat(1.0), CGFloat(1.0), CGFloat(1.0))
     static public let colorBackgroundBlack = (CGFloat(0.0), CGFloat(0.0), CGFloat(0.0), CGFloat(1.0))
     

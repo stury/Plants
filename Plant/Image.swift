@@ -238,6 +238,11 @@ public extension Image {
             if let consumer = CGDataConsumer(data: pdfData) {
                 if let context = CGContext(consumer: consumer, mediaBox: &mediaBox, nil) {
                     context.beginPDFPage(nil)
+                    
+                    // Draw the background color...
+                    context.setFillColor(red: color.0, green: color.1, blue: color.2, alpha: color.3)
+                    context.fill(CGRect(x: 0, y: 0, width: size.0, height: size.1))
+                    // Draw the image
                     drawing(context)
                     context.endPDFPage()
                     context.closePDF()

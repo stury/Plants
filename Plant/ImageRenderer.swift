@@ -26,61 +26,7 @@ public class ImageRenderer {
             self.backgroundColor = (1.0, 1.0, 1.0, 1.0)
         }
     }
-    
-//    // MARK: - Writing
-//    public func export(type: ImageRenderEnum, name: String = "maze", data: Data) {
-//        
-//        var documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-//        // See if we want to embed the file somewhere else...
-//        if outputDirectory.count > 0 {
-//            documentsPath.append(contentsOf: "/\(outputDirectory)")
-//            // Should I check to see if the directory exists already?
-//            let fileManager = FileManager.default
-//            var isDirectory : ObjCBool = true
-//            if !fileManager.fileExists(atPath: documentsPath, isDirectory: &isDirectory ) {
-//                do {
-//                    try fileManager.createDirectory(atPath: documentsPath, withIntermediateDirectories: true)
-//                }
-//                catch {
-//                    print( error )
-//                }
-//            }
-//        }
-//        if let documentURL = URL(string: "\(name).\(type.rawValue)", relativeTo: URL(fileURLWithPath: documentsPath)) {
-//            self.write(documentURL, data: data)
-//        }
-//    }
-//
-//    /// Just a helper method to write a data blob out to the disk
-//    public func write( _ url:URL, data: Data? ) {
-//        if let fileData = data {
-//            do {
-//                try fileData.write(to: url)
-//                print( "Wrote file to \(url)" )
-//            }
-//            catch {
-//                print( "ERROR when writing data out to disk.  \(error)" )
-//            }
-//        }
-//    }
-//    /// Just a helper method to write a data blob out to the disk
-//    public func write( _ path:String, data: Data? ) {
-//        write(URL(fileURLWithPath: path), data: data)
-//    }
-//    
-//    public func asyncWrite( _ url: URL, data: Data?, completion: @escaping (()->Void) ) {
-//        DispatchQueue.global().async { [weak self] in
-//            if let strongSelf = self {
-//                strongSelf.write(url, data: data)
-//                completion()
-//            }
-//        }
-//    }
-//    
-//    public func asyncWrite( _ path: String, data: Data?, completion: @escaping (()->Void) ) {
-//        asyncWrite(URL(fileURLWithPath: path), data: data, completion: completion)
-//    }
-    
+        
     // MARK: - Creating
     
     public func raster( size: CGSize, drawing: (CGContext)->Void ) -> Image? {
@@ -150,15 +96,15 @@ public class ImageRenderer {
         return result
     }
 
-    #if os(macOS) || os(iOS)
-    public func pdf( size: CGSize, drawing: (CGContext)->Void ) -> PDFDocument? {
-        var result : PDFDocument? = nil
-        if let data = data( mode: .pdf, size: size, drawing: drawing ) {
-            result = PDFDocument(data: data)
-        }
-        return result
-    }
-    #endif
+//    #if os(macOS) || os(iOS)
+//    public func pdf( size: CGSize, drawing: (CGContext)->Void ) -> PDFDocument? {
+//        var result : PDFDocument? = nil
+//        if let data = data( mode: .pdf, size: size, drawing: drawing ) {
+//            result = PDFDocument(data: data)
+//        }
+//        return result
+//    }
+//    #endif
     
     // MARK: - Utility
     
@@ -222,18 +168,18 @@ public class ImageRenderer {
                 }
                 else {
                     let totalItems = CGImageSourceGetCount( imageSource )
-                    print( "\(totalItems) in the image source...")
+//                    print( "\(totalItems) in the image source...")
                     for index in 0..<totalItems {
                         // Create an image from the first item in the image source.
-                        print("Attempting to create an image at index \(index)" )
+//                        print("Attempting to create an image at index \(index)" )
                         let image = CGImageSourceCreateImageAtIndex(imageSource, index, nil)
                         // Make sure the image exists before continuing
                         if let image = image {
                             result.append( image )
                         }
-                        else {
-                            print("Image not created from image source.")
-                        }
+//                        else {
+//                            print("Image not created from image source.")
+//                        }
                     }
                 }
             }

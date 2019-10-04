@@ -49,18 +49,15 @@ func drawPlant() {
 
     // Test out the rasterization of the Plant class.
     if let plantImage = plant.iterativeGrowth(6, offset: 50) {
-        if let pngData = plantImage.data() {
-            fileWriter?.export(type: .png, name: "plant_iterative", data: pngData)
-        }
+        fileWriter?.export(type: .png, name: "plant_iterative", data: plantImage.data())
     }
 
     if let plantImage = plant.drawPlant(6) {
-        if let pngData = plantImage.data() {
-            fileWriter?.export(type: .png, name: "plant_iteration_6", data: pngData)
-        }
+        fileWriter?.export(type: .png, name: "plant_iteration_6", data: plantImage.data())
     }
 
     // Now test out rendering the image into a PDF.
+    plant.backgroundColor = Turtle.colorBackgroundTransparent
     if let pdfData = plant.iterativeGrowthPdf(6, offset: 50) {
         fileWriter?.export( type: .pdf, name: "plant_iterative", data: pdfData )
     }
@@ -98,6 +95,7 @@ func drawIterativeRules( _ rules: Rules, range: Range<Int>, filename: String? ) 
     }
     
     // Now do the same thing, but with the PDF routines...
+    turtle.backgroundColor = Turtle.colorBackgroundTransparent
     var pdfData : Data?
     
     if let _ = range.min(), let _ = range.max() {
@@ -142,6 +140,7 @@ func drawIteration( _ rules: Rules, iteration: Int, filename: String? ) -> Image
     }
 
     // Now do the same for the PDF variants...
+    turtle.backgroundColor = Turtle.colorBackgroundTransparent
     var pdfData : Data?
     
     //    if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
@@ -224,6 +223,7 @@ func drawTurtle( ) {
     
     let turtle = Turtle()
     for (ruleName, (currentRule, iterations)) in rules {
+        turtle.backgroundColor = Turtle.colorBackgroundBlack
         turtle.rules = currentRule
         turtle.border = 50.0
 //        if let image = turtle.drawIterativeGrowth( iterations ) {
@@ -235,6 +235,7 @@ func drawTurtle( ) {
         }
 
         // Also write out PDF variants
+        turtle.backgroundColor = Turtle.colorBackgroundTransparent
         if let image = turtle.drawIterativeGrowthPdf( iterations, colors: [Turtle.colorAmberMonitor] ) {
             fileWriter?.export(fileType: "pdf", name: "turtle_iterative_\(ruleName)", data: image)
         }
@@ -272,6 +273,7 @@ func drawPlantBracketedTurtle() {
     turtle.border = 50.0
     for (ruleName, (rule, iterations)) in rules {
         turtle.rules = rule
+        turtle.backgroundColor = Turtle.colorBackgroundBlack
 //        if let image = turtle.drawIterativeGrowth( iterations) {
         if let image = turtle.drawIterativeGrowth( iterations, colors:[Turtle.colorAmberMonitor]) {
             fileWriter?.export(fileType: "png", name: "turtle_iterative_plant_\(ruleName)", data: image.data())
@@ -281,6 +283,7 @@ func drawPlantBracketedTurtle() {
         }
         
         // Output PDF images as well!
+        turtle.backgroundColor = Turtle.colorBackgroundTransparent
         if let image = turtle.drawIterativeGrowthPdf( iterations, colors:[Turtle.colorAmberMonitor] ) {
             fileWriter?.export(fileType: "pdf", name: "turtle_iterative_plant_\(ruleName)", data: image)
         }
@@ -315,6 +318,7 @@ func stochasticPlant() {
     }
 
     // Let's do the same with PDF
+    turtle.backgroundColor = Turtle.colorBackgroundTransparent
     var pdfImages = [Data]()
     
     for _ in 0...10 {
@@ -345,6 +349,7 @@ func modifierRule() {
     }
 
     // Now test out the PDF methods
+    turtle.backgroundColor = Turtle.colorBackgroundTransparent
     if let image = turtle.drawIterativeGrowthPdf( 5, mode: .top ) {
         fileWriter?.export(fileType: "pdf", name: "turtle_iterative_modifier", data: image)
     }
@@ -374,6 +379,7 @@ func serpinskiCarpet() {
     }
 
     // Test out the same thing with PDF
+    turtle.backgroundColor = Turtle.colorBackgroundTransparent
     if let image = turtle.drawIterativeGrowthPdf( 6, mode: .bottom ) {
         fileWriter?.export(fileType: "pdf", name: "turtle_iterative_serpinski_carpet", data: image)
     }
