@@ -58,6 +58,13 @@ class Plant {
     
     var rules =  ["0": rule0, "1": rule1]
     
+    convenience init(branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1) {
+        self.init()
+        self.branchAngle = branchAngle
+        self.rules["0"] = rule0
+        self.rules["1"] = rule1
+    }
+    
     /// Calculate the limits of the actual drawing, so we might be able to crop the image at the emd.
     private func updateLimit(_ point: CGPoint ) {
         limits.update(point)
@@ -258,7 +265,7 @@ extension Plant {
             self?.draw(in:context, rule:rule, imageSize:imageSize)
         }
 
-        if limits.within(imageSize) == false {
+        if !limits.within(imageSize) {
             // recalculate the image size, and the start position, then rerun this method...
             if let startLocation = startPos {
                 let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
@@ -281,16 +288,13 @@ extension Plant {
     public func croppedPlant( _ iterations: Int, offset: CGFloat = 0.0 ) -> Image? {
         var result : Image?
 
-        if let plantImage = drawPlant(iterations) {
+        if let _ = drawPlant(iterations) {
             //print("limit left: \(limits.left), left: \(limits.right)")
-            if let cropImage = plantImage.crop(CGRect(x: limits.left-offset/2, y: 0, width: (limits.right - limits.left) + offset, height: plantImage.size.height)) {
+            let height = limits.bottom-limits.top
+            if let cropImage = drawPlant(iterations, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) {
                 result = cropImage
             }
-//            else {
-//                result = plantImage
-//            }
         }
-
         return result
     }
 

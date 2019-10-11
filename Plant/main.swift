@@ -10,59 +10,55 @@ import Foundation
 
 let fileWriter = try? FileWriter(additionalOutputDirectory: "Plant")
 
+func plantCollection() ->[String:Plant] {
+    var result = [String:Plant]()
+            
+    result["Maple_25"] = Plant(branchAngle: 25.0, rule0: "1[0][0]110")
+    result["Maple_45"] = Plant(branchAngle: 45.0, rule0: "1[0][0]110")
+    result["Favorite"] = Plant(branchAngle: 25.0, rule0: "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]")
+    result["SparseLopsided"] = Plant(rule0: "11[1[1[0]]][11[][0]]111[10]")
+    result["Christmas"] = Plant(rule0: "11[[0]][[][0]]10")
+    result["Christmas2"] = Plant(rule0: "11[[0]][[0][0]]10")
+    result["Vase1"] = Plant(rule0: "1[0][0]")
+    result["Vase2"] = Plant(rule0: "1[1[0][0]0][1[0][0]0]")
+    result["Vase3"] = Plant(rule0: "1[1[0][0]][1[0][0]]")
+    result["Vase4"] = Plant(rule0: "1[1[0][0]][1[0][0]]", rule1: "11[0]11")
+    //result["Paisley"] = Plant(rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "1[0]11[0]1")
+    result["Paisley"] = Plant(rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "11")
+    result["Seaweed"] = Plant(rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "11[0[0]]")
+    result["Thyme"] = Plant(rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "1[0]1")
+    
+    return result
+}
+
 /**
  This is a sample function based on my origiinal code from 1990!  Just a very basic Plant drawing implementation.
  */
 func drawPlant() {
-    let plant = Plant()
-    
-    //plant.branchAngle = 25.0
-    //plant.rules["0"] = "1[0][0]110" // Maple leaf
-    
-    plant.branchAngle = 25.0
-    plant.rules["0"] =  "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]" // Lopsided
-    
-    //plant.rules["0"] =  "11[1[1[0]]][11[][0]]111[10]"  // SPARSE LOPSIDED
-    
-    //plant.branchAngle = 25
-    //plant.rules["0"] = "11[[0]][[][0]]10" // Christmas
-    //plant.rules["0"] = "1[0][0]" // ? Plant
-    //plant.rules["0"] = "1[1[1[1[1[1[10]]]]]]0" // Paisley
-    //plant.rules["1"] = "11"
-    
-    //plant.rules["0"] = "1[1[0][0]0][1[0][0]0]" // ? Plant
-    //plant.rules["0"] = "1[1[0][0]][1[0][0]]" // ? Plant
-    
+//    let plant = Plant()
+//
 //    plant.branchAngle = 25.0
-//    plant.rules["0"] = "1[1[0]1[0]][1[0]1[0]]" // ? Plant
+//    plant.rules["0"] =  "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]" // Lopsided
     
-    //let images = plant.iterativePlants(6, crop: true, offset: 50)
-    //for (index, plantImage) in images.enumerated() {
-    //    // print( "Plant for iteration \(index): \(plant.calculateRules(index))" )
-    //    // save the image to the disk!
-    //    _ = plantImage.export(name: "plant\(index)_cropped")
-    //}
+    let plants = plantCollection()
+    for plantDescriptor in plants {
+        // Test out the rasterization of the Plant class.
+        if let plantImage = plantDescriptor.value.iterativeGrowth(6, offset: 50) {
+            fileWriter?.export(type: .png, name: "plant_iterative_\(plantDescriptor.key)", data: plantImage.data())
+        }
 
+        if let plantImage = plantDescriptor.value.drawPlant(6) {
+            fileWriter?.export(type: .png, name: "plant_iteration_6_\(plantDescriptor.key)", data: plantImage.data())
+        }
 
-//    plant.branchAngle = 25.7
-//    plant.rules["0"] = "1[10]1[10]10" // ? Plant
-
-    // Test out the rasterization of the Plant class.
-    if let plantImage = plant.iterativeGrowth(6, offset: 50) {
-        fileWriter?.export(type: .png, name: "plant_iterative", data: plantImage.data())
-    }
-
-    if let plantImage = plant.drawPlant(6) {
-        fileWriter?.export(type: .png, name: "plant_iteration_6", data: plantImage.data())
-    }
-
-    // Now test out rendering the image into a PDF.
-    plant.backgroundColor = Turtle.colorBackgroundTransparent
-    if let pdfData = plant.iterativeGrowthPdf(6, offset: 50) {
-        fileWriter?.export( type: .pdf, name: "plant_iterative", data: pdfData )
-    }
-    if let pdfData = plant.drawPlantPdf(6) {
-        fileWriter?.export(type: .pdf, name: "plant_iteration_6", data: pdfData)
+        // Now test out rendering the image into a PDF.
+        plantDescriptor.value.backgroundColor = Turtle.colorBackgroundTransparent
+        if let pdfData = plantDescriptor.value.iterativeGrowthPdf(6, offset: 50) {
+            fileWriter?.export( type: .pdf, name: "plant_iterative_\(plantDescriptor.key)", data: pdfData )
+        }
+        if let pdfData = plantDescriptor.value.drawPlantPdf(6) {
+            fileWriter?.export(type: .pdf, name: "plant_iteration_6_\(plantDescriptor.key)", data: pdfData)
+        }
     }
 }
 
@@ -387,28 +383,28 @@ func serpinskiCarpet() {
 }
 
 drawPlant()
-drawTurtle()
-drawPlantBracketedTurtle()
-stochasticPlant()
-modifierRule()
-serpinskiCarpet()
-
-// This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
-//n = 3, δ = 60°
-//{XF+F+XF+F+XF+F}
-//X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
-_ = drawIterativeRules(Rules(initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")
-
-// Attempt at twin dragon:
-// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
-_ = drawIterativeRules(Rules(initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<12, filename: "twin-dragon")
-
-// Attempt at terdragon:
-// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
-_ = drawIterativeRules(Rules(initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "terdragon")
-
-// Attempt at Sierpinski Gadget:
-// http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
-_ = drawIterativeRules(Rules(initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket")
-_ = drawIterativeRules(Rules(initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket_nodeRewriting")
-
+//drawTurtle()
+//drawPlantBracketedTurtle()
+//stochasticPlant()
+//modifierRule()
+//serpinskiCarpet()
+//
+//// This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
+////n = 3, δ = 60°
+////{XF+F+XF+F+XF+F}
+////X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
+//_ = drawIterativeRules(Rules(initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")
+//
+//// Attempt at twin dragon:
+//// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
+//_ = drawIterativeRules(Rules(initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<12, filename: "twin-dragon")
+//
+//// Attempt at terdragon:
+//// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
+//_ = drawIterativeRules(Rules(initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "terdragon")
+//
+//// Attempt at Sierpinski Gadget:
+//// http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+//_ = drawIterativeRules(Rules(initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket")
+//_ = drawIterativeRules(Rules(initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket_nodeRewriting")
+//
