@@ -184,15 +184,9 @@ public extension Image {
         #if os(macOS)
         if let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
             let bitmap = NSBitmapImageRep(cgImage: cgImage)
-            #if swift(>=4.0)
             if let data = bitmap.representation(using: .png, properties: [:]) {
                 result = data
             }
-            #else
-            if let data = bitmap.representation(using: .PNG, properties: [:]) {
-                result = data
-            }
-            #endif
         }
         #elseif os(iOS)
         result = image.pngData()
@@ -201,75 +195,4 @@ public extension Image {
         return result
     }
     
-}
-
-public extension Image {
-    /// Simple method for generating a bitmap Image, filled in with a particular background color, and rendered with a block.
-    static func image( size: (Int, Int), color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Image? {
-        
-        var result : Image?
-        
-        if let context = Image.context( size: size, color:color) {
-            drawing(context)
-            
-            if let cgImage = context.makeImage() {
-                result = Image(cgImage: cgImage)
-            }
-        }
-        
-        return result
-    }
-    
-    // Convienience method
-    static func image( size: CGSize, color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Image? {
-        
-        return Image.image(size: (Int(size.width), Int(size.height)), color: color, drawing: drawing)
-    }
-    
-    /// Simple method for generating a pdf data blob, filled in with a particular background color, and rendered with a block.
-    static func pdf( size: (Int, Int), color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Data? {
-        
-        var result : Data? = nil
-        
-        var mediaBox = CGRect(x: 0, y: 0, width: size.0, height: size.1)
-        
-        // Example showing how to create a CGDataConsumer to grab the data, then allow me to write out that data myself.
-        if let pdfData = CFDataCreateMutable(nil, 0) {
-            if let consumer = CGDataConsumer(data: pdfData) {
-                if let context = CGContext(consumer: consumer, mediaBox: &mediaBox, nil) {
-                    context.beginPDFPage(nil)
-                    
-                    // Draw the background color...
-                    context.setFillColor(red: color.0, green: color.1, blue: color.2, alpha: color.3)
-                    context.fill(CGRect(x: 0, y: 0, width: size.0, height: size.1))
-                    // Draw the image
-                    drawing(context)
-                    context.endPDFPage()
-                    context.closePDF()
-                    
-                    let size = CFDataGetLength(pdfData)
-                    if let bytePtr = CFDataGetBytePtr(pdfData) {
-                        result = Data(bytes: bytePtr, count: size)
-                        if let result = result {
-                            print( result )
-                        }
-                    }
-                    print("Created PDF using a CFMutableData.  Size is \(size)")
-                }
-                else {
-                    print( "Failed to create a context")
-                }
-            }
-            else {
-                print("Failed to create a consumer")
-            }
-        }
-        
-        return result
-    }
-    
-    // convienience method!
-    static func pdf( size: CGSize, color:(CGFloat, CGFloat, CGFloat, CGFloat), drawing: (CGContext)->Void ) -> Data? {
-        return pdf(size: (Int(size.width), Int(size.height)), color: color, drawing: drawing)
-    }
 }

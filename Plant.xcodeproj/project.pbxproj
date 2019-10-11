@@ -58,6 +58,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D2478AD42348482A00D57A22 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
+				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
+				D28F353021B227B3007CFF9C /* Image.swift */,
+				D2C3E9E42327452F00843FFE /* ImageRenderer.swift */,
+				D2CEC2ED2344FDFA00034179 /* FileWriter.swift */,
+			);
+			path = Graphics;
+			sourceTree = "<group>";
+		};
 		D28F351B21B2264C007CFF9C = {
 			isa = PBXGroup;
 			children = (
@@ -83,11 +95,7 @@
 				D28F353821B4DE52007CFF9C /* Limit.swift */,
 				D28F353A21B4DE84007CFF9C /* Rules.swift */,
 				D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */,
-				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
-				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
-				D28F353021B227B3007CFF9C /* Image.swift */,
-				D2C3E9E42327452F00843FFE /* ImageRenderer.swift */,
-				D2CEC2ED2344FDFA00034179 /* FileWriter.swift */,
+				D2478AD42348482A00D57A22 /* Graphics */,
 			);
 			path = Plant;
 			sourceTree = "<group>";
