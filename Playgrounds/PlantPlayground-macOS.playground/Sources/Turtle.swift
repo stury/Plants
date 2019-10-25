@@ -388,7 +388,7 @@ extension Turtle {
 
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
     public func drawIterativeGrowth(_ iterations: Int, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor], mode: ImageHorizontalMode = .bottom ) -> Image? {        
-        return drawIterativeGrowth(0..<iterations, colors: colors, mode: mode)
+        return drawIterativeGrowth(0..<iterations+1, colors: colors, mode: mode)
     }
 
 }
@@ -509,6 +509,6 @@ extension Turtle {
 
     // This method creates iterations versions of the plant.  Then assemples the images all into one image to return to the caller.
     public func drawIterativeGrowthPdf(_ iterations: Int, colors: [(Double, Double, Double)] = [Turtle.colorAmberMonitor, Turtle.colorGreenMonitor], mode: ImageHorizontalMode = .bottom ) -> Data? {
-        return drawIterativeGrowthPdf(0..<iterations, colors: colors, mode: mode)
+        return drawIterativeGrowthPdf(0..<iterations+1, colors: colors, mode: mode)
     }
 }

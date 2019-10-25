@@ -90,6 +90,8 @@ public class Rules {
               result = result.replacingOccurrences(of: String(character), with: "")
             }
         }
+        // You can print out the result of the rule replacement if you want here.
+        //print( result )
         return result
     }
     

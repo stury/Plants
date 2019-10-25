@@ -56,18 +56,24 @@ let rules : [String:(Rules, Int)] = [
     // Based on complex image
 //    "complex_image":(Rules(initiator: "F", rules: ["F" : "+F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 60 ),5)
     
-    // https://nb.paulbutler.org/l-systems/
     //'F', {'F': 'F[-F][+F]'}, 4, 30
 //    "simple_branching_tree":(Rules(initiator: "F", rules: ["F" : "F[-F][+F]"], angle: 30, length: defaultLength, initialDirection: 90 ),5)
     
-    // https://nb.paulbutler.org/l-systems/
     // 'F', {'F': 'FF[++F][-FF]'}, 5, 22
 //    "asymetric_branching_tree":(Rules(initiator: "F", rules: ["F" : "FF[++F][-FF]"], angle: 22, length: defaultLength, initialDirection: 90 ),5)
     
-    // https://nb.paulbutler.org/l-systems/
     // l_plot('A', {'F': 'FF', 'A': 'F[+AF-[A]--A][---A]'}, 5, 22.5)
-    "branching_tree":(Rules(initiator: "A", rules: ["F": "FF", "A" : "F[+AF-[A]--A][---A]"], angle: 22.5, length: defaultLength, initialDirection: 90 , nodeRewriting: true),5)
+    //"branching_tree":(Rules(initiator: "A", rules: ["F": "FF", "A" : "F[+AF-[A]--A][---A]"], angle: 22.5, length: defaultLength, initialDirection: 90 , nodeRewriting: true),5)
 
+    // http://www.kevs3d.co.uk/dev/lsystems/
+    // All working!  There are a couple plants on this site I did not do.
+    "joined_crosses_curve":(Rules(initiator: "XYXYXYX+XYXYXYX+XYXYXYX+XYXYXYX", rules: ["F": "", "X" : "FX+FX+FXFY-FY-", "Y":"+FX+FXFY-FY-FY"], angle: 90, length: defaultLength, initialDirection: 90 , nodeRewriting: true),3)
+    //"lace":(Rules(initiator: "W", rules: ["W": "+++X--F--ZFX+", "X" : "---W++F++YFW-", "Y":"+ZFX--F--Z+++", "Z":"-YFW++F++Y---"], angle: 30, length: defaultLength, initialDirection: 90 , nodeRewriting: false),6)
+    // Also try the penrose tiling when you turn on node rewriting, it's interesting what comes out.
+    //"penrose_tiling":(Rules(initiator: "[F]++[F]++[F]++[F]++[F]", rules: ["F": "+GI--HI[---GI--FI]+", "G" : "-FI++GI[+++GI++HI]-", "H":"--GI++++FI[+HI++++GI]--GI", "I":""], angle: 36, length: defaultLength, initialDirection: 0 , nodeRewriting: false),6)
+    //"sierpinski_median_curve":(Rules(initiator: "L--F--L--F", rules: ["L": "+R-F-R+", "R" : "-L+F+L-"], angle: 45, length: defaultLength, initialDirection: 0 , nodeRewriting: false),8)
+    //"space_filling_curve":(Rules(initiator: "X", rules: ["X": "-YF+XFX+FY-", "Y" : "+XF-YFY-FX+"], angle: 90, length: defaultLength, initialDirection: 0 , nodeRewriting: true),6)
+    
     
     
 ]
