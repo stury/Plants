@@ -10,15 +10,17 @@
 
 import Foundation
 
-enum TurtleDrawingMode {
+public enum TurtleDrawingMode {
     /// Draw each segent as if it were the only piece to draw.
     case discrete
     /// Draw each piece as a part of a larger path.
     case path
 }
 
+// MARK: -
+
 /// A structure to keep track of the position and heading of the turtle.
-struct TurtleState {
+public struct TurtleState {
     /// Position specified as (x, y) of the current turtle cursor
     let position: (Double, Double)
     /// Angle of direction for the turtle (specified in degrees, not radians)
@@ -49,7 +51,7 @@ struct TurtleState {
 // MARK: -
 /// A simple implementation of a Turtle graphics context.  You give it a series of Rules to follow,
 /// and an iteration to execute, and it will draw the result.
-class Turtle {
+public class Turtle {
     
     static public let colorAmberMonitor = ( 0.7098, 0.3961, 0.1137 ) // amber
     static public let colorGreenMonitor = (0.2, 0.70, 0.2) // green display

@@ -13,23 +13,23 @@
     import UIKit
 #endif
 
-enum PlantItemEnum : Int {
+public enum PlantItemEnum : Int {
     case leaf = 0
     case branch = 1
 }
 
-enum PlantBranchEnum {
+public enum PlantBranchEnum {
     case left
     case right
 }
 
-struct PositionNode {
+public struct PositionNode {
     let position: (Double, Double)
     var direction: Double
     var branch : PlantBranchEnum  // Come back and check this out!
 }
 
-class Plant {
+public class Plant {
     public var branchAngle : Double = 45.0
     
     /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.

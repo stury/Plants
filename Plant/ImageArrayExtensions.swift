@@ -9,7 +9,7 @@
 import Foundation
 import CoreGraphics
 
-enum ImageHorizontalMode {
+public enum ImageHorizontalMode {
     case bottom;
     case center;
     case top;
@@ -18,7 +18,7 @@ enum ImageHorizontalMode {
 // MARK: - Image Array Extension
 
 /// Extension to an Array of Image objects so I can operate on the array of items more simply.
-extension Array where Element:Image {
+public extension Array where Element:Image {
     
     /// This method will take all of the images in the array and try to create a new image with the contents of all of them aligned horizonatlly one right after the other.  If successful, an Image will be returned.
     func arrangedHorizontally( backgroundColor: (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0), mode: ImageHorizontalMode = .bottom ) -> Image? {
@@ -67,7 +67,7 @@ extension Array where Element:Image {
 // MARK: - PDF Data Array Extension
 
 /// Extension to an Array of PDF Data objects, so I can operate on the array of items more simply.
-extension Array where Element==Data {
+public extension Array where Element==Data {
     
     /// This method will take all of the pdf Data in the array and try to create a new image with the contents of all of them aligned horizonatlly one right after the other.  If successful, a pdf data blob will be returned.
     func arrangedHorizontally( backgroundColor: (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0), mode: ImageHorizontalMode = .bottom ) -> Data? {

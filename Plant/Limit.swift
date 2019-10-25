@@ -15,7 +15,7 @@ import UIKit
 #endif
 
 /// This class is used to keep track of limit extremes of where drawing has occurred in the image.
-class Limit {
+public class Limit {
     
     public var left : CGFloat = 0.0
     public var right: CGFloat = 0.0
