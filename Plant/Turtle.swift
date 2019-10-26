@@ -134,7 +134,10 @@ public class Turtle {
 
         // In order to support 3D drawing of these, I'll have to implement the following:
         // & ^ \ / |
-            
+        case "|":
+            // Reverse direction (ie: turn by 180 degrees)
+            result = TurtleState(position: (state.position.0, state.position.1), heading: state.modifiedHeading(180), drawingMode: state.drawingMode )
+
         // Plants need branching, so that's what these rules are for:  Keeping track of the branches. (Push TurtleState onto and off of a stack.)
         case "[":
             // Push the state onto a stack.
