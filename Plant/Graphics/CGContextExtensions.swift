@@ -11,7 +11,12 @@ import CoreGraphics
 
 public extension CGContext {
     
-    /// Simple method for drawing a Polygon using abn array of (x, y) points.
+    /**
+     Simple method for drawing a Polygon using abn array of (x, y) points.
+     
+     - parameter points: array of (x,y) coordinates (Int) to draw between
+     - parameter using: drawing mode to use for the Polygon.  Default is .fillStroke.
+     */
     func drawPolygon( points: [(Int, Int)], using: CGPathDrawingMode = .fillStroke ) {
         
         if points.count > 0 {
@@ -29,7 +34,12 @@ public extension CGContext {
         }
     }
    
-    /// Simple method for drawing a Polygon using abn array of (x, y) points.
+    /**
+     Simple method for drawing a Polygon using abn array of (x, y) points.
+     
+     - parameter points: array of (x,y) coordinates (CGFloats) to draw between
+     - parameter using: drawing mode to use for the Polygon.  Default is .fillStroke.
+     */
     func drawPolygon( points: [(CGFloat, CGFloat)], using: CGPathDrawingMode = .fillStroke ) {
         
         if points.count > 0 {

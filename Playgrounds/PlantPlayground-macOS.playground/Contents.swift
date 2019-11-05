@@ -6,10 +6,10 @@ let defaultLength = 20.0
 let fileWriter = try? FileWriter("Plant")
 /**
  Simple function for drawing the contents of a rule at a particular interation level, and return the resulting Images.
- -param ruleName The name of the Rule you;re passing in.
- -param currentRules The Rule set to draw
- -param iterations The max iteration to draw for this set.
- -return An array of Images.
+ - parameter ruleName: The name of the Rule you;re passing in.
+ - parameter currentRules: The Rule set to draw
+ - parameter iterations: The max iteration to draw for this set.
+ - returns: An array of Images.
  */
 func draw( ruleName:String, currentRule: Rules, iterations: Int) -> [Image] {
     var result = [Image]()
@@ -239,6 +239,8 @@ let rules : [String:(Rules, Int)] = [
 //    F -> F+F-F-F+F
 //    angle = 90
 //    "variation_quadratic_snowflake":(Rules(initiator: "FF+FF+FF+FF", rules: ["F":"F+F-F-F+F"], angle: 90, length: defaultLength, initialDirection: 90 , nodeRewriting: true),4)
+    
+//    "koch_curve_snowflake_hex":(Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration)
 ]
 
 var images = [Image]()

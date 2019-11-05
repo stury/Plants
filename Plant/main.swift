@@ -181,6 +181,7 @@ func drawTurtle( ) {
         "triangle_curve": (Rules(initiator: "F-F-F", rules: ["F" : "F+F-FF"], angle: 120, length: defaultLength, initialDirection: 90 ),defaultIteration),
         "koch_curve_flat_snowflake": (Rules(initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
         "koch_curve_snowflake":(Rules(initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
+        "koch_curve_snowflake_hex":(Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),
         "koch_curve_anti-snowflake":(Rules(initiator: "F++F++F", rules: ["F" : "F+F--F+F"], angle: 60, length: 5.0, initialDirection: 0), 5),
         "scott_destructive_snowflake":(Rules(initiator: "F+F+F+F+F+F", rules: ["F" : "-F++FF-F"], angle: 60, length: defaultLength, initialDirection: 90 ),defaultIteration),
         "scott_destructive_tri":(Rules(initiator: "+F--F--F", rules: ["F" : "+F--FF+F"], angle: 60, length: defaultLength, initialDirection: 0 ),defaultIteration),

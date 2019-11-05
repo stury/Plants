@@ -1,23 +1,40 @@
 import CoreGraphics
 import ImageIO
+
 #if os(macOS)
 import Cocoa
 import CoreServices
-#else
+#else // iOS, watchOS, tvOS
 import UIKit
 import MobileCoreServices
 #endif
+
 #if os(macOS) || os(iOS)
 import Quartz
 #endif
 
+/// Enumeration to specify the different Image types we support.
 public enum ImageRenderEnum : String {
-    case png, pdf, jpg // jpeg2000, etc.
+    
+    /// PNG raster image
+    case png
+    /// PDF vector image
+    case pdf
+    /// JPG compressed bitmap image
+    case jpg // jpeg2000, etc.
 }
 
+/**
+ Class for creating images.  It allows a simple abstraction for dealing with the details of creating a Bitmap vs Vector type image.
+ */
 public class ImageRenderer {
+    /// instance variable to specify the color you want drawn in the background when creating the new image.
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat)
     
+    /**
+            Public initializer for creating a new ImageRenderer object.  If you want you can specify the default background color in this initializer.
+     - parameter backgroundColor: An optional background color you can specify the color in the image when you create it.
+     */
     public init(_ backgroundColor:(CGFloat, CGFloat, CGFloat, CGFloat)? = nil ) {
         if let backgroundColor = backgroundColor {
             self.backgroundColor = backgroundColor
@@ -27,8 +44,14 @@ public class ImageRenderer {
         }
     }
         
-    // MARK: - Creating
+    // MARK: - Creating Images
     
+    /**
+     Public method for creating a bitmap rasterized image.
+     - parameter size: CGSize specifying the width/height of the image you want to create.
+     - parameter drawing: A simple closure you specify to draw the image inside a CGContext.
+     - returns: Optional Image object.  If successful, you will have an Image you can use.
+     */
     public func raster( size: CGSize, drawing: (CGContext)->Void ) -> Image? {
         var result : Image? = nil
         
@@ -37,7 +60,14 @@ public class ImageRenderer {
         return result
     }
     
-    // Allows you to load in any CoreImage known file, and create an Image out of it.
+    //
+    /**
+        This method is a simple method for allowing you to load in any CoreImage known file, and create an Image object out of it.
+        Depending upon the image file type, once Data object might contain multiple Images that need to be created.
+        As an example, if you pass in a PDF image  as the Data object, we will return an array of Image objects.  One for each page of the PDF.
+     - parameter data: The Data object to use for converting the image to a rasterized image.
+     - returns: An array of Image opbjects.
+     */
     public func raster( _ data: Data ) -> [Image] {
         var result = [Image]()
         
@@ -50,7 +80,12 @@ public class ImageRenderer {
         return result
     }
     
-    // Allows you to load in any CoreImage known file, and create an Image out of it.
+    /**
+     Simple public method for specifying a URL to load into memory as a rasterized bitmap object.
+     This method should allow you to load in any CoreImage known file, and create an Image out of it.
+     - parameter url: URL of where the image is located.  Note: This should be a file URL!
+     - returns: Array of Image objects.
+     */
     public func raster( _ url: URL ) -> [Image] {
         var result = [Image]()
         if let data = try? Data(contentsOf: url) {
@@ -62,10 +97,24 @@ public class ImageRenderer {
         return result
     }
     
+    /**
+     Simple public method for specifying a URL to load into memory as a rasterized bitmap object.
+     This method should allow you to load in any CoreImage known file, and create an Image out of it.
+     - parameter path: String with the path of the file to open, and render.
+     - returns: Array of Image objects.
+     */
     public func raster( _ path: String ) -> [Image] {
         return raster( URL(fileURLWithPath: path) )
     }
     
+    /**
+     Simple public method for creating a Data object given a size and a closure for drawing your image.  You can use this to draw an image
+     into a pdf context, and get a PDF data returned from this call.
+     - parameter mode: An ImageRenderEnum value for the type of image data you want to get back from this call.
+     - parameter size: A CGSize value specifying the area that you want to draw into.
+     - parameter drawing: A closure where you will be given the constructed CGContext that you can draw into.
+     - returns: An optional Data object.  If we could create the requested Data, you'll get a Data object, if not, you will not have an object you can work with.
+     */
     public func data( mode: ImageRenderEnum, size: CGSize, drawing: (CGContext)->Void ) -> Data? {
         var result : Data? = nil
         
@@ -98,7 +147,12 @@ public class ImageRenderer {
 
     // MARK: - Helper methods
     
-    /// Simple method for generating a bitmap Image, filled in with a particular background color, and rendered with a block.
+    /**
+    Simple generic method for generating a bitmap Image, filled in with a particular background color, and rendered with the closure provided.
+     - parameter size: A tuple (Int, Int) of the width, height in pixels you want the image render to be.
+     - parameter drawing: A closure provided by the caller for drawing inside of the CGContext we will create.
+     - returns: An optional Image object.  If we could create the bitmap image, you'll get an Image back.
+     */
     private func image( size: (Int, Int), drawing: (CGContext)->Void ) -> Image? {
         
         var result : Image?
@@ -114,12 +168,22 @@ public class ImageRenderer {
         return result
     }
     
-    // Convienience method
+    /**
+    Simple convienience method for generating a bitmap Image, filled in with a particular background color, and rendered with the closure provided.
+     - parameter size: A CGSize object specifying the width and height in pixels you want the image render to be.
+     - parameter drawing: A closure provided by the caller for drawing inside of the CGContext we will create.
+     - returns: An optional Image object.  If we could create the bitmap image, you'll get an Image back.
+     */
     private func image( size: CGSize, drawing: (CGContext)->Void ) -> Image? {
         return image(size: (Int(size.width), Int(size.height)), drawing: drawing)
     }
     
-    /// Simple method for generating a pdf data blob, filled in with a particular background color, and rendered with a block.
+    /**
+    Simple method for generating a pdf data blob, filled in with a particular background color, and rendered with the closure provided.
+     - parameter size: A tuple (Int, Int) specifying the width and height you want the image to be.
+     - parameter drawing: A closure provided by the caller for drawing inside of the CGContext we will create.
+     - returns: An optional Data object.  If we could create the pdf, you'll get a Data object back.
+     */
     private func pdf( size: (Int, Int), drawing: (CGContext)->Void ) -> Data? {
         
         var result : Data? = nil
@@ -161,11 +225,17 @@ public class ImageRenderer {
         return result
     }
     
-    // convienience method!
+    /**
+    Simple convienience method for generating a pdf data blob, filled in with a particular background color, and rendered with the closure provided.
+     - parameter size: A CGSize object specifying the width and height you want the pdf bounds to be.
+     - parameter drawing: A closure provided by the caller for drawing inside of the CGContext we will create.
+     - returns: An optional Data object.  If we could create the pdf, you'll get a Data object back.
+     */
     private func pdf( size: CGSize, drawing: (CGContext)->Void ) -> Data? {
         return pdf(size: (Int(size.width), Int(size.height)), drawing: drawing)
     }
 
+// NOTE:  This commented out method is an older function I'd used at an earlier time.
 //    #if os(macOS) || os(iOS)
 //    public func pdf( size: CGSize, drawing: (CGContext)->Void ) -> PDFDocument? {
 //        var result : PDFDocument? = nil
@@ -176,10 +246,15 @@ public class ImageRenderer {
 //    }
 //    #endif
     
-    // MARK: - Utility
+    // MARK: - Internal Private Utility Methods
     
     #if os(macOS)
-    /// macOS only private function to pull out the bitmap data in a particular format.
+    /**
+    macOS only private function to pull out the bitmap data in a particular format.
+     - parameter image: An Image object to get the data in a particular file format.
+     - parameter storageType: An NSBitmapImageRep.FileType value specifying what type of file data the caller wants.
+     - returns: An optional Data object.  If we could create the requested Data, you'll get a Data object, if not, you will not have an object you can work with.
+     */
     private func macOSImageData(_ image: Image, storageType: NSBitmapImageRep.FileType ) -> Data? {
         var result : Data? = nil
         if let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
@@ -191,6 +266,12 @@ public class ImageRenderer {
     #endif
     
     
+    /**
+    Private method for creating an array of CGImage object from a Data object.  If you have a multi page PDF for example, you'll get
+    a CGImage for each page in the PDF data.
+     - parameter data: The Data to rasterize into a CGImage.
+     - returns: An array of CGImage objects.
+     */
     private func loadCGImageFromData( _ data: Data) -> [CGImage] {
         var result: [CGImage] = [CGImage]()
         
@@ -212,7 +293,7 @@ public class ImageRenderer {
                 print( "imageSource type is \(type)")
                 // If it's a PDF, we need to load in the file differently.
                 if type == kUTTypePDF as String {
-                    // Need to do something different here...
+                    // Need to do something different for PDF data...
                     if let dataProvider = CGDataProvider(data: data as CFData) {
                         if let pdfReference = CGPDFDocument(dataProvider) {
                             let numberOfPages = pdfReference.numberOfPages
