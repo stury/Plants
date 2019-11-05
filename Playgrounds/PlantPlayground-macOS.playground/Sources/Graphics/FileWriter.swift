@@ -15,7 +15,7 @@ public class FileWriter {
     private let directory: FileManager.SearchPathDirectory
     private let domainMask: FileManager.SearchPathDomainMask
     
-    init( directory: FileManager.SearchPathDirectory = .documentDirectory, domainMask: FileManager.SearchPathDomainMask = .userDomainMask, additionalOutputDirectory: String?) throws {
+    public init( directory: FileManager.SearchPathDirectory = .documentDirectory, domainMask: FileManager.SearchPathDomainMask = .userDomainMask, additionalOutputDirectory: String?) throws {
         
         self.directory = directory
         self.domainMask = domainMask
@@ -52,7 +52,7 @@ public class FileWriter {
         }
     }
     
-    convenience public init(_ additionalOutputDirectory: String? = nil) throws {
+    public convenience init(_ additionalOutputDirectory: String? = nil) throws {
         do {
             try self.init(directory: .documentDirectory, domainMask: .userDomainMask, additionalOutputDirectory: additionalOutputDirectory)
         }

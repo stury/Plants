@@ -8,14 +8,14 @@
 
 import Foundation
 
-class FileWriter {
+public class FileWriter {
     let additionalDirectory : String
     private let basicPath : String
     private let computedPath : String
     private let directory: FileManager.SearchPathDirectory
     private let domainMask: FileManager.SearchPathDomainMask
     
-    init( directory: FileManager.SearchPathDirectory = .documentDirectory, domainMask: FileManager.SearchPathDomainMask = .userDomainMask, additionalOutputDirectory: String?) throws {
+    public init( directory: FileManager.SearchPathDirectory = .documentDirectory, domainMask: FileManager.SearchPathDomainMask = .userDomainMask, additionalOutputDirectory: String?) throws {
         
         self.directory = directory
         self.domainMask = domainMask
@@ -52,7 +52,7 @@ class FileWriter {
         }
     }
     
-    convenience init(_ additionalOutputDirectory: String? = nil) throws {
+    public convenience init(_ additionalOutputDirectory: String? = nil) throws {
         do {
             try self.init(directory: .documentDirectory, domainMask: .userDomainMask, additionalOutputDirectory: additionalOutputDirectory)
         }
