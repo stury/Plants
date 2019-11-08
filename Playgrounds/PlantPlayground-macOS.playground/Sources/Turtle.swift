@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public enum TurtleDrawingMode {
     /// Draw each segent as if it were the only piece to draw.

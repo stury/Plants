@@ -4,13 +4,10 @@ import ImageIO
 #if os(macOS)
 import Cocoa
 import CoreServices
+import Quartz
 #else // iOS, watchOS, tvOS
 import UIKit
 import MobileCoreServices
-#endif
-
-#if os(macOS) || os(iOS)
-import Quartz
 #endif
 
 /// Enumeration to specify the different Image types we support.
@@ -207,11 +204,11 @@ public class ImageRenderer {
                     let size = CFDataGetLength(pdfData)
                     if let bytePtr = CFDataGetBytePtr(pdfData) {
                         result = Data(bytes: bytePtr, count: size)
-                        if let result = result {
-                            print( result )
-                        }
+//                        if let result = result {
+//                            print( result )
+//                        }
                     }
-                    print("Created PDF using a CFMutableData.  Size is \(size)")
+                    //print("Created PDF using a CFMutableData.  Size is \(size)")
                 }
                 else {
                     print( "Failed to create a context")
@@ -290,7 +287,7 @@ public class ImageRenderer {
             
             if let type = CGImageSourceGetType(imageSource) as String? {
                 
-                print( "imageSource type is \(type)")
+                //print( "imageSource type is \(type)")
                 // If it's a PDF, we need to load in the file differently.
                 if type == kUTTypePDF as String {
                     // Need to do something different for PDF data...

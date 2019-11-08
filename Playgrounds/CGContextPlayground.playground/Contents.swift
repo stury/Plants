@@ -40,6 +40,9 @@ func drawImage( _ context: CGContext ) {
     print( context.boundingBoxOfPath )
     
     context.drawPath(using: .eoFillStroke)
+    
+//    context.move(to: CGPoint(x: 0, y: 0))
+    
 
 }
 
