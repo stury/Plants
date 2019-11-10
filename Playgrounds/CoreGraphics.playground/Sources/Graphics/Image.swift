@@ -74,6 +74,7 @@ let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipl
  */
 public extension Image {
     
+    ///
     /**
       Simple method for generating a CGContext, filled in with a particular background color.
      
@@ -191,6 +192,43 @@ public extension Image {
         return result
     }
     
+//    /// simple method to export an Image as a PNG to the user's document directory.
+//    func export(name: String = "maze") -> Image? {
+//        
+//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//        if let documentURL = URL(string: "\(name).png", relativeTo: URL(fileURLWithPath: documentsPath)) {
+//            self.output(documentURL)
+//        }
+//        
+//        return self
+//    }
+    
+//    /// A simple method for outputting the image as a PNG image.
+//    func output(_ url: URL) {
+//        let image = self
+//        #if os(macOS)
+//        if let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+//            let bitmap = NSBitmapImageRep(cgImage: cgImage)
+//            #if swift(>=4.0)
+//            if let data = bitmap.representation(using: .png, properties: [:]) {
+//                try? data.write(to: url)
+//                print( url )
+//            }
+//            #else
+//            if let data = bitmap.representation(using: .PNG, properties: [:]) {
+//                try? data.write(to: url)
+//                print( url )
+//            }
+//            #endif
+//        }
+//        //        if let bits = imageRep.representations.first as? NSBitmapImageRep {
+//        //            if let data = bits.representation(using: .png, properties: [:]) {
+//        //                try? data.write(to: URL(fileURLWithPath: "./maze.png"))
+//        //            }
+//        //        }
+//        #endif
+//    }
+
     /**
      Simple method to retrieve the image as a PNG data, that can be written to disk.
      
