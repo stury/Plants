@@ -36,7 +36,7 @@ public class Plant {
     public var limits : Limit = Limit()
     public var border : CGFloat = 40.0
     
-    public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 1.0)
+    public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 0.0)
     
     private let branchColor = ( 0.7098, 0.3961, 0.1137 )
     private let leafColor = ( 0.0, 1.0, 0.0 )
@@ -45,8 +45,10 @@ public class Plant {
     public var context : CGContext?
     var positionStack : [PositionNode] = [PositionNode]()
     
+    public var name: String?
+    
     let seed = "0"
-    static let rule0 = "11[0]1[0]1110"
+    public static let rule0 = "11[0]1[0]1110"
     //static let rule0 = "1[0][0]110" // Maple leaf
     //static let rule0 = "11[[0]][[][0]]10" // Christmas
     //static let rule0 = "1[0][0]" // ? Plant
@@ -54,12 +56,20 @@ public class Plant {
     //static let rule0 = "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]"  // Lopsided
     //static let rule0 = "11[1[1[0]]][11[][0]]111[10]" // Sparse lopsided
     
-    static let rule1 = "11"
+    public static let rule1 = "11"
     
     var rules =  ["0": rule0, "1": rule1]
     
-    convenience init(branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1) {
+    public convenience init(branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1) {
         self.init()
+        self.branchAngle = branchAngle
+        self.rules["0"] = rule0
+        self.rules["1"] = rule1
+    }
+
+    public convenience init(name: String, branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1) {
+        self.init()
+        self.name = name
         self.branchAngle = branchAngle
         self.rules["0"] = rule0
         self.rules["1"] = rule1
@@ -396,15 +406,42 @@ extension Plant {
         return result
     }
     
-    // This method provides a cropped version the image.  This will allow us to automate having multikle images imposed onto the same image so you can see their growth...
+    // This method provides a cropped version the image.  This will allow us to automate having multiple images imposed onto the same image so you can see their growth...
     public func croppedPlantPdf( _ iteration: Int, offset: CGFloat = 0.0 ) -> Data? {
         var result : Data?
 
-        if let _ = drawPlantPdf(iteration) {
+        if let image = drawPlantPdf(iteration) {
             //print("limit left: \(limits.left), left: \(limits.right)")
             let height = limits.bottom-limits.top
-            if let cropImage = drawPlantPdf(iteration, imageSize: (Int((limits.right-limits.left)+offset), Int(height))) { 
-                result = cropImage
+            let width = (limits.right-limits.left)+offset
+//            if let cropImage = drawPlantPdf(iteration, imageSize: (Int(width), Int(height))) {
+//                result = cropImage
+//            }
+            let translation = ( limits.left, limits.bottom )
+            let imageSize = ( width, height )
+            print( "cropped pdf size: \(imageSize)" )
+            
+            let renderer = ImageRenderer(backgroundColor)
+            result = renderer.data(mode: .pdf, size: CGSize(width: imageSize.0, height: imageSize.1)) { (context) in
+                // now I can iterate through all of the images and generate one image that incorporates them all!
+                if let provider = CGDataProvider(data: image as CFData),
+                    let document = CGPDFDocument(provider),
+                    let page = document.page(at:1)
+                {
+                    let imageRect = page.getBoxRect(.mediaBox)
+                    // transform the page over the current offset, and then draw the page.
+
+                    // Calculate where we need to draw!
+//                    let rect : CGRect
+//                    rect = CGRect(x: offset, y: (CGFloat(height) - imageRect.size.height)/2.0, width: imageRect.size.width, height: imageRect.size.height)
+//                    context.translateBy(x: rect.origin.x, y: rect.origin.y)
+
+                    context.translateBy(x: -translation.0, y:-( imageRect.size.height - translation.1))
+                    context.drawPDFPage( page )
+                    // reset the translation...
+                    context.translateBy(x: +translation.0, y: (imageRect.size.height - translation.1))
+//                    context.translateBy(x: -rect.origin.x, y: -rect.origin.y)
+                }
             }
         }
 

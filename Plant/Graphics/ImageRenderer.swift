@@ -193,9 +193,16 @@ public class ImageRenderer {
                 if let context = CGContext(consumer: consumer, mediaBox: &mediaBox, nil) {
                     context.beginPDFPage(nil)
                     
-                    // Draw the background color...
-                    context.setFillColor(red: backgroundColor.0, green: backgroundColor.1, blue: backgroundColor.2, alpha: backgroundColor.3)
-                    context.fill(CGRect(x: 0, y: 0, width: size.0, height: size.1))
+//                    if backgroundColor.3 == 0.0 {
+//                        // If the background color is completely transparent - clear everything from the PDF!
+//                        context.clear(mediaBox)
+//                    }
+//                    else
+//                    {
+                        // Draw the background color...
+                        context.setFillColor(red: backgroundColor.0, green: backgroundColor.1, blue: backgroundColor.2, alpha: backgroundColor.3)
+                        context.fill(CGRect(x: 0, y: 0, width: size.0, height: size.1))
+//                    }
                     // Draw the image
                     drawing(context)
                     context.endPDFPage()

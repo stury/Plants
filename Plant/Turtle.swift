@@ -66,7 +66,7 @@ public class Turtle {
     public var limits : Limit = Limit()
     
     /// The Rules for drawing the image.
-    public var rules : Rules = Rules(initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"])
+    public var rules : Rules = Rules(name: "demo", initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"])
     
     /// Background color + alpha to use for the background of the image.  (Should easilly be able to change to having a transparent background.)
     public var backgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = colorBackgroundBlack
