@@ -38,7 +38,7 @@ public class Plant : CustomStringConvertible {
              if let name = name {
                  result += "\(name) Rule Set\n\n"
              }
-             result += "δ = \(branchAngle)◦\n\n"
+             result += "δ = \(branchAngle)°\n\n"
              result += " w : \(seed)\n"
              var iteration = 1
              for (rule, replacement) in rules {
