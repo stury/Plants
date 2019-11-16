@@ -12,7 +12,7 @@ import PDFKit
 
 class DetailViewController: UIViewController {
     
-    let processingQueue = DispatchQueue(label: "DetailViewProcessing")
+    let processingQueue = DispatchQueue(label: "DetailViewProcessing", qos: .userInitiated, autoreleaseFrequency: .inherit ) // DispatchQueue(label: "DetailViewProcessing")
     
     @IBOutlet weak var detailView: UIView!
     var pdfView : PDFView! = nil
@@ -20,6 +20,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var incrementIteration: UIButton!
     @IBOutlet weak var decrementIteration: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     var detailItem: Any? {
         didSet {
@@ -54,6 +55,8 @@ class DetailViewController: UIViewController {
             }
         }
     }
+    
+    var screenBackgroundColor : (CGFloat, CGFloat, CGFloat, CGFloat) = (1.0, 1.0, 1.0, 0.0)
     
     func createAndSetupPdfView(_ detail: UIView) -> PDFView {
         let pdfView = PDFView(frame: detail.frame)
@@ -98,9 +101,9 @@ class DetailViewController: UIViewController {
     
     func debugPDFView() {
         #if DEBUG
-        if let pdfView = pdfView {
-            print("pdfView = \(pdfView)/npdfView.subviews = \(pdfView.subviews)\n----------")
-        }
+//        if let pdfView = pdfView {
+//            print("pdfView = \(pdfView)/npdfView.subviews = \(pdfView.subviews)\n----------")
+//        }
         #endif
     }
     
@@ -118,6 +121,7 @@ class DetailViewController: UIViewController {
     }
     
     func updatePlant(_ plant: Plant) {
+        plant.backgroundColor = screenBackgroundColor
         if let data = plant.croppedPlantPdf(currentIteration) {
             // set the view Document!
             DispatchQueue.main.async { [weak self] in
@@ -127,7 +131,9 @@ class DetailViewController: UIViewController {
     }
     
     func updateRules(_ rules:Rules ) {
+        
         let turtle = Turtle()
+        turtle.backgroundColor = screenBackgroundColor
         turtle.rules = rules
         if let data = turtle.drawCroppedPdf(currentIteration) {
             DispatchQueue.main.async { [weak self] in
@@ -170,9 +176,23 @@ class DetailViewController: UIViewController {
         }
     }
 
+    func updateScreenBackgroundColor() {
+        if #available(iOS 13, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                screenBackgroundColor = (0.1098, 0.1098, 0.1176, 1.0)
+            }
+            else {
+                screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
+            }
+        } else {
+            screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        updateScreenBackgroundColor()
         configureView()
         
     }
@@ -185,6 +205,11 @@ class DetailViewController: UIViewController {
     @IBAction func incrementAction(_ sender: UIButton) {
         currentIteration += 1
         configureView()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateScreenBackgroundColor()
+        updatePDF()
     }
 }
 

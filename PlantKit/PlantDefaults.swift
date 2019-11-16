@@ -283,5 +283,43 @@ public func defaultFractalCollection() ->[Rules] {
         //    angle = 90
     result.append(Rules(name: "variation_quadratic_snowflake", initiator: "FF+FF+FF+FF", rules: ["F":"F+F-F-F+F"], angle: 90, length: defaultLength, initialDirection: 90 , nodeRewriting: true))
 
+    // Bracketted Turtle:
+    result.append(Rules(name: "a", initiator: "F", rules: ["F" : "F[+F]F[-F]F"], angle:25.7))
+    result.append(Rules(name: "b", initiator: "F", rules: ["F" : "F[+F]F[-F][F]"], angle:20))
+    result.append(Rules(name: "c", initiator: "F", rules: ["F" : "FF-[-F+F+F]+[+F-F-F]"], angle:22.5))
+    result.append(Rules(name: "d", initiator: "X", rules: ["X" : "F[+X]F[-X]+X", "F" : "FF"], angle:20, nodeRewriting: true))
+    result.append(Rules(name: "e", initiator: "X", rules: ["X" : "F[+X][-X]FX", "F" : "FF"], angle:25.7, nodeRewriting: true))
+    result.append(Rules(name: "f", initiator: "X", rules: ["X" : "F-[[X]+X]+F[+FX]-X", "F" : "FF"], angle:22.5, nodeRewriting: true))
+    result.append(Rules(name: "multirule", initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true))
+    
+    result.append(Rules(name: "stochasticPlant", initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true))
+    result.append(Rules(name: "modifier_rule", initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 1200, initialDirection: 0, modifier: 3 ))
+    // Serpinsk Carpet, corrected.
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/carpet/carpet.htm
+    result.append(Rules(name:"serpinsk carpet", initiator: "F", rules: ["F" : "F+F−F−F−f+F+F+F−F", "f":"fff"], angle: 90,  length: 2400, initialDirection: 45, modifier: 3))
+    
+    // This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
+    //n = 3, δ = 60°
+    //{XF+F+XF+F+XF+F}
+    //X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
+    result.append(Rules(name: "sample", initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2))
+    
+    // Attempt at twin dragon:
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
+    result.append(Rules(name: "twin_dragon", initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
+
+    // Attempt at terdragon:
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
+    result.append(Rules(name: "terdragon", initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+
+    // Attempt at Sierpinski Gadget:
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+    result.append(Rules(name: "Sierpinski Gadget", initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "Sierpinski_Gasket_nodeRewriting", initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
+
+    result.append(Rules(name:"koch_curve_variant_1_stars", initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 30 ))
+    
+    result.append(Rules(name: "koch_curve_variant_1_ornate", initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 45, length: defaultLength, initialDirection: 67 ))
+
     return result
 }

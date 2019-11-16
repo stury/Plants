@@ -45,6 +45,7 @@ public class Plant {
     public var context : CGContext?
     var positionStack : [PositionNode] = [PositionNode]()
     
+    public var lengthModifier : Double = 1.0
     public var name: String?
     
     let seed = "0"
@@ -111,15 +112,15 @@ public class Plant {
     
     func drawLeaf(_ position: (CGFloat, CGFloat), direction: Double) {
         let directionInRadiens = radiens(direction)
-        let adjustedPosition = ( position.0 + CGFloat( ceil(sin(directionInRadiens)*4.0) ),
-                                 position.1 - CGFloat(ceil(cos(directionInRadiens)*4.0)) )
+        let adjustedPosition = ( position.0 + CGFloat( ceil(sin(directionInRadiens)*4.0*lengthModifier) ),
+                                 position.1 - CGFloat(ceil(cos(directionInRadiens)*4.0*lengthModifier)) )
         //print( "drawLeaf() directionsInRadiens=\(directionInRadiens), position=\(position), adjustedPosition=\(adjustedPosition)")
         
         limits.update(adjustedPosition)
         
         if let context = context {
             context.setStrokeColor(CGColor.from(color(for: .leaf)))
-            context.setLineWidth(2.0)
+            context.setLineWidth(CGFloat(2.0*lengthModifier))
             context.drawLineSegment(points: [position, adjustedPosition])
         }
     }
@@ -130,11 +131,12 @@ public class Plant {
     
     func drawBranch(_ position: (CGFloat, CGFloat), direction: Double, length: Double) -> (CGFloat, CGFloat) {
         let directionInRadiens = radiens(direction)
-        let adjustedPosition = ( position.0 + CGFloat( ceil(sin(directionInRadiens)*length) ),
-                                 position.1 - CGFloat(ceil(cos(directionInRadiens)*length)) )
+        let adjustedPosition = ( position.0 + CGFloat( ceil(sin(directionInRadiens)*length*lengthModifier) ),
+                                 position.1 - CGFloat(ceil(cos(directionInRadiens)*length*lengthModifier)) )
         
         limits.update(adjustedPosition)
         
+        context?.setLineWidth(CGFloat(2.0*lengthModifier))
         context?.setStrokeColor(CGColor.from(color(for: .branch)))
         context?.drawLineSegment(points: [position, adjustedPosition])
         return adjustedPosition

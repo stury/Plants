@@ -575,29 +575,55 @@ func serpinskiCarpet() {
 
 }
 
-drawPlant()
-drawTurtle()
-drawPlantBracketedTurtle()
-stochasticPlant()
-modifierRule()
-serpinskiCarpet()
+//drawPlant()
+//drawTurtle()
+//drawPlantBracketedTurtle()
+//stochasticPlant()
+//modifierRule()
+//serpinskiCarpet()
+//
+//// This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
+////n = 3, δ = 60°
+////{XF+F+XF+F+XF+F}
+////X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
+//_ = drawIterativeRules(Rules(name: "sample", initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")
+//
+//// Attempt at twin dragon:
+//// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
+//_ = drawIterativeRules(Rules(name: "twin_dragon", initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<12, filename: "twin-dragon")
+//
+//// Attempt at terdragon:
+//// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
+//_ = drawIterativeRules(Rules(name: "terdragon", initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "terdragon")
+//
+//// Attempt at Sierpinski Gadget:
+//// http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+//_ = drawIterativeRules(Rules(name: "Sierpinski Gadget", initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket")
+//_ = drawIterativeRules(Rules(name: "Sierpinski_Gasket_nodeRewriting", initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket_nodeRewriting")
 
-// This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
-//n = 3, δ = 60°
-//{XF+F+XF+F+XF+F}
-//X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
-_ = drawIterativeRules(Rules(name: "sample", initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2), range: 0..<6, filename: "sample")
+/* --------------------------------------------------- */
 
-// Attempt at twin dragon:
-// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
-_ = drawIterativeRules(Rules(name: "twin_dragon", initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<12, filename: "twin-dragon")
+func appIconImages(from appIcon: Image, name: String) {
+    let sizes = [180, 167, 152, 120, 87, 80, 76, 60, 58, 40, 29, 20]
+    for size in sizes {
+        if let resized = appIcon.resize(size: (size, size)) {
+            let pngData = resized.data()
+            fileWriter?.write("\(name)\(size).png", data: pngData)
+        }
+    }
+}
 
-// Attempt at terdragon:
-// http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
-_ = drawIterativeRules(Rules(name: "terdragon", initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "terdragon")
-
-// Attempt at Sierpinski Gadget:
-// http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
-_ = drawIterativeRules(Rules(name: "Sierpinski Gadget", initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket")
-_ = drawIterativeRules(Rules(name: "Sierpinski_Gasket_nodeRewriting", initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1), range: 0..<6, filename: "Sierpinski_Gasket_nodeRewriting")
-
+// 20 for smaller cells.  12 for cellsSize  120
+func appIcon(_ plant: Plant) {
+    plant.lengthModifier = 5.0
+    if let baseImage = plant.drawPlant(5) {
+        // Generate the 1024x1024 application icon image
+        if let image1024 = Image.appIconImage(with: baseImage) {
+            let pngData = image1024.data()
+            fileWriter?.write("appIcon_1024.png", data: pngData)
+            
+            appIconImages(from: image1024, name: "appIcon_" )
+        }
+    }
+}
+appIcon( Plant(name: "Favorite", branchAngle: 25.0, rule0: "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]") )
