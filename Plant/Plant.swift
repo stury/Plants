@@ -29,7 +29,27 @@ public struct PositionNode {
     var branch : PlantBranchEnum  // Come back and check this out!
 }
 
-public class Plant {
+public class Plant : CustomStringConvertible {
+
+    public var description: String {
+        get {
+            // Convert the Plant info to a string
+             var result : String = ""
+             if let name = name {
+                 result += "\(name) Rule Set\n\n"
+             }
+             result += "δ = \(branchAngle)◦\n\n"
+             result += " w : \(seed)\n"
+             var iteration = 1
+             for (rule, replacement) in rules {
+                 result += "p\(iteration) : \(rule) -> \(replacement)\n"
+                 iteration += 1
+             }
+             
+             return result
+        }
+    }
+    
     public var branchAngle : Double = 45.0
     
     /// This class instance keeps track of where we're drawing, such that we can use it to calculate the correct image size to create.

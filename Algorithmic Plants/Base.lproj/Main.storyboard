@@ -72,7 +72,13 @@
                         <viewLayoutGuide key="safeArea" id="VUw-jc-0yf"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
+                    <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM">
+                        <barButtonItem key="rightBarButtonItem" title="Info" image="info.circle" catalog="system" id="T5v-4H-l69">
+                            <connections>
+                                <segue destination="CFg-vU-rt6" kind="show" identifier="showInfo" id="9SY-f4-72V"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="ewL-k1-Tab" id="RLW-py-C0S"/>
                         <outlet property="decrementIteration" destination="DPR-NH-1lJ" id="F7j-BC-6lN"/>
@@ -83,6 +89,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="708" y="128.18590704647679"/>
+        </scene>
+        <!--Info-->
+        <scene sceneID="0ve-Id-VLv">
+            <objects>
+                <viewController id="CFg-vU-rt6" customClass="InfoViewController" customModule="Digital_Plants" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VuF-hZ-Gtc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="OgW-3o-rPa">
+                                <rect key="frame" x="16" y="44" width="343" height="603"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="OgW-3o-rPa" firstAttribute="leading" secondItem="EPR-EI-N4g" secondAttribute="leading" constant="16" id="59y-TI-NWG"/>
+                            <constraint firstItem="OgW-3o-rPa" firstAttribute="top" secondItem="EPR-EI-N4g" secondAttribute="top" id="EJg-Ky-T8D"/>
+                            <constraint firstItem="EPR-EI-N4g" firstAttribute="bottom" secondItem="OgW-3o-rPa" secondAttribute="bottom" constant="20" id="evu-Xn-ahi"/>
+                            <constraint firstItem="EPR-EI-N4g" firstAttribute="trailing" secondItem="OgW-3o-rPa" secondAttribute="trailing" constant="16" id="hSX-sC-ifM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="EPR-EI-N4g"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Info" id="qih-v8-hjk">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Edit" id="tBd-Sp-c6T"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="editButton" destination="tBd-Sp-c6T" id="PCm-cx-t6v"/>
+                        <outlet property="ruleTextDescription" destination="OgW-3o-rPa" id="9bs-KV-fHs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q78-aW-3Bs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1620" y="127.28635682158921"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
@@ -157,6 +201,9 @@
             <point key="canvasLocation" x="-45" y="129"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="info.circle" catalog="system" width="64" height="60"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>
     </inferredMetricsTieBreakers>

@@ -9,7 +9,38 @@
 import Foundation
 
 /// Class to setup with rules for building up image instances.  
-public class Rules {
+public class Rules : CustomStringConvertible {
+    
+    public var description: String {
+        get {
+            // Convert the Plant info to a string
+            var result : String = ""
+            result += "\(name) Rule Set\n\n"
+
+            result += "δ = \(angle)°\n\n"
+            result += " w : \(initiator)\n"
+            var iteration = 1
+            for (rule, replacement) in rules {
+                let count = replacement.count
+                if count == 1 {
+                    // Simple case
+                    result += "p\(iteration) : \(rule) -> \(replacement[0])\n"
+                    iteration += 1
+                }
+                else {
+                    // There are multiple possibilities!
+                    let probability = 1.0/Double(count)
+                    for possibility in replacement {
+                        result += "p\(iteration) : \(rule) - \(String(format:"%.3f", probability)) -> \(possibility)\n"
+                        iteration += 1
+                    }
+                }
+            }
+
+            return result
+        }
+    }
+    
     public let name: String
     public let initiator : String
     public let rules : [Character:[String]]
