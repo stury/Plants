@@ -2,5 +2,10 @@
 <Timeline
    version = "3.0">
    <TimelineItems>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/scott/Library/Mobile%20Documents/com~apple~CloudDocs/Development/Plant/Playgrounds/CoreGraphics.playground/Pages/UIGraphicsImageRenderer.xcplaygroundpage#CharacterRangeLen=829&amp;CharacterRangeLoc=1310&amp;EndingColumnNumber=0&amp;EndingLineNumber=62&amp;StartingColumnNumber=9&amp;StartingLineNumber=34&amp;Timestamp=595659477.0308191"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
    </TimelineItems>
 </Timeline>

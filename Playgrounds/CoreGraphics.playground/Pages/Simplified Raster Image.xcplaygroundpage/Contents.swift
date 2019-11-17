@@ -1,9 +1,20 @@
 //: [Previous](@previous)
 
+/*:
+You can abstract away all the details by putting the generic boiler plate code into a class to hide it from your consumer.
+ I created a *ImageRenderer* class, which now makes my code look dead simple.
+ 
+1. Create a ImageRenderer instance.
+2. Ask it to render a specific size image.
+3. In the closure do your normal CGContext drawing.
+ 
+ Done.  Class converts the drawing into a UIImage/NSImage depending on your platform.
+*/
+
 import Foundation
 import CoreGraphics
 
-// Lets draw something simple as a raster image
+// Let's draw something simple as a raster image
 
 let size = (200, 200)
 var image : Image?
@@ -11,18 +22,7 @@ var image : Image?
 let renderer = ImageRenderer()
 image = renderer.raster(size: CGSize(width: size.0, height: size.1), drawing: { (context) in
     
-    // draw a simple shape!
-    // 0,0 is in the lower left
-    context.beginPath()
-    context.setFillColor(CGColor.from((1.0, 0.0, 0.0, 1.0)))
-    context.move(to: CGPoint(x: 0, y: 0))
-    context.addLine(to: CGPoint(x: size.0/2, y: size.1/2))
-    context.addLine(to: CGPoint(x: size.0/2, y: 0))
-    context.addLine(to: CGPoint(x: 0, y: size.1/2))
-    context.addLine(to: CGPoint(x: 0, y: 0))
-    context.closePath()
-    
-    context.drawPath(using: .fillStroke)
+    drawShape(context, size: size)
 })
 
 //: [Next](@next)

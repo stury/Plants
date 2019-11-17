@@ -1,5 +1,9 @@
 //: [Previous](@previous)
 
+/*:
+ This page shows an example of drawing something a bit more colorful, and creating an image out of it.  I can show this same code in Python if there's interest.
+ */
+
 import Foundation
 import CoreGraphics
 
