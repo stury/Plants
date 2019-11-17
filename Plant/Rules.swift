@@ -16,8 +16,12 @@ public class Rules : CustomStringConvertible {
             // Convert the Plant info to a string
             var result : String = ""
             result += "\(name) Rule Set\n\n"
-
-            result += "δ = \(angle)°\n\n"
+            result += "δ = \(angle)°\n"
+            result += "Initial Direction: \(initialDirection)°\n"
+            if nodeRewriting {
+                result += "Node Rewriting: \(nodeRewriting)\n"
+            }
+            result += "\n"
             result += " w : \(initiator)\n"
             var iteration = 1
             for (rule, replacement) in rules {

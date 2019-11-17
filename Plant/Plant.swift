@@ -278,6 +278,7 @@ public class Plant : CustomStringConvertible {
                 print("WARNING: cannot process rule for character: \(character)")
             }
         }
+        context.restoreGState()
     }
 }
 
