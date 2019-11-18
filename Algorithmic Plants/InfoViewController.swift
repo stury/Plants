@@ -15,7 +15,8 @@ class InfoViewController: UIViewController {
     @IBOutlet weak var ruleTextDescription : UITextView!
     
     var rules : Any? = nil
-        
+    var iteration: Int = 0
+    
     // Convert the rule that's been set, into a textual representation that we can display.
     func createDescription() -> String {
         if let plant = rules as? Plant {
@@ -23,7 +24,8 @@ class InfoViewController: UIViewController {
         }
         else if let rules = rules as? Rules {
             // Convert the Rules object into a nice text string.
-            return rules.description
+            let currentExampleRule = rules.calculateRules(for: iteration)
+            return rules.description + "\n\nExample n=\(iteration) rules:\n \(currentExampleRule)"
         }
         return "Unknown item!  \n\nNo description available. \n\n\(String(describing: rules))"
     }

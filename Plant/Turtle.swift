@@ -228,10 +228,16 @@ public class Turtle {
     }
     
     /// Method for drawing the rule set at a particular iteration point.
-    public func draw(_ iteration: Int, imageSize: (Int, Int) = (20, 20) ) -> Image? {
+    public func draw(_ iteration: Int, imageSize: (Int, Int) = (20, 20), calculatedRule: String? = nil ) -> Image? {
         var result : Image?
         
-        let rule = rules.calculateRules(for: iteration)
+        let rule : String
+        if let calculatedRule = calculatedRule {
+            rule = calculatedRule
+        }
+        else {
+            rule = rules.calculateRules(for: iteration)
+        }
         
         length = rules.calculateLength(for: iteration)
         limits.reset( imageSize )
@@ -249,7 +255,7 @@ public class Turtle {
             let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
             if let start = start {
                 self.start = CGPoint(x: start.x-limits.left+border, y:start.y-limits.top+border )
-                result = draw( iteration, imageSize: newImageSize )
+                result = draw( iteration, imageSize: newImageSize, calculatedRule: rule )
             }
         }
 
@@ -262,10 +268,16 @@ public class Turtle {
         return result
     }
     
-    public func drawPdf(_ iteration: Int, imageSize: (Int, Int) = (20, 20) ) -> Data? {
+    public func drawPdf(_ iteration: Int, imageSize: (Int, Int) = (20, 20), calculatedRule: String? = nil  ) -> Data? {
         var result : Data?
         
-        let rule = rules.calculateRules(for: iteration)
+        let rule : String
+        if let calculatedRule = calculatedRule {
+            rule = calculatedRule
+        }
+        else {
+            rule = rules.calculateRules(for: iteration)
+        }
         
         length = rules.calculateLength(for: iteration)
         limits.reset( imageSize )
@@ -283,7 +295,7 @@ public class Turtle {
             let newImageSize = (Int(limits.width+2*border), Int(limits.height+2*border))
             if let start = start {
                 self.start = CGPoint(x: start.x-limits.left+border, y:start.y-limits.top+border )
-                result = drawPdf( iteration, imageSize: newImageSize )
+                result = drawPdf( iteration, imageSize: newImageSize, calculatedRule: rule )
             }
         }
 

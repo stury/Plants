@@ -127,6 +127,9 @@ public class Rules : CustomStringConvertible {
               result = result.replacingOccurrences(of: String(character), with: "")
             }
         }
+        #if DEBUG
+        //print("\(result)")
+        #endif
         return result
     }
     

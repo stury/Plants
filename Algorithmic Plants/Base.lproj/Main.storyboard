@@ -38,15 +38,25 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1V-1J-oYA">
                                 <rect key="frame" x="329" y="52" width="30" height="53"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <state key="normal" title="+"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="incrementAction:" destination="JEX-9P-axG" eventType="touchUpInside" id="YoQ-gk-Rhz"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="n=4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joA-ek-XJr">
+                                <rect key="frame" x="172" y="68" width="31" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DPR-NH-1lJ">
                                 <rect key="frame" x="16" y="52" width="30" height="53"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <state key="normal" title="-"/>
+                                <state key="normal" title="-">
+                                    <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="decrementAction:" destination="JEX-9P-axG" eventType="touchUpInside" id="Muf-19-KbS"/>
                                 </connections>
@@ -61,9 +71,11 @@
                             <constraint firstItem="Q1V-1J-oYA" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="8" id="6be-T8-YuZ"/>
                             <constraint firstAttribute="bottom" secondItem="Wud-x9-KTB" secondAttribute="bottom" id="C6i-Yr-x0C"/>
                             <constraint firstItem="DPR-NH-1lJ" firstAttribute="leading" secondItem="VUw-jc-0yf" secondAttribute="leading" constant="16" id="Dfz-6J-NWW"/>
+                            <constraint firstItem="ewL-k1-Tab" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="EW3-LW-laH"/>
+                            <constraint firstItem="ewL-k1-Tab" firstAttribute="centerY" secondItem="svH-Pt-448" secondAttribute="centerY" id="ICv-wd-1It"/>
                             <constraint firstItem="VUw-jc-0yf" firstAttribute="trailing" secondItem="Q1V-1J-oYA" secondAttribute="trailing" constant="16" id="Rjs-cy-xHP"/>
-                            <constraint firstItem="ewL-k1-Tab" firstAttribute="centerY" secondItem="svH-Pt-448" secondAttribute="centerY" id="T34-7a-QHS"/>
-                            <constraint firstItem="ewL-k1-Tab" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="feh-cN-btp"/>
+                            <constraint firstItem="joA-ek-XJr" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="YDD-ih-aUU"/>
+                            <constraint firstItem="joA-ek-XJr" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="24" id="f3N-Hq-M3p"/>
                             <constraint firstItem="Wud-x9-KTB" firstAttribute="leading" secondItem="VUw-jc-0yf" secondAttribute="leading" id="lBs-Xj-wsw"/>
                             <constraint firstItem="DPR-NH-1lJ" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="8" id="rA0-8X-6BC"/>
                             <constraint firstItem="Wud-x9-KTB" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" id="sCR-Uy-Lcc"/>
@@ -84,6 +96,7 @@
                         <outlet property="decrementIteration" destination="DPR-NH-1lJ" id="F7j-BC-6lN"/>
                         <outlet property="detailView" destination="Wud-x9-KTB" id="Dnd-0k-IrT"/>
                         <outlet property="incrementIteration" destination="Q1V-1J-oYA" id="R3q-WM-NB6"/>
+                        <outlet property="iterationLabel" destination="joA-ek-XJr" id="HHc-og-HLv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>

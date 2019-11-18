@@ -20,7 +20,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var incrementIteration: UIButton!
     @IBOutlet weak var decrementIteration: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak var iterationLabel: UILabel!
     
     var detailItem: Any? {
         didSet {
@@ -52,6 +52,10 @@ class DetailViewController: UIViewController {
                 else if decrementIteration.isEnabled == false {
                     decrementIteration.isEnabled = true
                 }
+            }
+            // Set the iteration label
+            if let iterationLabel = iterationLabel {
+                iterationLabel.text = "n=\(currentIteration)"
             }
         }
     }
@@ -220,7 +224,8 @@ class DetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "showInfo" {
             if let infoVC = segue.destination as? InfoViewController {
-                infoVC.rules = detailItem
+                infoVC.rules        = detailItem
+                infoVC.iteration    = currentIteration
             }
         }
         

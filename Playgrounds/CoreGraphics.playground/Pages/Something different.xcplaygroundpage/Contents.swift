@@ -2,6 +2,19 @@
 
 /*:
  This page shows an example of drawing something a bit more colorful, and creating an image out of it.  I can show this same code in Python if there's interest.
+ 
+ Original Python code this is based on:
+ 
+ import turtle
+ colors = ['red', 'purple', 'blue', 'green', 'orange', 'yellow']
+ t = turtle.Pen()
+ turtle.bgcolor('black')
+ for x in range(360):
+     t.pencolor(colors[x%6])
+     t.width(x/100 + 1)
+     t.forward(x)
+     t.left(59)
+ 
  */
 
 import Foundation
@@ -17,14 +30,6 @@ func radians( _ degrees:Double ) -> Double {
 let renderer = ImageRenderer((0.0, 0.0, 0.0, 1.0))
 image = renderer.raster(size: CGSize(width: size.0, height: size.1), drawing: { (context) in
     
-    //colors = ['red', 'purple', 'blue', 'green', 'orange', 'yellow']
-    //t = turtle.Pen()
-    //turtle.bgcolor('black')
-    //for x in range(360):
-    //    t.pencolor(colors[x%6])
-    //    t.width(x/100 + 1)
-    //    t.forward(x)
-    //    t.left(59)
     let colors = [CGColor.from((1.0, 0.0, 0.0, 1.0)),  // #FF0000
                   CGColor.from((0.5, 0.0, 0.5, 1.0)),  // #800080
                   CGColor.from((0.0, 0.0, 1.0, 1.0)),  // #0000FF
