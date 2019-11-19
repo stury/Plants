@@ -16,6 +16,7 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var detailView: UIView!
     var pdfView : PDFView! = nil
+    var pdfData : Data? = nil
     
     @IBOutlet weak var incrementIteration: UIButton!
     @IBOutlet weak var decrementIteration: UIButton!
@@ -112,6 +113,7 @@ class DetailViewController: UIViewController {
     }
     
     func updateDocument(_ data: Data) {
+        pdfData = data
         if let document = PDFDocument(data: data), let page = document.page(at: 0) {
             let bounds = page.bounds(for: .mediaBox)
             print( "page mediaBox size = \(bounds.size)")
@@ -181,16 +183,17 @@ class DetailViewController: UIViewController {
     }
 
     func updateScreenBackgroundColor() {
-        if #available(iOS 13, *) {
-            if traitCollection.userInterfaceStyle == .dark {
-                screenBackgroundColor = (0.1098, 0.1098, 0.1176, 1.0)
-            }
-            else {
-                screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
-            }
-        } else {
-            screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
-        }
+//        if #available(iOS 13, *) {
+//            if traitCollection.userInterfaceStyle == .dark {
+//                screenBackgroundColor = (0.1098, 0.1098, 0.1176, 1.0)
+//            }
+//            else {
+//                screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
+//            }
+//        } else {
+//            screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
+//        }
+        screenBackgroundColor =  (1.0, 1.0, 1.0, 0.0)
     }
     
     override func viewDidLoad() {
@@ -214,6 +217,35 @@ class DetailViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         updateScreenBackgroundColor()
         updatePDF()
+    }
+    
+    @IBAction func onAction(_ sender: UIBarButtonItem) {
+        // Open up the Action sheet, with the Image in the list of what you want to share.
+        var items = [Any]()
+
+        // It appears that the share activity understands the raw PDF data, but not a PDFDocument object.
+        if let data = pdfData {
+            items.append( data )
+        }
+        if let document = pdfView.document {
+            items.append( document )
+        }
+        // If we don't have anything to act upon, don't open the Action Sheet.
+        if items.count > 0 {
+            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                //On iPad, you must present the view controller in a popover.
+                activityVC.modalPresentationStyle = .popover
+            }
+            else if UIDevice.current.userInterfaceIdiom == .phone {
+                // On iPhone and iPod touch, you must present it modally.
+                activityVC.modalPresentationStyle = .overCurrentContext //.currentContext
+            }
+            
+            self.present(activityVC, animated: true) {
+                print("Presented VC!")
+            }
+        }
     }
     
     // MARK: - Navigation

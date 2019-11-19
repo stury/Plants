@@ -85,11 +85,18 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM">
-                        <barButtonItem key="rightBarButtonItem" title="Info" image="info.circle" catalog="system" id="T5v-4H-l69">
-                            <connections>
-                                <segue destination="CFg-vU-rt6" kind="show" identifier="showInfo" id="9SY-f4-72V"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Info" image="info.circle" catalog="system" id="T5v-4H-l69">
+                                <connections>
+                                    <segue destination="CFg-vU-rt6" kind="show" identifier="showInfo" id="9SY-f4-72V"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="action" id="SYA-ec-2Km">
+                                <connections>
+                                    <action selector="onAction:" destination="JEX-9P-axG" id="HyK-Ay-qCo"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="ewL-k1-Tab" id="RLW-py-C0S"/>
