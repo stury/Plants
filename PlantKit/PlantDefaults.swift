@@ -16,16 +16,17 @@ public func defaultPlantCollection() ->[Plant] {
             
     result.append( Plant(name: "Maple_25", branchAngle: 25.0, rule0: "1[0][0]110") )
     result.append( Plant(name: "Maple_45", branchAngle: 45.0, rule0: "1[0][0]110") )
+    result.append( Plant(name: "Maple_65", branchAngle: 65.0, rule0: "1[0][0]110") )
     result.append( Plant(name: "Favorite", branchAngle: 25.0, rule0: "11[1[1[0]]]1[1[0]]1[1[0][1[0]]]") )
     result.append( Plant(name: "SparseLopsided", rule0: "11[1[1[0]]][11[][0]]111[10]") )
-    result.append( Plant(name: "Christmas", rule0: "11[[0]][[][0]]10") )
-    result.append( Plant(name: "Christmas2", rule0: "11[[0]][[0][0]]10") )
+    result.append( Plant(name: "Onesided Pine", rule0: "11[[0]][[][0]]10") )
+    result.append( Plant(name: "Pine", rule0: "11[[0]][[0][0]]10") )
     result.append( Plant(name: "Vase1", rule0: "1[0][0]") )
     result.append( Plant(name: "Vase2", rule0: "1[1[0][0]0][1[0][0]0]") )
     result.append( Plant(name: "Vase3", rule0: "1[1[0][0]][1[0][0]]") )
     result.append( Plant(name: "Vase4", rule0: "1[1[0][0]][1[0][0]]", rule1: "11[0]11") )
-    //result.append( Plant(name: "Paisley", rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "1[0]11[0]1")
-    result.append( Plant(name: "Paisley", rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "11") )
+    result.append( Plant(name: "Paisley", rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "1[0]11[0]1") )
+    //result.append( Plant(name: "Paisley", rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "11") )
     result.append( Plant(name: "Seaweed", rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "11[0[0]]") )
     result.append( Plant(name: "Thyme", rule0: "1[1[1[1[1[1[10]]]]]]0", rule1: "1[0]1") )
     
@@ -41,6 +42,86 @@ public func defaultFractalCollection() ->[Rules] {
     /// default segment length
     let defaultLength = 20.0
 
+    // Sample Plants
+    result.append(Rules(name: "a", initiator: "F", rules: ["F" : "F[+F]F[-F]F"], angle:25.7))
+    result.append(Rules(name: "b", initiator: "F", rules: ["F" : "F[+F]F[-F][F]"], angle:20))
+    result.append(Rules(name: "c", initiator: "F", rules: ["F" : "FF-[-F+F+F]+[+F-F-F]"], angle:22.5))
+    result.append(Rules(name: "d", initiator: "X", rules: ["X" : "F[+X]F[-X]+X", "F" : "FF"], angle:20, nodeRewriting: true))
+    result.append(Rules(name: "e", initiator: "X", rules: ["X" : "F[+X][-X]FX", "F" : "FF"], angle:25.7, nodeRewriting: true))
+    result.append(Rules(name: "f", initiator: "X", rules: ["X" : "F-[[X]+X]+F[+FX]-X", "F" : "FF"], angle:22.5, nodeRewriting: true))
+    result.append(Rules(name: "multirule", initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true))
+    
+    result.append(Rules(name: "stochasticPlant", initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true))
+
+    //https://nb.paulbutler.org/l-systems/
+    //'F', {'F': 'F[-F][+F]'}, 4, 30
+    result.append(Rules(name: "simple_branching_tree", initiator: "F", rules: ["F" : "F[-F][+F]"], angle: 30, length: defaultLength, initialDirection: 90 ))
+            
+            // 'F', {'F': 'FF[++F][-FF]'}, 5, 22
+    result.append(Rules(name: "asymetric_branching_tree", initiator: "F", rules: ["F" : "FF[++F][-FF]"], angle: 22, length: defaultLength, initialDirection: 90 ))
+            
+        // l_plot('A', {'F': 'FF', 'A': 'F[+AF-[A]--A][---A]'}, 5, 22.5)
+    result.append(Rules(name: "branching_tree", initiator: "A", rules: ["F": "FF", "A" : "F[+AF-[A]--A][---A]"], angle: 22.5, length: defaultLength, initialDirection: 90 , nodeRewriting: true))
+
+    
+    // von Koch Snowflake Demos
+    result.append(Rules(name: "koch_curve_flat_snowflake", initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ))
+    result.append(Rules(name: "koch_curve_snowflake", initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
+    result.append(Rules(name: "koch_curve_snowflake_hex", initiator: "F+F+F+F+F+F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
+    result.append(Rules(name: "koch_curve_anti-snowflake", initiator: "F++F++F", rules: ["F" : "F+F--F+F"], angle: 60, length: 5.0, initialDirection: 0))
+
+    // Sierpinski Demos
+    // Attempt at Sierpinski Gadget:
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+    result.append(Rules(name: "Sierpinski Gadget", initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "Sierpinski_Gasket_nodeRewriting", initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
+    // Serpinsk Carpet, corrected.
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/carpet/carpet.htm
+    result.append(Rules(name:"serpinsk carpet", initiator: "F", rules: ["F" : "F+F−F−F−f+F+F+F−F", "f":"fff"], angle: 90,  length: 2400, initialDirection: 45, modifier: 3))
+
+    // Space Filling Curves
+    result.append(Rules(name: "hilbert_curve", initiator: "L", rules: ["L" : "+RF-LFL-FR+", "R" : "-LF+RFR+FL-"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
+    result.append(Rules(name: "3x3_macrotile", initiator: "-L", rules: ["L" : "LF+RFR+FL-F-LFLFL-FRFR+", "R" : "-LFLF+RFRFR+F+RF-LFL-FR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
+    result.append(Rules(name: "4x4_macrotile", initiator: "-L", rules: ["L" : "LFLF+RFR+FLFL-FRF-LFL-FR+F+RF-LFL-FRFRFR+", "R" : "-LFLFLF+RFR+FL-F-LF+RFR+FLF+RFRF-LFL-FRFR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
+    result.append(Rules(name: "3x3_peano_curve", initiator: "L", rules: ["L" : "LFRFL-F-RFLFR+F+LFRFL", "R" : "RFLFR+F+LFRFL-F-RFLFR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
+    result.append(Rules(name: "5x5_macrotile", initiator: "L", rules: ["L" : "L+F+R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L-F-R-F-L+F+R+F+L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R-F-L", "R" : "R-F-L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R+F+L+F+R-F-L-F-R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L+F+R"], angle: 45, length: defaultLength, initialDirection: 45, nodeRewriting: true ))
+
+    // Dragon Curve
+    result.append(Rules(name: "dragon-curve", initiator: "L", rules: ["L" : "L+R+", "R" : "-L-R"], angle: 90, length: defaultLength, initialDirection: 90 ))
+        // Lévy_Dragon  http://ecademy.agnesscott.edu/~lriddle/ifs/levy/levy.htm
+    result.append(Rules(name: "Levy_Dragon", initiator: "F", rules: ["F":"+F−−F+"], angle: 45, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "Levy_Tapestry", initiator: "F++F++F++F++", rules: ["F":"+F−−F+"], angle: 45, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    // Attempt at twin dragon:
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
+    result.append(Rules(name: "twin_dragon", initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
+
+    // Attempt at terdragon:
+    // http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
+    result.append(Rules(name: "terdragon", initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+
+        // http://www.kevs3d.co.uk/dev/lsystems/
+        // Also try the penrose tiling when you turn on node rewriting, it's interesting what comes out.
+    result.append(Rules(name: "penrose_tiling", initiator: "[F]++[F]++[F]++[F]++[F]", rules: ["F": "+GI--HI[---GI--FI]+", "G" : "-FI++GI[+++GI++HI]-", "H":"--GI++++FI[+HI++++GI]--GI", "I":""], angle: 36, length: defaultLength, initialDirection: 0 , nodeRewriting: false))
+
+    // These two show how just a small change in the rule, can yield a very different outcome than what you were expecting!
+    result.append(Rules(name:"koch_curve_variant_1_stars", initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 30 ))
+    
+    result.append(Rules(name: "koch_curve_variant_1_ornate", initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 45, length: defaultLength, initialDirection: 67 ))
+
+    /* Other ones I can show... */
+    
+    // Other Sierpinski types, not really needed for demo.
+    result.append(Rules(name: "sierpinski_gasket", initiator: "R", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ))
+        // http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
+        // These seem to only work in certain situations.
+    result.append(Rules(name: "sierpinski_gasket_hexagon_outward", initiator: "R-R-R-R-R-R-", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ))
+    result.append(Rules(name: "sierpinski_gasket_hexagon_inward", initiator: "L-L-L-L-L-L-", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ))
+
+    result.append(Rules(name: "square-grid-approximation-of-the-Sierpinski-curve", initiator: "F+XF+F+XF", rules: ["X" : "XF-F+F-XF+F+XF-F+F-X", "F":"F"], angle: 90.0, length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
+
+    result.append(Rules(name: "sierpinski_median_curve", initiator: "L--F--L--F", rules: ["L": "+R-F-R+", "R" : "-L+F+L-"], angle: 45, length: defaultLength, initialDirection: 0 , nodeRewriting: false))
+
+    
     result.append(Rules(name: "quadraticKochIsland", initiator: "F-F-F-F", rules: ["F" : "F-F+F+FF-F-F+F"]))
     result.append(Rules(name: "quadraticModifiedSnowflakeCurve", initiator: "-F", rules: ["F" : "F+F-F-F+F"]))
     result.append(Rules(name: "islandsAndLakes", initiator: "F+F+F+F", rules: ["F" : "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF", "f":"ffffff"]))
@@ -54,29 +135,13 @@ public func defaultFractalCollection() ->[Rules] {
     result.append(Rules(name: "hex_curve_updated", initiator: "H", rules: ["H" : "FT+FT+FT+FT+FT+FT", "T" : "--FH--FH--FH", "F" : "FF"], angle: 60, length: defaultLength, initialDirection: 90, modifier: 1 ))
     result.append(Rules(name: "tri_curve", initiator: "F+F+F", rules: ["F" : "F+F-F+F"], angle: 120, length: defaultLength, initialDirection: 90 ))
     result.append(Rules(name:"triangle_curve", initiator: "F-F-F", rules: ["F" : "F+F-FF"], angle: 120, length: defaultLength, initialDirection: 90 ))
-    result.append(Rules(name: "koch_curve_flat_snowflake", initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ))
-    result.append(Rules(name: "koch_curve_snowflake", initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
-    result.append(Rules(name: "koch_curve_snowflake_hex", initiator: "F+F+F+F+F+F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
-    result.append(Rules(name: "koch_curve_anti-snowflake", initiator: "F++F++F", rules: ["F" : "F+F--F+F"], angle: 60, length: 5.0, initialDirection: 0))
     result.append(Rules(name: "scott_destructive_snowflake", initiator: "F+F+F+F+F+F", rules: ["F" : "-F++FF-F"], angle: 60, length: defaultLength, initialDirection: 90 ))
     result.append(Rules(name: "scott_destructive_tri", initiator: "+F--F--F", rules: ["F" : "+F--FF+F"], angle: 60, length: defaultLength, initialDirection: 0 ))
         
-    result.append(Rules(name: "dragon-curve", initiator: "L", rules: ["L" : "L+R+", "R" : "-L-R"], angle: 90, length: defaultLength, initialDirection: 90 ))
-    result.append(Rules(name: "sierpinski_gasket", initiator: "R", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ))
-        // http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
-        // These seem to only work in certain situations.
-    result.append(Rules(name: "sierpinski_gasket_hexagon_outward", initiator: "R-R-R-R-R-R-", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ))
-    result.append(Rules(name: "sierpinski_gasket_hexagon_inward", initiator: "L-L-L-L-L-L-", rules: ["L" : "R+L+R", "R" : "L-R-L"], angle: 60, length: defaultLength, initialDirection: 0 ))
         // Examples of edge-rewriting
     result.append(Rules(name: "hexagonal_gosper_curve", initiator: "L", rules: ["L" : "L+R++R-L--LL-R+", "R" : "-L+RR++R+L--L-R"], angle: 60, length: defaultLength, initialDirection: 0 ))
     result.append(Rules(name: "quadratic-Gosper_curve", initiator: "-R", rules: ["L" : "LL-R-R+L+L-R-RL+R+LLR-L+R+LL+R-LR-R-L+L+RR-", "R" : "+LL-R-R+L+LR+L-RR-L-R+LRR-L-RL+L+R-R-L+L+RR"], angle: 90, length: defaultLength, initialDirection: 0 ))
         // Examples of Node rewriting
-    result.append(Rules(name: "hilbert_curve", initiator: "L", rules: ["L" : "+RF-LFL-FR+", "R" : "-LF+RFR+FL-"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
-    result.append(Rules(name: "3x3_macrotile", initiator: "-L", rules: ["L" : "LF+RFR+FL-F-LFLFL-FRFR+", "R" : "-LFLF+RFRFR+F+RF-LFL-FR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
-    result.append(Rules(name: "4x4_macrotile", initiator: "-L", rules: ["L" : "LFLF+RFR+FLFL-FRF-LFL-FR+F+RF-LFL-FRFRFR+", "R" : "-LFLFLF+RFR+FL-F-LF+RFR+FLF+RFRF-LFL-FRFR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
-    result.append(Rules(name: "3x3_peano_curve", initiator: "L", rules: ["L" : "LFRFL-F-RFLFR+F+LFRFL", "R" : "RFLFR+F+LFRFL-F-RFLFR"], angle: 90, length: defaultLength, initialDirection: 90, nodeRewriting: true ))
-    result.append(Rules(name: "5x5_macrotile", initiator: "L", rules: ["L" : "L+F+R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L-F-R-F-L+F+R+F+L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R-F-L", "R" : "R-F-L+F+R-F-L+F+R+F+L-F-R+F+L+F+R-F-L+F+R+F+L+F+R-F-L-F-R-F-L+F+R-F-L-F-R+F+L-F-R-F-L+F+R-F-L+F+R"], angle: 45, length: defaultLength, initialDirection: 45, nodeRewriting: true ))
-    result.append(Rules(name: "square-grid-approximation-of-the-Sierpinski-curve", initiator: "F+XF+F+XF", rules: ["X" : "XF-F+F-XF+F+XF-F+F-X", "F":"F"], angle: 90.0, length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
 //        "scott_curve": (Rules(name: "scott_curve", initiator: "F++F++F++F", rules: ["F" : "-F+F"], angle: 45, length: defaultLength, initialDirection: 90 ),defaultIteration),
         // http://ecademy.agnesscott.edu/~lriddle/ifs/pentigre/pentigre2.htm
     result.append(Rules(name: "McWhorter_Pentigree", initiator: "F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
@@ -86,9 +151,6 @@ public func defaultFractalCollection() ->[Rules] {
     result.append(Rules(name: "McWhorter_Pentadentrite", initiator: "F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
         // http://ecademy.agnesscott.edu/~lriddle/ifs/pentaden/pentadenForm2.htm
     result.append(Rules(name: "McWhorter_Pentadentrite_2nd", initiator: "F+F+F+F+F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
-        // Lévy_Dragon  http://ecademy.agnesscott.edu/~lriddle/ifs/levy/levy.htm
-    result.append(Rules(name: "Levy_Dragon", initiator: "F", rules: ["F":"+F−−F+"], angle: 45, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
-    result.append(Rules(name: "Levy_Tapestry", initiator: "F++F++F++F++", rules: ["F":"+F−−F+"], angle: 45, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
 
     result.append(Rules(name: "koch_curve_snowflake", initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
         
@@ -101,22 +163,11 @@ public func defaultFractalCollection() ->[Rules] {
             // Based on complex image
     result.append(Rules(name: "complex_image", initiator: "F", rules: ["F" : "+F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 60 ))
             
-            //'F', {'F': 'F[-F][+F]'}, 4, 30
-    result.append(Rules(name: "simple_branching_tree", initiator: "F", rules: ["F" : "F[-F][+F]"], angle: 30, length: defaultLength, initialDirection: 90 ))
-            
-            // 'F', {'F': 'FF[++F][-FF]'}, 5, 22
-    result.append(Rules(name: "asymetric_branching_tree", initiator: "F", rules: ["F" : "FF[++F][-FF]"], angle: 22, length: defaultLength, initialDirection: 90 ))
-            
-        // l_plot('A', {'F': 'FF', 'A': 'F[+AF-[A]--A][---A]'}, 5, 22.5)
-    result.append(Rules(name: "branching_tree", initiator: "A", rules: ["F": "FF", "A" : "F[+AF-[A]--A][---A]"], angle: 22.5, length: defaultLength, initialDirection: 90 , nodeRewriting: true))
 
         // http://www.kevs3d.co.uk/dev/lsystems/
         // All working!  There are a couple plants on this site I did not do.
     result.append(Rules(name: "joined_crosses_curve", initiator: "XYXYXYX+XYXYXYX+XYXYXYX+XYXYXYX", rules: ["F": "", "X" : "FX+FX+FXFY-FY-", "Y":"+FX+FXFY-FY-FY"], angle: 90, length: defaultLength, initialDirection: 90 , nodeRewriting: true))
         result.append(Rules(name: "lace", initiator: "W", rules: ["W": "+++X--F--ZFX+", "X" : "---W++F++YFW-", "Y":"+ZFX--F--Z+++", "Z":"-YFW++F++Y---"], angle: 30, length: defaultLength, initialDirection: 90 , nodeRewriting: false))
-        // Also try the penrose tiling when you turn on node rewriting, it's interesting what comes out.
-    result.append(Rules(name: "penrose_tiling", initiator: "[F]++[F]++[F]++[F]++[F]", rules: ["F": "+GI--HI[---GI--FI]+", "G" : "-FI++GI[+++GI++HI]-", "H":"--GI++++FI[+HI++++GI]--GI", "I":""], angle: 36, length: defaultLength, initialDirection: 0 , nodeRewriting: false))
-    result.append(Rules(name: "sierpinski_median_curve", initiator: "L--F--L--F", rules: ["L": "+R-F-R+", "R" : "-L+F+L-"], angle: 45, length: defaultLength, initialDirection: 0 , nodeRewriting: false))
     result.append(Rules(name: "space_filling_curve", initiator: "X", rules: ["X": "-YF+XFX+FY-", "Y" : "+XF-YFY-FX+"], angle: 90, length: defaultLength, initialDirection: 0 , nodeRewriting: true))
         //F=C0FF[C1-F++F][C2+F--F]C3++F--F
     result.append(Rules(name: "kevs_pond_weed", initiator: "F", rules: ["F": "FF[-F++F][+F--F]++F--F"], angle: 27, length: defaultLength, initialDirection: 90 , nodeRewriting: true))
@@ -283,43 +334,16 @@ public func defaultFractalCollection() ->[Rules] {
         //    angle = 90
     result.append(Rules(name: "variation_quadratic_snowflake", initiator: "FF+FF+FF+FF", rules: ["F":"F+F-F-F+F"], angle: 90, length: defaultLength, initialDirection: 90 , nodeRewriting: true))
 
-    // Bracketted Turtle:
-    result.append(Rules(name: "a", initiator: "F", rules: ["F" : "F[+F]F[-F]F"], angle:25.7))
-    result.append(Rules(name: "b", initiator: "F", rules: ["F" : "F[+F]F[-F][F]"], angle:20))
-    result.append(Rules(name: "c", initiator: "F", rules: ["F" : "FF-[-F+F+F]+[+F-F-F]"], angle:22.5))
-    result.append(Rules(name: "d", initiator: "X", rules: ["X" : "F[+X]F[-X]+X", "F" : "FF"], angle:20, nodeRewriting: true))
-    result.append(Rules(name: "e", initiator: "X", rules: ["X" : "F[+X][-X]FX", "F" : "FF"], angle:25.7, nodeRewriting: true))
-    result.append(Rules(name: "f", initiator: "X", rules: ["X" : "F-[[X]+X]+F[+FX]-X", "F" : "FF"], angle:22.5, nodeRewriting: true))
-    result.append(Rules(name: "multirule", initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true))
-    
-    result.append(Rules(name: "stochasticPlant", initiator: "F", rules: ["F" : ["F[+F]F[-F]F","F[+F]F","F[-F]F"]], angle:22.5, nodeRewriting: true))
-    result.append(Rules(name: "modifier_rule", initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 1200, initialDirection: 0, modifier: 3 ))
-    // Serpinsk Carpet, corrected.
-    // http://ecademy.agnesscott.edu/~lriddle/ifs/carpet/carpet.htm
-    result.append(Rules(name:"serpinsk carpet", initiator: "F", rules: ["F" : "F+F−F−F−f+F+F+F−F", "f":"fff"], angle: 90,  length: 2400, initialDirection: 45, modifier: 3))
     
     // This rule set needs node rewriting to remove the extra letters in the final rule set to draw.
     //n = 3, δ = 60°
     //{XF+F+XF+F+XF+F}
     //X → XF+F+XF−F−F−XF−F+F+F−F+F+F−X
-    result.append(Rules(name: "sample", initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2))
+    result.append(Rules(name: "hexagonal pyramid", initiator: "{XF+F+XF+F+XF+F}", rules: ["X" : "XF+F+XF−F−F−XF−F+F+F−F+F+F−X"], angle: 60,  length: 600, initialDirection: 0, nodeRewriting: true, modifier: 2))
     
-    // Attempt at twin dragon:
-    // http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/twindragon.htm
-    result.append(Rules(name: "twin_dragon", initiator: "FX----FX", rules: ["X" : "+FX--FY+", "Y": "-FX++FY-", "F":"Z" ], angle: 45,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
+    // Note I can probably delete this one, since it's the Koch Snowflake.
+    // result.append(Rules(name: "modifier_rule", initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 1200, initialDirection: 0, modifier: 3 ))
 
-    // Attempt at terdragon:
-    // http://ecademy.agnesscott.edu/~lriddle/ifs/heighway/terdragon.htm
-    result.append(Rules(name: "terdragon", initiator: "F", rules: ["F" : "+F----F++++F-" ], angle: 30,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
-
-    // Attempt at Sierpinski Gadget:
-    // http://ecademy.agnesscott.edu/~lriddle/ifs/siertri/siertri.htm
-    result.append(Rules(name: "Sierpinski Gadget", initiator: "F+F+F", rules: ["F" : "F+F-F-F+F" ], angle: 120,  length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
-    result.append(Rules(name: "Sierpinski_Gasket_nodeRewriting", initiator: "FX", rules: ["F" : "Z", "X":"+FY-FX-FY+", "Y":"-FX+FY+FX-" ], angle: 60,  length: defaultLength, initialDirection: 0, nodeRewriting: true, modifier: 1))
-
-    result.append(Rules(name:"koch_curve_variant_1_stars", initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 30 ))
-    
-    result.append(Rules(name: "koch_curve_variant_1_ornate", initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 45, length: defaultLength, initialDirection: 67 ))
 
     return result
 }

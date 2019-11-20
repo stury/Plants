@@ -12,7 +12,7 @@ import PDFKit
 
 class DetailViewController: UIViewController {
     
-    let processingQueue = DispatchQueue(label: "DetailViewProcessing", qos: .userInitiated, autoreleaseFrequency: .inherit ) // DispatchQueue(label: "DetailViewProcessing")
+    let processingQueue = DispatchQueue(label: "DetailViewProcessing", qos: .default /*.userInitiated*/, autoreleaseFrequency: .inherit ) 
     
     @IBOutlet weak var detailView: UIView!
     var pdfView : PDFView! = nil
