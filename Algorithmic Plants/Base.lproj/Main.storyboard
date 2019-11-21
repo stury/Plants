@@ -35,32 +35,46 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1V-1J-oYA">
-                                <rect key="frame" x="329" y="52" width="30" height="53"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <state key="normal" title="+">
-                                    <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="incrementAction:" destination="JEX-9P-axG" eventType="touchUpInside" id="YoQ-gk-Rhz"/>
-                                </connections>
-                            </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQ2-SP-LIl">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" id="EeP-de-ig5">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DPR-NH-1lJ">
+                                            <rect key="frame" x="16" y="0.0" width="30" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                            <state key="normal" title="-">
+                                                <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="decrementAction:" destination="JEX-9P-axG" eventType="touchUpInside" id="Muf-19-KbS"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SL1-AX-V9j"/>
+                                    <barButtonItem enabled="NO" title="Settings" image="gear" catalog="system" id="aLL-q4-DRl"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="XdE-J7-9ku"/>
+                                    <barButtonItem style="plain" id="ld7-fa-w66">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Q1V-1J-oYA">
+                                            <rect key="frame" x="329" y="0.0" width="30" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                            <state key="normal" title="+">
+                                                <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="incrementAction:" destination="JEX-9P-axG" eventType="touchUpInside" id="YoQ-gk-Rhz"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="n=4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joA-ek-XJr">
                                 <rect key="frame" x="172" y="68" width="31" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DPR-NH-1lJ">
-                                <rect key="frame" x="16" y="52" width="30" height="53"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <state key="normal" title="-">
-                                    <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="decrementAction:" destination="JEX-9P-axG" eventType="touchUpInside" id="Muf-19-KbS"/>
-                                </connections>
-                            </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ewL-k1-Tab">
                                 <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                                 <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -68,17 +82,16 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Q1V-1J-oYA" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="8" id="6be-T8-YuZ"/>
                             <constraint firstAttribute="bottom" secondItem="Wud-x9-KTB" secondAttribute="bottom" id="C6i-Yr-x0C"/>
-                            <constraint firstItem="DPR-NH-1lJ" firstAttribute="leading" secondItem="VUw-jc-0yf" secondAttribute="leading" constant="16" id="Dfz-6J-NWW"/>
+                            <constraint firstItem="cQ2-SP-LIl" firstAttribute="trailing" secondItem="VUw-jc-0yf" secondAttribute="trailing" id="Djv-9t-QMP"/>
                             <constraint firstItem="ewL-k1-Tab" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="EW3-LW-laH"/>
                             <constraint firstItem="ewL-k1-Tab" firstAttribute="centerY" secondItem="svH-Pt-448" secondAttribute="centerY" id="ICv-wd-1It"/>
-                            <constraint firstItem="VUw-jc-0yf" firstAttribute="trailing" secondItem="Q1V-1J-oYA" secondAttribute="trailing" constant="16" id="Rjs-cy-xHP"/>
+                            <constraint firstItem="cQ2-SP-LIl" firstAttribute="leading" secondItem="VUw-jc-0yf" secondAttribute="leading" id="UgY-Id-owI"/>
                             <constraint firstItem="joA-ek-XJr" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="YDD-ih-aUU"/>
                             <constraint firstItem="joA-ek-XJr" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="24" id="f3N-Hq-M3p"/>
                             <constraint firstItem="Wud-x9-KTB" firstAttribute="leading" secondItem="VUw-jc-0yf" secondAttribute="leading" id="lBs-Xj-wsw"/>
-                            <constraint firstItem="DPR-NH-1lJ" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" constant="8" id="rA0-8X-6BC"/>
                             <constraint firstItem="Wud-x9-KTB" firstAttribute="top" secondItem="VUw-jc-0yf" secondAttribute="top" id="sCR-Uy-Lcc"/>
+                            <constraint firstItem="VUw-jc-0yf" firstAttribute="bottom" secondItem="cQ2-SP-LIl" secondAttribute="bottom" id="tLA-FM-KJu"/>
                             <constraint firstItem="Wud-x9-KTB" firstAttribute="trailing" secondItem="VUw-jc-0yf" secondAttribute="trailing" id="wHj-Ay-5mn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="VUw-jc-0yf"/>
@@ -198,7 +211,7 @@
                             <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8"/>
+                    <navigationItem key="navigationItem" title="L-Systems" id="Zdf-7t-Un8"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
@@ -222,6 +235,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="gear" catalog="system" width="64" height="58"/>
         <image name="info.circle" catalog="system" width="64" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
