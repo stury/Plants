@@ -17,12 +17,16 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var detailView: UIView!
     var pdfView : PDFView! = nil
     var pdfData : Data? = nil
+    var turtleColor : (Double, Double, Double, Double)?
     
-    @IBOutlet weak var incrementIteration: UIButton!
-    @IBOutlet weak var decrementIteration: UIButton!
+    @IBOutlet weak var incrementIteration: UIBarButtonItem!
+    @IBOutlet weak var decrementIteration: UIBarButtonItem!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var iterationLabel: UILabel!
-    
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
+    @IBOutlet weak var infoButton: UIBarButtonItem!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
+
     var detailItem: Any? {
         didSet {
             // Reset the currentIteration...
@@ -45,15 +49,7 @@ class DetailViewController: UIViewController {
     
     var currentIteration : Int = 4 {
         didSet {
-            if let _ = decrementIteration {
-                
-                if currentIteration == lowestIteration {
-                    decrementIteration.isEnabled = false
-                }
-                else if decrementIteration.isEnabled == false {
-                    decrementIteration.isEnabled = true
-                }
-            }
+            updateButtons()
             // Set the iteration label
             if let iterationLabel = iterationLabel {
                 iterationLabel.text = "n=\(currentIteration)"
@@ -140,6 +136,9 @@ class DetailViewController: UIViewController {
         
         let turtle = Turtle()
         turtle.backgroundColor = screenBackgroundColor
+        if let turtleColor = turtleColor {
+            turtle.color = (turtleColor.0, turtleColor.1, turtleColor.2)
+        }
         turtle.rules = rules
         if let data = turtle.drawCroppedPdf(currentIteration) {
             DispatchQueue.main.async { [weak self] in
@@ -167,7 +166,30 @@ class DetailViewController: UIViewController {
             print( "Unknown Item!" )
         }
     }
-    
+
+    func updateButtons() {
+        if let _ = detailItem {
+            // Enable Buttons!
+            incrementIteration?.isEnabled = true
+            infoButton.isEnabled = true
+            shareButton.isEnabled = true
+
+            if currentIteration == lowestIteration {
+                decrementIteration?.isEnabled = false
+            }
+            else if decrementIteration?.isEnabled == false {
+                decrementIteration?.isEnabled = true
+            }
+        }
+        else {
+            // Disable the bar buttons!
+            incrementIteration?.isEnabled = false
+            decrementIteration?.isEnabled = false
+            infoButton.isEnabled = false
+            shareButton.isEnabled = false
+        }
+    }
+
     func configureView() {
         
         // Update the user interface for the detail item.
@@ -179,7 +201,14 @@ class DetailViewController: UIViewController {
             }
                 
             updatePDF()
+            
+//            if let settingsButton = settingsButton {
+//                if let _ = detailItem as? Rules {
+//                    settingsButton.isEnabled = true
+//                }
+//            }
         }
+        updateButtons()
     }
 
     func updateScreenBackgroundColor() {
@@ -201,15 +230,14 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         updateScreenBackgroundColor()
         configureView()
-        
     }
 
-    @IBAction func decrementAction(_ sender: UIButton) {
+    @IBAction func decrementAction(_ sender: UIBarButtonItem) {
         currentIteration -= 1
         configureView()
     }
     
-    @IBAction func incrementAction(_ sender: UIButton) {
+    @IBAction func incrementAction(_ sender: UIBarButtonItem) {
         currentIteration += 1
         configureView()
     }
@@ -227,15 +255,23 @@ class DetailViewController: UIViewController {
         if let data = pdfData {
             items.append( data )
         }
-        if let document = pdfView.document {
-            items.append( document )
-        }
+//        iOS doesn't seem to understand a PDFDocument as a share item.  Only the Data.
+//        if let document = pdfView.document {
+//            items.append( document )
+//        }
         // If we don't have anything to act upon, don't open the Action Sheet.
         if items.count > 0 {
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
             if UIDevice.current.userInterfaceIdiom == .pad {
                 //On iPad, you must present the view controller in a popover.
                 activityVC.modalPresentationStyle = .popover
+                // Remember to setup the Popover based on where you're activating it from...
+                if let popOver = activityVC.popoverPresentationController {
+                  //popOver.sourceView = UIView
+                  //popOver.sourceRect =
+                  popOver.barButtonItem = sender
+                }
+                
             }
             else if UIDevice.current.userInterfaceIdiom == .phone {
                 // On iPhone and iPod touch, you must present it modally.
@@ -260,8 +296,20 @@ class DetailViewController: UIViewController {
                 infoVC.iteration    = currentIteration
             }
         }
+        else if segue.identifier == "settings" {
+            print( "loading the Settings VC..." )
+            
+        }
         
     }
 
+    override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
+        print( "unwinding seque:  \(String(describing: unwindSegue.identifier)) \(unwindSegue.destination) -> \(subsequentVC)" )
+    }
+
+    @IBAction func onUnwind(_ sender: UIStoryboardSegue) {
+        // Unwind segue happening...
+        
+    }
 }
 

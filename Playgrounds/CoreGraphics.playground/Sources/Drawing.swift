@@ -10,8 +10,8 @@ import CoreGraphics
 public func drawShape( _ context: CGContext, size: (Int, Int) ) {
     // draw a simple shape!
     // 0,0 is in the lower left
-    context.clear(CGRect(origin: CGPoint(x: 0, y: 0),
-                         size: CGSize(width: size.0, height: size.1)))
+    //context.clear(CGRect(origin: CGPoint(x: 0, y: 0),
+    //                     size: CGSize(width: size.0, height: size.1)))
     
     //: define the colors for black and red
     let black   = CGColor(srgbRed: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)

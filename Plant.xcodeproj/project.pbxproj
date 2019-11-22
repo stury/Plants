@@ -32,6 +32,8 @@
 		D2103A892377C18F00C4CB90 /* PlantDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A882377C18F00C4CB90 /* PlantDefaults.swift */; };
 		D2567D62237A71A600D96340 /* PlantKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2103A2F2377B8B800C4CB90 /* PlantKit.framework */; };
 		D2567D63237A71A600D96340 /* PlantKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2103A2F2377B8B800C4CB90 /* PlantKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2763C39238730AC00CE4FE9 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2763C38238730AC00CE4FE9 /* ColorPickerView.swift */; };
+		D2763C3B2387344600CE4FE9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2763C3A2387344600CE4FE9 /* SettingsViewController.swift */; };
 		D27BA30921BCCC36006C9D92 /* ImageArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */; };
 		D28F352821B2264C007CFF9C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352721B2264C007CFF9C /* main.swift */; };
 		D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */; };
@@ -123,6 +125,8 @@
 		D2103A7A2377BA0300C4CB90 /* Algorithmic_PlantsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithmic_PlantsUITests.swift; sourceTree = "<group>"; };
 		D2103A7C2377BA0300C4CB90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2103A882377C18F00C4CB90 /* PlantDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDefaults.swift; sourceTree = "<group>"; };
+		D2763C38238730AC00CE4FE9 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		D2763C3A2387344600CE4FE9 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageArrayExtensions.swift; sourceTree = "<group>"; };
 		D28F352421B2264C007CFF9C /* Plant */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Plant; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28F352721B2264C007CFF9C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -212,7 +216,9 @@
 				D2103A582377B9FE00C4CB90 /* SceneDelegate.swift */,
 				D2103A5A2377B9FE00C4CB90 /* MasterViewController.swift */,
 				D2103A5C2377B9FE00C4CB90 /* DetailViewController.swift */,
+				D2763C38238730AC00CE4FE9 /* ColorPickerView.swift */,
 				D2FC56C0238087FD00094EEB /* InfoViewController.swift */,
+				D2763C3A2387344600CE4FE9 /* SettingsViewController.swift */,
 				D2103A5E2377B9FE00C4CB90 /* Main.storyboard */,
 				D2103A612377BA0200C4CB90 /* Assets.xcassets */,
 				D2103A632377BA0200C4CB90 /* LaunchScreen.storyboard */,
@@ -551,6 +557,8 @@
 			files = (
 				D2103A572377B9FE00C4CB90 /* AppDelegate.swift in Sources */,
 				D2103A592377B9FE00C4CB90 /* SceneDelegate.swift in Sources */,
+				D2763C3B2387344600CE4FE9 /* SettingsViewController.swift in Sources */,
+				D2763C39238730AC00CE4FE9 /* ColorPickerView.swift in Sources */,
 				D2103A5B2377B9FE00C4CB90 /* MasterViewController.swift in Sources */,
 				D2103A5D2377B9FE00C4CB90 /* DetailViewController.swift in Sources */,
 				D2FC56C223808F8900094EEB /* InfoViewController.swift in Sources */,
@@ -650,7 +658,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = PlantKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -683,7 +691,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = PlantKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -754,7 +762,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U5K2PCXQE4;
 				INFOPLIST_FILE = "Algorithmic Plants/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -775,7 +783,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U5K2PCXQE4;
 				INFOPLIST_FILE = "Algorithmic Plants/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
