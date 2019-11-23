@@ -260,7 +260,7 @@ public class Turtle {
         }
 
         #if DEBUG
-        print( "limit: left:\(limits.left), right:\(limits.right), top:\(limits.top), bottom:\(limits.bottom)" )
+        //print( "limit: left:\(limits.left), right:\(limits.right), top:\(limits.top), bottom:\(limits.bottom)" )
         // I could flag that this image isn't big enough, if the values fall outside of the current imageSize!
         #endif
         start = nil
@@ -300,7 +300,7 @@ public class Turtle {
         }
 
         #if DEBUG
-        print( "limit: left:\(limits.left), right:\(limits.right), top:\(limits.top), bottom:\(limits.bottom)" )
+        //print( "limit: left:\(limits.left), right:\(limits.right), top:\(limits.top), bottom:\(limits.bottom)" )
         // I could flag that this image isn't big enough, if the values fall outside of the current imageSize!
         #endif
         start = nil

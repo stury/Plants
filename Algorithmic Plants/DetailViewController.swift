@@ -111,8 +111,10 @@ class DetailViewController: UIViewController {
     func updateDocument(_ data: Data) {
         pdfData = data
         if let document = PDFDocument(data: data), let page = document.page(at: 0) {
-            let bounds = page.bounds(for: .mediaBox)
-            print( "page mediaBox size = \(bounds.size)")
+            #if DEBUG
+//            let bounds = page.bounds(for: .mediaBox)
+//            print( "page mediaBox size = \(bounds.size)")
+            #endif
             
             pdfView?.document = document
             pdfView?.autoScales = true
@@ -255,12 +257,14 @@ class DetailViewController: UIViewController {
         // Code specific to Mac.  Mac doesn't understand the raw data, nor the PDFDocument...  Write it out to disk, and send the URL.  This gives you most of the share options, but not "Save to Photos".  You can only get that if your first item was a UIImage (rasterized!)
         if let writer = try? FileWriter(directory: .cachesDirectory, domainMask: .userDomainMask, additionalOutputDirectory: "Temp") {
             if let url = writer.export(fileType: "pdf", name: "share", data: pdfData) {
-                items.append(url.standardizedFileURL)
+                items.append(url.standardizedFileURL as NSURL)
+                if let nsUrl = NSURL(string: url.absoluteString) {
+                    items.append(nsUrl)
+                }
             }
         }
 
 //        // Passing a UIImage to the items ensures that the Add To Photos appears in the drop down.  But they seem to need to be first in the list in that case.
-//        if let pdfData = pdfData {
 //        let renderer = ImageRenderer()
 //            let images = renderer.raster(pdfData)
 //            for image in images {

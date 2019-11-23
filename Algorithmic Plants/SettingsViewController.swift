@@ -46,28 +46,53 @@ class SettingsViewController: UIViewController {
         var blue    : CGFloat = 0.0
         var alpha   : CGFloat = 1.0
         
-        print( cgColor.colorSpace.debugDescription )
-        print( "cgColor Components: \(cgColor.numberOfComponents)" )
-        if cgColor.numberOfComponents == 4 {
-            if let components = cgColor.components {
-                for (index, component) in components.enumerated() {
-                    switch ( index ) {
-                    case 0:
-                        red = component
-                    case 1:
-                        green = component
-                    case 2:
-                        blue = component
-                    case 3:
-                        alpha = component
-                    default:
-                        print("We should NEVER get here!")
+        if let colorSpace = cgColor.colorSpace {
+            switch (colorSpace.model) {
+            case .monochrome:
+                if cgColor.numberOfComponents <= 2 {
+                    // Treat as black and white + alpha...
+                    if let components = cgColor.components {
+                        for (index, component) in components.enumerated() {
+                            switch ( index ) {
+                            case 0:
+                                red = component
+                                green = component
+                                blue = component
+                            case 1:
+                                alpha = component
+                            default:
+                                print("We should NEVER get here!")
+                            }
+                        }
                     }
                 }
+            case .rgb:
+                if cgColor.numberOfComponents == 3 || cgColor.numberOfComponents == 4 {
+                    if let components = cgColor.components {
+                        for (index, component) in components.enumerated() {
+                            switch ( index ) {
+                            case 0:
+                                red = component
+                            case 1:
+                                green = component
+                            case 2:
+                                blue = component
+                            case 3:
+                                alpha = component
+                            default:
+                                print("We should NEVER get here!")
+                            }
+                        }
+                    }
+                }
+
+            default:
+                print( cgColor.colorSpace.debugDescription )
+                print( "cgColor Components: \(cgColor.numberOfComponents)" )
             }
         }
         else {
-            print( "I haven't dealt with this before!" )
+            print( "ERROR: I haven't dealt with this before!" )
         }
         
         return (red, green, blue, alpha)
