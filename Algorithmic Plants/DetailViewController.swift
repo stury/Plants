@@ -251,14 +251,34 @@ class DetailViewController: UIViewController {
         // Open up the Action sheet, with the Image in the list of what you want to share.
         var items = [Any]()
 
+        #if targetEnvironment(macCatalyst)
+        // Code specific to Mac.  Mac doesn't understand the raw data, nor the PDFDocument...  Write it out to disk, and send the URL.  This gives you most of the share options, but not "Save to Photos".  You can only get that if your first item was a UIImage (rasterized!)
+        if let writer = try? FileWriter(directory: .cachesDirectory, domainMask: .userDomainMask, additionalOutputDirectory: "Temp") {
+            if let url = writer.export(fileType: "pdf", name: "share", data: pdfData) {
+                items.append(url.standardizedFileURL)
+            }
+        }
+
+//        // Passing a UIImage to the items ensures that the Add To Photos appears in the drop down.  But they seem to need to be first in the list in that case.
+//        if let pdfData = pdfData {
+//        let renderer = ImageRenderer()
+//            let images = renderer.raster(pdfData)
+//            for image in images {
+//                items.append(image)
+//            }
+//        }
+        #else
         // It appears that the share activity understands the raw PDF data, but not a PDFDocument object.
         if let data = pdfData {
             items.append( data )
         }
-//        iOS doesn't seem to understand a PDFDocument as a share item.  Only the Data.
-//        if let document = pdfView.document {
-//            items.append( document )
-//        }
+        //        iOS doesn't seem to understand a PDFDocument as a share item.  Only the Data.
+        //        if let document = pdfView.document {
+        //            items.append( document )
+        //        }
+        #endif
+
+        
         // If we don't have anything to act upon, don't open the Action Sheet.
         if items.count > 0 {
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)

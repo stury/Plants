@@ -79,10 +79,12 @@ class SettingsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        print( "\(String(describing: segue.identifier)) \(segue.destination)" )
-        
-        if let currentColorView = currentColorView, let color = currentColorView.backgroundColor {
-            _ = convertColor(color.cgColor)
+        if let identifier = segue.identifier {
+            print( "\(identifier) \(segue.destination)" )
+            
+            if let currentColorView = currentColorView, let color = currentColorView.backgroundColor {
+                _ = convertColor(color.cgColor)
+            }
         }
     }
 

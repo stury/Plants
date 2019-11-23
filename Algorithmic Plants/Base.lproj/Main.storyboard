@@ -230,7 +230,6 @@
                     <connections>
                         <outlet property="colorPickerView" destination="3Xd-QJ-YA5" id="KCU-Q7-Qzo"/>
                         <outlet property="currentColorView" destination="G5m-Ro-tEe" id="34I-WP-ABv"/>
-                        <segue destination="E6I-oD-Ldh" kind="unwind" unwindAction="onUnwind:" id="a36-zu-QAj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wlj-0j-zlS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
