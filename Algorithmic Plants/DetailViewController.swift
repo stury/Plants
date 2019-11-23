@@ -202,11 +202,11 @@ class DetailViewController: UIViewController {
                 
             updatePDF()
             
-//            if let settingsButton = settingsButton {
-//                if let _ = detailItem as? Rules {
-//                    settingsButton.isEnabled = true
-//                }
-//            }
+            if let settingsButton = settingsButton {
+                if let _ = detailItem as? Rules {
+                    settingsButton.isEnabled = true
+                }
+            }
         }
         updateButtons()
     }

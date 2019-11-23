@@ -220,7 +220,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8sc-1k-Rq5"/>
                     </view>
-                    <navigationItem key="navigationItem" id="dgt-ep-tNT"/>
+                    <navigationItem key="navigationItem" id="dgt-ep-tNT">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="pCE-I7-1M4">
+                            <connections>
+                                <segue destination="E6I-oD-Ldh" kind="unwind" unwindAction="onUnwind:" id="R7u-Ak-bgk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="colorPickerView" destination="3Xd-QJ-YA5" id="KCU-Q7-Qzo"/>
                         <outlet property="currentColorView" destination="G5m-Ro-tEe" id="34I-WP-ABv"/>

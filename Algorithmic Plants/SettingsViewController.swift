@@ -90,7 +90,11 @@ class SettingsViewController: UIViewController {
         print( "unwinding seque:  \(String(describing: unwindSegue.identifier)) \(unwindSegue.destination) -> \(subsequentVC)" )
         
         if let currentColorView = currentColorView, let color = currentColorView.backgroundColor {
-            _ = convertColor(color.cgColor)
+            let color = convertColor(color.cgColor)
+            if let destination = unwindSegue.destination as? DetailViewController {
+                destination.turtleColor = (Double(color.0), Double(color.1), Double(color.2), Double(color.3))
+                destination.updatePDF()
+            }
         }
     }
     
