@@ -344,6 +344,8 @@ public func defaultFractalCollection() ->[Rules] {
     // Note I can probably delete this one, since it's the Koch Snowflake.
     // result.append(Rules(name: "modifier_rule", initiator: "+F--F--F", rules: ["F" : "F+F--F+F"], angle: 60, length: 1200, initialDirection: 0, modifier: 3 ))
 
+    
+    result.append(Rules(name:"Cesaro's Triangle Sweep", initiator: "F+F+F+F", rules: ["F" : "F+F--F+F"], angle: 85, length: defaultLength, initialDirection: 0 ))
 
     return result
 }

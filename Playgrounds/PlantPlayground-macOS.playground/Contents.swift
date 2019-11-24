@@ -44,13 +44,18 @@ let defaultIteration = 4
 
 let rules : [String:(Rules, Int)] = [
     // 'F', {'F': 'FF[++F][-FF]'}, 5, 22
-    "asymetric_branching_tree":(Rules(initiator: "F", rules: ["F" : "FF[++F][-FF]"], angle: 22, length: defaultLength, initialDirection: 90 ),5),
+//    "asymetric_branching_tree":(Rules(initiator: "F", rules: ["F" : "FF[++F][-FF]"], angle: 22, length: defaultLength, initialDirection: 90 ),5),
         
 //    "koch_curve_snowflake":(Rules(initiator: /*"F++F++F"*/ "F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ),5),
 
 //    "koch_curve_variant_1_stars":(Rules(initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 30 ),5),
 //
 //    "koch_curve_variant_1_ornate":(Rules(initiator: "F", rules: ["F" : "F+F--F+F--F+F"], angle: 45, length: defaultLength, initialDirection: 67 ),4),
+    
+//    "Cesaro's Triangle Sweep":(Rules(initiator: "F+F+F+F", rules: ["F" : "F+F--F+F"], angle: 85, length: defaultLength, initialDirection: 0 ),5),
+    
+    "Polya's Triangle Sweep":(Rules(initiator: "F|f+F|f+F|f+F|f", rules: ["F":"F+F--F+F"], angle: 45, length: defaultLength, initialDirection: 0 ),4),
+    
 ]
 
 var images = [Image]()
