@@ -45,6 +45,7 @@
 		D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
 		D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C3E9E42327452F00843FFE /* ImageRenderer.swift */; };
 		D2CEC2EE2344FDFA00034179 /* FileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CEC2ED2344FDFA00034179 /* FileWriter.swift */; };
+		D2EEC6E2238AD217003E3028 /* SaveFileActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2EEC6E1238AD217003E3028 /* SaveFileActivity.swift */; };
 		D2FC56C223808F8900094EEB /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC56C0238087FD00094EEB /* InfoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +141,7 @@
 		D28F353A21B4DE84007CFF9C /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
 		D2C3E9E42327452F00843FFE /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
 		D2CEC2ED2344FDFA00034179 /* FileWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWriter.swift; sourceTree = "<group>"; };
+		D2EEC6E1238AD217003E3028 /* SaveFileActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFileActivity.swift; sourceTree = "<group>"; };
 		D2FC56C0238087FD00094EEB /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -220,6 +222,7 @@
 				D2763C38238730AC00CE4FE9 /* ColorPickerView.swift */,
 				D2FC56C0238087FD00094EEB /* InfoViewController.swift */,
 				D2763C3A2387344600CE4FE9 /* SettingsViewController.swift */,
+				D2EEC6E1238AD217003E3028 /* SaveFileActivity.swift */,
 				D2103A5E2377B9FE00C4CB90 /* Main.storyboard */,
 				D2103A612377BA0200C4CB90 /* Assets.xcassets */,
 				D2103A632377BA0200C4CB90 /* LaunchScreen.storyboard */,
@@ -562,6 +565,7 @@
 				D2763C3B2387344600CE4FE9 /* SettingsViewController.swift in Sources */,
 				D2763C39238730AC00CE4FE9 /* ColorPickerView.swift in Sources */,
 				D2103A5B2377B9FE00C4CB90 /* MasterViewController.swift in Sources */,
+				D2EEC6E2238AD217003E3028 /* SaveFileActivity.swift in Sources */,
 				D2103A5D2377B9FE00C4CB90 /* DetailViewController.swift in Sources */,
 				D2FC56C223808F8900094EEB /* InfoViewController.swift in Sources */,
 			);

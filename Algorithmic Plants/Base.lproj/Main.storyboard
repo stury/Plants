@@ -38,7 +38,8 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQ2-SP-LIl">
                                 <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <items>
-                                    <barButtonItem title="-" id="5tx-nE-Ch5">
+                                    <barButtonItem title="-" image="gobackward" catalog="system" id="5tx-nE-Ch5">
+                                        <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="decrementAction:" destination="JEX-9P-axG" id="9E5-Z3-qhF"/>
                                         </connections>
@@ -50,7 +51,8 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="XdE-J7-9ku"/>
-                                    <barButtonItem title="+" style="plain" id="jiH-qF-IA6">
+                                    <barButtonItem title="+" image="goforward" catalog="system" style="plain" id="jiH-qF-IA6">
+                                        <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="incrementAction:" destination="JEX-9P-axG" id="L4t-J1-aQT"/>
                                         </connections>
@@ -312,6 +314,8 @@
     </scenes>
     <resources>
         <image name="gear" catalog="system" width="64" height="58"/>
+        <image name="gobackward" catalog="system" width="60" height="64"/>
+        <image name="goforward" catalog="system" width="60" height="64"/>
         <image name="info.circle" catalog="system" width="64" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>

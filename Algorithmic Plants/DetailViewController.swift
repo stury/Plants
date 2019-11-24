@@ -110,11 +110,13 @@ class DetailViewController: UIViewController {
     
     func updateDocument(_ data: Data) {
         pdfData = data
-        if let document = PDFDocument(data: data), let page = document.page(at: 0) {
-            #if DEBUG
+        if let document = PDFDocument(data: data) {
+//            #if DEBUG
+//            if let page = document.page(at: 0) {
 //            let bounds = page.bounds(for: .mediaBox)
 //            print( "page mediaBox size = \(bounds.size)")
-            #endif
+//            }
+//            #endif
             
             pdfView?.document = document
             pdfView?.autoScales = true
@@ -252,7 +254,8 @@ class DetailViewController: UIViewController {
     @IBAction func onAction(_ sender: UIBarButtonItem) {
         // Open up the Action sheet, with the Image in the list of what you want to share.
         var items = [Any]()
-
+        var applicationActivities = [UIActivity]()
+        
         #if targetEnvironment(macCatalyst)
         // Code specific to Mac.  Mac doesn't understand the raw data, nor the PDFDocument...  Write it out to disk, and send the URL.  This gives you most of the share options, but not "Save to Photos".  You can only get that if your first item was a UIImage (rasterized!)
         if let writer = try? FileWriter(directory: .cachesDirectory, domainMask: .userDomainMask, additionalOutputDirectory: "Temp") {
@@ -271,6 +274,7 @@ class DetailViewController: UIViewController {
 //                items.append(image)
 //            }
 //        }
+        applicationActivities.append(SaveFileActivity())
         #else
         // It appears that the share activity understands the raw PDF data, but not a PDFDocument object.
         if let data = pdfData {
@@ -285,7 +289,7 @@ class DetailViewController: UIViewController {
         
         // If we don't have anything to act upon, don't open the Action Sheet.
         if items.count > 0 {
-            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities)
             if UIDevice.current.userInterfaceIdiom == .pad {
                 //On iPad, you must present the view controller in a popover.
                 activityVC.modalPresentationStyle = .popover
