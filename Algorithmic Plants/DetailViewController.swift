@@ -258,8 +258,18 @@ class DetailViewController: UIViewController {
         
         #if targetEnvironment(macCatalyst)
         // Code specific to Mac.  Mac doesn't understand the raw data, nor the PDFDocument...  Write it out to disk, and send the URL.  This gives you most of the share options, but not "Save to Photos".  You can only get that if your first item was a UIImage (rasterized!)
+        var name = "share"
+        if let detailItem = detailItem as? Plant {
+            if let detailName = detailItem.name {
+                name = detailName
+            }
+        }
+        else if let detailItem = detailItem as? Rules {
+            name = detailItem.name
+        }
+
         if let writer = try? FileWriter(directory: .cachesDirectory, domainMask: .userDomainMask, additionalOutputDirectory: "Temp") {
-            if let url = writer.export(fileType: "pdf", name: "share", data: pdfData) {
+            if let url = writer.export(fileType: "pdf", name: name, data: pdfData) {
                 items.append(url.standardizedFileURL as NSURL)
                 if let nsUrl = NSURL(string: url.absoluteString) {
                     items.append(nsUrl)

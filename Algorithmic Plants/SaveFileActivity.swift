@@ -10,7 +10,7 @@ import UIKit
 import CoreImage
 import MobileCoreServices
 
-class SaveFileActivity: UIActivity {
+class SaveFileActivity: UIActivity, UIDocumentPickerDelegate {
 
  
     override var activityType: UIActivity.ActivityType? {
@@ -107,9 +107,10 @@ class SaveFileActivity: UIActivity {
         if let pdfFile = pdfFile {
             // So we are keeping track of the items we need to export to a file.
             // Prefer the file to the Data object.
-            // Present the save controller. We've set it to `exportToService` in order
-            // to export the data -- OLD COMMENT
-            viewController = UIDocumentPickerViewController(url: pdfFile, in: UIDocumentPickerMode.exportToService)
+            let documentPicker = UIDocumentPickerViewController(url: pdfFile, in: UIDocumentPickerMode.exportToService)
+            documentPicker.delegate = self
+            
+            viewController = documentPicker
         }
         else if let pdfData = pdfData {
             // Export the data to the system, then use that to construct the Document Picker.
@@ -118,12 +119,14 @@ class SaveFileActivity: UIActivity {
             do {
                 let tempURL = fileManager.temporaryDirectory.appendingPathComponent("L-System .pdf")
 
-                // Write the data out into the file
+                // Write the data out to the file
                 try pdfData.write(to: tempURL)
 
-                // Present the save controller. We've set it to `exportToService` in order
-                // to export the data -- OLD COMMENT
-                viewController = UIDocumentPickerViewController(url: tempURL, in: UIDocumentPickerMode.exportToService)
+                // Present the save controller.
+                let documentPicker = UIDocumentPickerViewController(url: tempURL, in: UIDocumentPickerMode.exportToService)
+                documentPicker.delegate = self
+                
+                viewController = documentPicker
             }
             catch {
                 print( "Oops!  Error when trying to export the PDFData! \(error)" )
@@ -134,7 +137,7 @@ class SaveFileActivity: UIActivity {
     
     override class var activityCategory: UIActivity.Category {
         get {
-            return .action //.share
+            return .action
         }
     }
     
@@ -144,4 +147,28 @@ class SaveFileActivity: UIActivity {
         }
     }
     
+    // MARK: - UIDocumentPickerDelegate
+    func deleteTempFile() {
+        // In our case, we are always creating a temporary file.
+        // So if the user cancelled or chooses the action, we need to remove the temp file.
+        if let file = pdfFile, file.isFileURL {
+            try? FileManager.default.removeItem(at: file)
+        }
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        deleteTempFile()
+        
+        // The list of URL's sent to this method, is where the user saved the file(s).
+        // DO NOT delete those!
+//        for url in urls {
+//            if url.isFileURL {
+//                print( "\(url)" )
+//            }
+//        }
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        deleteTempFile()
+    }
 }
