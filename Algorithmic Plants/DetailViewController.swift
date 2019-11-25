@@ -255,6 +255,7 @@ class DetailViewController: UIViewController {
         // Open up the Action sheet, with the Image in the list of what you want to share.
         var items = [Any]()
         var applicationActivities = [UIActivity]()
+        var createdFile : URL?
         
         #if targetEnvironment(macCatalyst)
         // Code specific to Mac.  Mac doesn't understand the raw data, nor the PDFDocument...  Write it out to disk, and send the URL.  This gives you most of the share options, but not "Save to Photos".  You can only get that if your first item was a UIImage (rasterized!)
@@ -270,10 +271,8 @@ class DetailViewController: UIViewController {
 
         if let writer = try? FileWriter(directory: .cachesDirectory, domainMask: .userDomainMask, additionalOutputDirectory: "Temp") {
             if let url = writer.export(fileType: "pdf", name: name, data: pdfData) {
+                createdFile = url
                 items.append(url.standardizedFileURL as NSURL)
-                if let nsUrl = NSURL(string: url.absoluteString) {
-                    items.append(nsUrl)
-                }
             }
         }
 
@@ -315,7 +314,24 @@ class DetailViewController: UIViewController {
                 // On iPhone and iPod touch, you must present it modally.
                 activityVC.modalPresentationStyle = .overCurrentContext //.currentContext
             }
-            
+            if let url = createdFile, url.isFileURL {
+                // Interesting Side note:  The UIActivityViewController doesn't seem to call the completion block if the user doesn't select an item to share with.
+                // This seems to be at odds with the documentation about what it should do...
+                // Maybe I should see if we get a willAppear to capture the cancel case...
+                let path = url.path
+//                print("Temporary file created: \(path).  Setting the completionWithItemsHandler...")
+                activityVC.completionWithItemsHandler = { (activityType, completed, returnedItems, error) -> Void in
+                    let fileManager = FileManager.default
+//                    print( "completionWithItemsHandler called.  path = \(path)" )
+                    if fileManager.fileExists(atPath: path) {
+//                        print( "deleting \(path)" )
+                        try? fileManager.removeItem(atPath: path)
+                    }
+                    else {
+//                        print( "path did not exist!" )
+                    }
+                }
+            }
             self.present(activityVC, animated: true) {
                 print("Presented VC!")
             }
