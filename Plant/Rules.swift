@@ -54,7 +54,10 @@ public class Rules : CustomStringConvertible {
     public let nodeRewriting : Bool
     public let modifier : Double   // What to change the length by on each iteration...
     
-    public init(name: String, initiator: String, rules: [Character:[String]], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false, modifier: Double = 1 ) {
+    public let defaultIteration : Int
+    public let note : String?
+    
+    public init(name: String, initiator: String, rules: [Character:[String]], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false, modifier: Double = 1, defaultIteration: Int = 4, note: String? = nil ) {
         self.name       = name
         self.initiator  = initiator
         self.rules      = rules
@@ -63,16 +66,18 @@ public class Rules : CustomStringConvertible {
         self.initialDirection = initialDirection
         self.nodeRewriting  = nodeRewriting
         self.modifier = modifier
+        self.defaultIteration = defaultIteration
+        self.note = note
     }
 
-    public convenience init(name: String, initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false, modifier: Double = 1 ) {
+    public convenience init(name: String, initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false, modifier: Double = 1, defaultIteration: Int = 4, note: String? = nil ) {
 
         var newRules = [Character:[String]]()
         for (char, string) in rules {
             newRules[char] = [string]
         }
 
-        self.init(name: name, initiator: initiator, rules: newRules, angle: angle, length: length, initialDirection: initialDirection, nodeRewriting: nodeRewriting, modifier: modifier)
+        self.init(name: name, initiator: initiator, rules: newRules, angle: angle, length: length, initialDirection: initialDirection, nodeRewriting: nodeRewriting, modifier: modifier, defaultIteration: defaultIteration, note: note)
     }
 //    public init(initiator: String, rules: [Character:String], angle: Double = 90.0, length: Double = 5.0, initialDirection: Double = 90.0, nodeRewriting: Bool = false ) {
 //        self.initiator  = initiator

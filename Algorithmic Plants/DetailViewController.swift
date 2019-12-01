@@ -30,7 +30,15 @@ class DetailViewController: UIViewController {
     var detailItem: Any? {
         didSet {
             // Reset the currentIteration...
-            currentIteration = 4
+            if let rules = detailItem as? Rules {
+                currentIteration = rules.defaultIteration
+            }
+            else if let plant = detailItem as? Plant {
+                currentIteration = plant.defaultIteration
+            }
+            else {
+                currentIteration = 4
+            }
             // Update the view.
             configureView()
         }

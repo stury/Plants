@@ -67,7 +67,9 @@ public class Plant : CustomStringConvertible {
     
     public var lengthModifier : Double = 1.0
     public var name: String?
-    
+    public var defaultIteration : Int = 4
+    public var note : String? = nil
+
     let seed = "0"
     public static let rule0 = "11[0]1[0]1110"
     //static let rule0 = "1[0][0]110" // Maple leaf
@@ -80,20 +82,24 @@ public class Plant : CustomStringConvertible {
     public static let rule1 = "11"
     
     var rules =  ["0": rule0, "1": rule1]
-    
-    public convenience init(branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1) {
+
+    public convenience init(branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1, defaultIteration: Int = 4, note: String? = nil) {
         self.init()
         self.branchAngle = branchAngle
         self.rules["0"] = rule0
         self.rules["1"] = rule1
+        self.defaultIteration = defaultIteration
+        self.note = note
     }
 
-    public convenience init(name: String, branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1) {
+    public convenience init(name: String, branchAngle: Double = 45.0, rule0: String = rule0, rule1: String = rule1, defaultIteration: Int = 4, note: String? = nil) {
         self.init()
         self.name = name
         self.branchAngle = branchAngle
         self.rules["0"] = rule0
         self.rules["1"] = rule1
+        self.defaultIteration = defaultIteration
+        self.note = note
     }
     
     /// Calculate the limits of the actual drawing, so we might be able to crop the image at the emd.

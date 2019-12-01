@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D200C0712390C47800A184AC /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200C0702390C47800A184AC /* ThumbnailGenerator.swift */; };
+		D200C07323936EBF00A184AC /* MasterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200C07223936EBF00A184AC /* MasterTableViewCell.swift */; };
+		D200C0752394145500A184AC /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D200C0742394145500A184AC /* FileCache.swift */; };
 		D2103A382377B8B800C4CB90 /* PlantKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2103A2F2377B8B800C4CB90 /* PlantKit.framework */; };
 		D2103A3D2377B8B800C4CB90 /* PlantKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A3C2377B8B800C4CB90 /* PlantKitTests.swift */; };
 		D2103A3F2377B8B800C4CB90 /* PlantKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D2103A312377B8B800C4CB90 /* PlantKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -104,6 +107,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D200C0702390C47800A184AC /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
+		D200C07223936EBF00A184AC /* MasterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterTableViewCell.swift; sourceTree = "<group>"; };
+		D200C0742394145500A184AC /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		D2103A2F2377B8B800C4CB90 /* PlantKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlantKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2103A312377B8B800C4CB90 /* PlantKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlantKit.h; sourceTree = "<group>"; };
 		D2103A322377B8B800C4CB90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -218,11 +224,14 @@
 				D2103A562377B9FE00C4CB90 /* AppDelegate.swift */,
 				D2103A582377B9FE00C4CB90 /* SceneDelegate.swift */,
 				D2103A5A2377B9FE00C4CB90 /* MasterViewController.swift */,
+				D200C07223936EBF00A184AC /* MasterTableViewCell.swift */,
 				D2103A5C2377B9FE00C4CB90 /* DetailViewController.swift */,
 				D2763C38238730AC00CE4FE9 /* ColorPickerView.swift */,
 				D2FC56C0238087FD00094EEB /* InfoViewController.swift */,
 				D2763C3A2387344600CE4FE9 /* SettingsViewController.swift */,
 				D2EEC6E1238AD217003E3028 /* SaveFileActivity.swift */,
+				D200C0702390C47800A184AC /* ThumbnailGenerator.swift */,
+				D200C0742394145500A184AC /* FileCache.swift */,
 				D2103A5E2377B9FE00C4CB90 /* Main.storyboard */,
 				D2103A612377BA0200C4CB90 /* Assets.xcassets */,
 				D2103A632377BA0200C4CB90 /* LaunchScreen.storyboard */,
@@ -563,8 +572,11 @@
 				D2103A572377B9FE00C4CB90 /* AppDelegate.swift in Sources */,
 				D2103A592377B9FE00C4CB90 /* SceneDelegate.swift in Sources */,
 				D2763C3B2387344600CE4FE9 /* SettingsViewController.swift in Sources */,
+				D200C0752394145500A184AC /* FileCache.swift in Sources */,
 				D2763C39238730AC00CE4FE9 /* ColorPickerView.swift in Sources */,
 				D2103A5B2377B9FE00C4CB90 /* MasterViewController.swift in Sources */,
+				D200C07323936EBF00A184AC /* MasterTableViewCell.swift in Sources */,
+				D200C0712390C47800A184AC /* ThumbnailGenerator.swift in Sources */,
 				D2EEC6E2238AD217003E3028 /* SaveFileActivity.swift in Sources */,
 				D2103A5D2377B9FE00C4CB90 /* DetailViewController.swift in Sources */,
 				D2FC56C223808F8900094EEB /* InfoViewController.swift in Sources */,

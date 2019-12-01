@@ -18,7 +18,7 @@ public class FileWriter {
     /// The base path to use for new files.
     private let basicPath : String
     /// The computed path combining the basic path plus the additional directory path, where we will actually write files to disk.
-    private let computedPath : String
+    public let computedPath : String
     /// The directory to ask the FileManager for it's location.
     private let directory: FileManager.SearchPathDirectory
     /// The FileManager domainMask to search.

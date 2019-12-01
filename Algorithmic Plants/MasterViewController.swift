@@ -80,16 +80,30 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        if indexPath.section == 0 {
-            let object = plantObjects[indexPath.row]
-            if let name = object.name {
-                cell.textLabel!.text = name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MasterCell", for: indexPath)
+        if let cell = cell as? MasterTableViewCell {
+            let object : Any
+            
+            if indexPath.section == 0 {
+                object = plantObjects[indexPath.row]
             }
+            else {
+                object = fractalObjects[indexPath.row]
+            }
+            // Setting the item, should allow the Cell to configure itself!
+            cell.item = object
         }
         else {
-            let object = fractalObjects[indexPath.row]
-            cell.textLabel!.text = object.name
+            if indexPath.section == 0 {
+                let object = plantObjects[indexPath.row]
+                if let name = object.name {
+                    cell.textLabel!.text = name
+                }
+            }
+            else {
+                let object = fractalObjects[indexPath.row]
+                cell.textLabel!.text = object.name
+            }
         }
         return cell
     }
