@@ -65,9 +65,9 @@ public func defaultFractalCollection() ->[Rules] {
 
     
     // von Koch Snowflake Demos
-    result.append(Rules(name: "koch curve flat snowflake", initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0 ))
-    result.append(Rules(name: "koch curve snowflake", initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
-    result.append(Rules(name: "koch curve snowflake hex", initiator: "F+F+F+F+F+F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0 ))
+    result.append(Rules(name: "koch curve flat snowflake", initiator: "F", rules: ["F" : "F+F--F+F"], angle: 60, length: defaultLength, initialDirection: 0, defaultIteration: 3 ))
+    result.append(Rules(name: "koch curve snowflake", initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0, defaultIteration: 3 ))
+    result.append(Rules(name: "koch curve snowflake hex", initiator: "F+F+F+F+F+F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0, defaultIteration: 3 ))
     result.append(Rules(name: "koch curve anti-snowflake", initiator: "F++F++F", rules: ["F" : "F+F--F+F"], angle: 60, length: 5.0, initialDirection: 0))
 
     // Sierpinski Demos
@@ -146,20 +146,20 @@ public func defaultFractalCollection() ->[Rules] {
         // Examples of Node rewriting
 //        "scott_curve": (Rules(name: "scott_curve", initiator: "F++F++F++F", rules: ["F" : "-F+F"], angle: 45, length: defaultLength, initialDirection: 90 ),defaultIteration),
         // http://ecademy.agnesscott.edu/~lriddle/ifs/pentigre/pentigre2.htm
-    result.append(Rules(name: "McWhorter Pentigree", initiator: "F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "McWhorter Pentigree", initiator: "F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1, defaultIteration: 3))
         // http://ecademy.agnesscott.edu/~lriddle/ifs/pentigre/pentigreeForm2.htm
-    result.append(Rules(name: "McWhorter Pentigree 2nd form", initiator: "F++F++F++F++F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "McWhorter Pentigree 2nd form", initiator: "F++F++F++F++F", rules: ["F":"+F++F−−−−F−−F++F++F−"], angle: 36, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1, defaultIteration: 3))
         // http://ecademy.agnesscott.edu/~lriddle/ifs/pentaden/penta.htm
-    result.append(Rules(name: "McWhorter Pentadentrite", initiator: "F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "McWhorter Pentadentrite", initiator: "F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1, defaultIteration: 3))
         // http://ecademy.agnesscott.edu/~lriddle/ifs/pentaden/pentadenForm2.htm
-    result.append(Rules(name: "McWhorter Pentadentrite 2nd", initiator: "F+F+F+F+F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1))
+    result.append(Rules(name: "McWhorter Pentadentrite 2nd", initiator: "F+F+F+F+F", rules: ["F":"F+F-F--F+F+F"], angle: 72, length: defaultLength, initialDirection: 0, nodeRewriting: false, modifier: 1, defaultIteration: 3))
 
     result.append(Rules(name: "Koch curve snowflake", initiator: "F++F++F", rules: ["F" : "F−F++F−F"], angle: 60, length: defaultLength, initialDirection: 0, defaultIteration: 3 ))
         
         // https://en.wikipedia.org/wiki/L-system
     result.append(Rules(name: "Koch curve", initiator: "F", rules: ["F" : "F+F−F−F+F"], angle: 90, length: defaultLength, initialDirection: 0, defaultIteration: 3 ))
         //    //"F++Ffff+F"
-    result.append(Rules(name: "Koch curve 2", initiator: "F", rules: ["F" : "F++Ffff+F"], angle: 90, length: defaultLength, initialDirection: 0 ))
+    result.append(Rules(name: "Koch curve 2", initiator: "F", rules: ["F" : "F+Ffff+F"], angle: 90, length: defaultLength, initialDirection: 0 ))
             
             // https://nb.paulbutler.org/l-systems/
             // Based on complex image

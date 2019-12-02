@@ -192,6 +192,11 @@ class DetailViewController: UIViewController {
             else if decrementIteration?.isEnabled == false {
                 decrementIteration?.isEnabled = true
             }
+
+            // Set the iteration label
+            if let iterationLabel = iterationLabel, iterationLabel.text != "n=\(currentIteration)" {
+                iterationLabel.text = "n=\(currentIteration)"
+            }
         }
         else {
             // Disable the bar buttons!
@@ -199,6 +204,11 @@ class DetailViewController: UIViewController {
             decrementIteration?.isEnabled = false
             infoButton.isEnabled = false
             shareButton.isEnabled = false
+
+            // Set the iteration label
+            if let iterationLabel = iterationLabel {
+                iterationLabel.text = ""
+            }
         }
     }
 
