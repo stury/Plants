@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ImageRenderer
 
 let fileWriter = try? FileWriter(additionalOutputDirectory: "Plant")
 

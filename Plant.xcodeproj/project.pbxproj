@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,11 +18,6 @@
 		D2103A482377B92C00C4CB90 /* Limit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353821B4DE52007CFF9C /* Limit.swift */; };
 		D2103A492377B92C00C4CB90 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
 		D2103A4A2377B92C00C4CB90 /* ImageArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */; };
-		D2103A4B2377B93800C4CB90 /* CGColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */; };
-		D2103A4C2377B93800C4CB90 /* CGContextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */; };
-		D2103A4D2377B93800C4CB90 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353021B227B3007CFF9C /* Image.swift */; };
-		D2103A4E2377B93800C4CB90 /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C3E9E42327452F00843FFE /* ImageRenderer.swift */; };
-		D2103A4F2377B93800C4CB90 /* FileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CEC2ED2344FDFA00034179 /* FileWriter.swift */; };
 		D2103A572377B9FE00C4CB90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A562377B9FE00C4CB90 /* AppDelegate.swift */; };
 		D2103A592377B9FE00C4CB90 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A582377B9FE00C4CB90 /* SceneDelegate.swift */; };
 		D2103A5B2377B9FE00C4CB90 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A5A2377B9FE00C4CB90 /* MasterViewController.swift */; };
@@ -33,21 +28,25 @@
 		D2103A702377BA0300C4CB90 /* Algorithmic_PlantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A6F2377BA0300C4CB90 /* Algorithmic_PlantsTests.swift */; };
 		D2103A7B2377BA0300C4CB90 /* Algorithmic_PlantsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A7A2377BA0300C4CB90 /* Algorithmic_PlantsUITests.swift */; };
 		D2103A892377C18F00C4CB90 /* PlantDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A882377C18F00C4CB90 /* PlantDefaults.swift */; };
-		D2567D62237A71A600D96340 /* PlantKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2103A2F2377B8B800C4CB90 /* PlantKit.framework */; };
-		D2567D63237A71A600D96340 /* PlantKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2103A2F2377B8B800C4CB90 /* PlantKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2763C39238730AC00CE4FE9 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2763C38238730AC00CE4FE9 /* ColorPickerView.swift */; };
 		D2763C3B2387344600CE4FE9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2763C3A2387344600CE4FE9 /* SettingsViewController.swift */; };
 		D27BA30921BCCC36006C9D92 /* ImageArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */; };
+		D28A7F9B244C007600337F65 /* ImageRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = D28A7F9A244C007600337F65 /* ImageRenderer */; };
+		D28A7F9D244C00F700337F65 /* ImageRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = D28A7F9C244C00F700337F65 /* ImageRenderer */; };
+		D28A7F9F244C010C00337F65 /* ImageRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = D28A7F9E244C010C00337F65 /* ImageRenderer */; };
 		D28F352821B2264C007CFF9C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352721B2264C007CFF9C /* main.swift */; };
-		D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */; };
-		D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */; };
-		D28F353321B227B4007CFF9C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353021B227B3007CFF9C /* Image.swift */; };
 		D28F353521B227CF007CFF9C /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353421B227CF007CFF9C /* Plant.swift */; };
 		D28F353721B483F2007CFF9C /* Turtle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353621B483F2007CFF9C /* Turtle.swift */; };
 		D28F353921B4DE52007CFF9C /* Limit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353821B4DE52007CFF9C /* Limit.swift */; };
 		D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
-		D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C3E9E42327452F00843FFE /* ImageRenderer.swift */; };
-		D2CEC2EE2344FDFA00034179 /* FileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CEC2ED2344FDFA00034179 /* FileWriter.swift */; };
+		D2D639A72411FD1700DE74E3 /* PlantKitLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D639A62411FD1700DE74E3 /* PlantKitLib.swift */; };
+		D2D639AB2411FD6A00DE74E3 /* PlantDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2103A882377C18F00C4CB90 /* PlantDefaults.swift */; };
+		D2D639B12411FD9200DE74E3 /* ImageArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */; };
+		D2D639B22411FD9500DE74E3 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353A21B4DE84007CFF9C /* Rules.swift */; };
+		D2D639B32411FD9800DE74E3 /* Limit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353821B4DE52007CFF9C /* Limit.swift */; };
+		D2D639B42411FD9B00DE74E3 /* Turtle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353621B483F2007CFF9C /* Turtle.swift */; };
+		D2D639B52411FD9F00DE74E3 /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F353421B227CF007CFF9C /* Plant.swift */; };
+		D2D639B82411FE8E00DE74E3 /* libPlantKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2D639A42411FD1700DE74E3 /* libPlantKit.a */; };
 		D2EEC6E2238AD217003E3028 /* SaveFileActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2EEC6E1238AD217003E3028 /* SaveFileActivity.swift */; };
 		D2FC56C223808F8900094EEB /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC56C0238087FD00094EEB /* InfoViewController.swift */; };
 /* End PBXBuildFile section */
@@ -74,12 +73,12 @@
 			remoteGlobalIDString = D2103A532377B9FE00C4CB90;
 			remoteInfo = "Algorithmic Plants";
 		};
-		D2103A862377BA2300C4CB90 /* PBXContainerItemProxy */ = {
+		D2D639B62411FDC200DE74E3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D28F351C21B2264C007CFF9C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2103A2E2377B8B800C4CB90;
-			remoteInfo = PlantKit;
+			remoteGlobalIDString = D2D639A32411FD1700DE74E3;
+			remoteInfo = PlantKitLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -90,7 +89,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D2567D63237A71A600D96340 /* PlantKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +101,15 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D2D639A22411FD1700DE74E3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -138,15 +145,13 @@
 		D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageArrayExtensions.swift; sourceTree = "<group>"; };
 		D28F352421B2264C007CFF9C /* Plant */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Plant; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28F352721B2264C007CFF9C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGContextExtensions.swift; sourceTree = "<group>"; };
-		D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorExtensions.swift; sourceTree = "<group>"; };
-		D28F353021B227B3007CFF9C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D28F353421B227CF007CFF9C /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
 		D28F353621B483F2007CFF9C /* Turtle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Turtle.swift; sourceTree = "<group>"; };
 		D28F353821B4DE52007CFF9C /* Limit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Limit.swift; sourceTree = "<group>"; };
 		D28F353A21B4DE84007CFF9C /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
-		D2C3E9E42327452F00843FFE /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
-		D2CEC2ED2344FDFA00034179 /* FileWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWriter.swift; sourceTree = "<group>"; };
+		D2D6399F2411FCD000DE74E3 /* PlantKit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PlantKit copy-Info.plist"; path = "/Users/scott/Library/Mobile Documents/com~apple~CloudDocs/Development/Plant/PlantKit copy-Info.plist"; sourceTree = "<absolute>"; };
+		D2D639A42411FD1700DE74E3 /* libPlantKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlantKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2D639A62411FD1700DE74E3 /* PlantKitLib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantKitLib.swift; sourceTree = "<group>"; };
 		D2EEC6E1238AD217003E3028 /* SaveFileActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveFileActivity.swift; sourceTree = "<group>"; };
 		D2FC56C0238087FD00094EEB /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D28A7F9D244C00F700337F65 /* ImageRenderer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,7 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2567D62237A71A600D96340 /* PlantKit.framework in Frameworks */,
+				D2D639B82411FE8E00DE74E3 /* libPlantKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +199,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D28A7F9B244C007600337F65 /* ImageRenderer in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2D639A12411FD1700DE74E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D28A7F9F244C010C00337F65 /* ImageRenderer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,18 +273,6 @@
 			path = "Algorithmic PlantsUITests";
 			sourceTree = "<group>";
 		};
-		D2478AD42348482A00D57A22 /* Graphics */ = {
-			isa = PBXGroup;
-			children = (
-				D28F352F21B227B3007CFF9C /* CGColorExtensions.swift */,
-				D28F352E21B227B3007CFF9C /* CGContextExtensions.swift */,
-				D28F353021B227B3007CFF9C /* Image.swift */,
-				D2C3E9E42327452F00843FFE /* ImageRenderer.swift */,
-				D2CEC2ED2344FDFA00034179 /* FileWriter.swift */,
-			);
-			path = Graphics;
-			sourceTree = "<group>";
-		};
 		D2567D60237A719700D96340 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,8 +290,10 @@
 				D2103A552377B9FE00C4CB90 /* Algorithmic Plants */,
 				D2103A6E2377BA0300C4CB90 /* Algorithmic PlantsTests */,
 				D2103A792377BA0300C4CB90 /* Algorithmic PlantsUITests */,
+				D2D639A52411FD1700DE74E3 /* PlantKitLib */,
 				D28F352521B2264C007CFF9C /* Products */,
 				D2567D60237A719700D96340 /* Frameworks */,
+				D2D6399F2411FCD000DE74E3 /* PlantKit copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -301,6 +306,7 @@
 				D2103A542377B9FE00C4CB90 /* Digital Plants.app */,
 				D2103A6B2377BA0300C4CB90 /* Digital PlantsTests.xctest */,
 				D2103A762377BA0300C4CB90 /* Digital PlantsUITests.xctest */,
+				D2D639A42411FD1700DE74E3 /* libPlantKit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -314,9 +320,16 @@
 				D28F353821B4DE52007CFF9C /* Limit.swift */,
 				D28F353A21B4DE84007CFF9C /* Rules.swift */,
 				D27BA30821BCCC36006C9D92 /* ImageArrayExtensions.swift */,
-				D2478AD42348482A00D57A22 /* Graphics */,
 			);
 			path = Plant;
+			sourceTree = "<group>";
+		};
+		D2D639A52411FD1700DE74E3 /* PlantKitLib */ = {
+			isa = PBXGroup;
+			children = (
+				D2D639A62411FD1700DE74E3 /* PlantKitLib.swift */,
+			);
+			path = PlantKitLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,6 +360,9 @@
 			dependencies = (
 			);
 			name = PlantKit;
+			packageProductDependencies = (
+				D28A7F9C244C00F700337F65 /* ImageRenderer */,
+			);
 			productName = PlantKit;
 			productReference = D2103A2F2377B8B800C4CB90 /* PlantKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -381,7 +397,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D2103A872377BA2300C4CB90 /* PBXTargetDependency */,
+				D2D639B72411FDC200DE74E3 /* PBXTargetDependency */,
 			);
 			name = "Digital Plants";
 			productName = "Algorithmic Plants";
@@ -437,9 +453,32 @@
 			dependencies = (
 			);
 			name = Plant;
+			packageProductDependencies = (
+				D28A7F9A244C007600337F65 /* ImageRenderer */,
+			);
 			productName = Plant;
 			productReference = D28F352421B2264C007CFF9C /* Plant */;
 			productType = "com.apple.product-type.tool";
+		};
+		D2D639A32411FD1700DE74E3 /* PlantKitLib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2D639A82411FD1700DE74E3 /* Build configuration list for PBXNativeTarget "PlantKitLib" */;
+			buildPhases = (
+				D2D639A02411FD1700DE74E3 /* Sources */,
+				D2D639A12411FD1700DE74E3 /* Frameworks */,
+				D2D639A22411FD1700DE74E3 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PlantKitLib;
+			packageProductDependencies = (
+				D28A7F9E244C010C00337F65 /* ImageRenderer */,
+			);
+			productName = PlantKitLib;
+			productReference = D2D639A42411FD1700DE74E3 /* libPlantKit.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -447,7 +486,7 @@
 		D28F351C21B2264C007CFF9C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1110;
+				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Scott Tury";
 				TargetAttributes = {
@@ -472,6 +511,9 @@
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
 					};
+					D2D639A32411FD1700DE74E3 = {
+						CreatedOnToolsVersion = 11.2;
+					};
 				};
 			};
 			buildConfigurationList = D28F351F21B2264C007CFF9C /* Build configuration list for PBXProject "Plant" */;
@@ -483,12 +525,16 @@
 				Base,
 			);
 			mainGroup = D28F351B21B2264C007CFF9C;
+			packageReferences = (
+				D28A7F99244C007600337F65 /* XCRemoteSwiftPackageReference "ImageRenderer" */,
+			);
 			productRefGroup = D28F352521B2264C007CFF9C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				D28F352321B2264C007CFF9C /* Plant */,
 				D2103A2E2377B8B800C4CB90 /* PlantKit */,
+				D2D639A32411FD1700DE74E3 /* PlantKitLib */,
 				D2103A362377B8B800C4CB90 /* PlantKitTests */,
 				D2103A532377B9FE00C4CB90 /* Digital Plants */,
 				D2103A6A2377BA0300C4CB90 /* Digital PlantsTests */,
@@ -544,16 +590,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2103A462377B92C00C4CB90 /* Plant.swift in Sources */,
-				D2103A4D2377B93800C4CB90 /* Image.swift in Sources */,
-				D2103A4F2377B93800C4CB90 /* FileWriter.swift in Sources */,
 				D2103A892377C18F00C4CB90 /* PlantDefaults.swift in Sources */,
-				D2103A4B2377B93800C4CB90 /* CGColorExtensions.swift in Sources */,
 				D2103A492377B92C00C4CB90 /* Rules.swift in Sources */,
 				D2103A482377B92C00C4CB90 /* Limit.swift in Sources */,
 				D2103A4A2377B92C00C4CB90 /* ImageArrayExtensions.swift in Sources */,
 				D2103A472377B92C00C4CB90 /* Turtle.swift in Sources */,
-				D2103A4E2377B93800C4CB90 /* ImageRenderer.swift in Sources */,
-				D2103A4C2377B93800C4CB90 /* CGContextExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,15 +646,24 @@
 			files = (
 				D28F352821B2264C007CFF9C /* main.swift in Sources */,
 				D28F353B21B4DE84007CFF9C /* Rules.swift in Sources */,
-				D28F353321B227B4007CFF9C /* Image.swift in Sources */,
 				D28F353521B227CF007CFF9C /* Plant.swift in Sources */,
-				D2CEC2EE2344FDFA00034179 /* FileWriter.swift in Sources */,
-				D2C3E9E52327453000843FFE /* ImageRenderer.swift in Sources */,
-				D28F353221B227B4007CFF9C /* CGColorExtensions.swift in Sources */,
-				D28F353121B227B4007CFF9C /* CGContextExtensions.swift in Sources */,
 				D28F353921B4DE52007CFF9C /* Limit.swift in Sources */,
 				D27BA30921BCCC36006C9D92 /* ImageArrayExtensions.swift in Sources */,
 				D28F353721B483F2007CFF9C /* Turtle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2D639A02411FD1700DE74E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2D639B52411FD9F00DE74E3 /* Plant.swift in Sources */,
+				D2D639B42411FD9B00DE74E3 /* Turtle.swift in Sources */,
+				D2D639B22411FD9500DE74E3 /* Rules.swift in Sources */,
+				D2D639A72411FD1700DE74E3 /* PlantKitLib.swift in Sources */,
+				D2D639AB2411FD6A00DE74E3 /* PlantDefaults.swift in Sources */,
+				D2D639B12411FD9200DE74E3 /* ImageArrayExtensions.swift in Sources */,
+				D2D639B32411FD9800DE74E3 /* Limit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,10 +685,10 @@
 			target = D2103A532377B9FE00C4CB90 /* Digital Plants */;
 			targetProxy = D2103A772377BA0300C4CB90 /* PBXContainerItemProxy */;
 		};
-		D2103A872377BA2300C4CB90 /* PBXTargetDependency */ = {
+		D2D639B72411FDC200DE74E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2103A2E2377B8B800C4CB90 /* PlantKit */;
-			targetProxy = D2103A862377BA2300C4CB90 /* PBXContainerItemProxy */;
+			target = D2D639A32411FD1700DE74E3 /* PlantKitLib */;
+			targetProxy = D2D639B62411FDC200DE74E3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1048,6 +1098,37 @@
 			};
 			name = Release;
 		};
+		D2D639A92411FD1700DE74E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U5K2PCXQE4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = PlantKit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D2D639AA2411FD1700DE74E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U5K2PCXQE4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = PlantKit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1114,7 +1195,45 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		D2D639A82411FD1700DE74E3 /* Build configuration list for PBXNativeTarget "PlantKitLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2D639A92411FD1700DE74E3 /* Debug */,
+				D2D639AA2411FD1700DE74E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D28A7F99244C007600337F65 /* XCRemoteSwiftPackageReference "ImageRenderer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stury/ImageRenderer";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D28A7F9A244C007600337F65 /* ImageRenderer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D28A7F99244C007600337F65 /* XCRemoteSwiftPackageReference "ImageRenderer" */;
+			productName = ImageRenderer;
+		};
+		D28A7F9C244C00F700337F65 /* ImageRenderer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D28A7F99244C007600337F65 /* XCRemoteSwiftPackageReference "ImageRenderer" */;
+			productName = ImageRenderer;
+		};
+		D28A7F9E244C010C00337F65 /* ImageRenderer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D28A7F99244C007600337F65 /* XCRemoteSwiftPackageReference "ImageRenderer" */;
+			productName = ImageRenderer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D28F351C21B2264C007CFF9C /* Project object */;
 }

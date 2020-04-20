@@ -12,6 +12,7 @@
 #elseif os(iOS)
     import UIKit
 #endif
+import ImageRenderer
 
 public enum PlantItemEnum : Int {
     case leaf = 0

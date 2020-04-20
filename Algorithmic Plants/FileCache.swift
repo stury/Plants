@@ -8,6 +8,7 @@
 
 import Foundation
 import PlantKit
+import ImageRenderer
 
 class FileCache {
 

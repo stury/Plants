@@ -8,7 +8,7 @@
 
 import UIKit
 import PlantKit
-
+import ImageRenderer
 
 
 class MasterTableViewCell: UITableViewCell {

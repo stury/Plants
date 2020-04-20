@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import ImageRenderer
 import PlantKit
 
 class ThumbnailGenerator {
